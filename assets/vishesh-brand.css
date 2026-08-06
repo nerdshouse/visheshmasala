@@ -114,3 +114,64 @@ h3,
     transition: none;
   }
 }
+
+/* ---------- Nav + submenu design ---------- */
+.header__menu-item {
+  font-weight: 600;
+  font-size: 1.5rem;
+  border-radius: 99rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.header__menu-item:hover {
+  background: #ffffff;
+}
+
+.header__menu-item:hover span {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.header__menu-item span {
+  transition: color 0.2s ease;
+}
+
+/* Dropdown submenu: white rounded card */
+.header__submenu.global-settings-popup,
+.header__submenu {
+  border-radius: 1.4rem;
+  border: none;
+  box-shadow: 0 1.2rem 3.2rem rgba(74, 52, 24, 0.18);
+  overflow: hidden;
+  padding: 0.8rem;
+}
+
+.header__submenu .header__submenu {
+  box-shadow: none;
+  padding: 0;
+}
+
+.header__submenu .header__menu-item {
+  border-radius: 0.8rem;
+  font-weight: 500;
+  padding: 1rem 1.4rem;
+}
+
+.header__submenu .header__menu-item:hover {
+  background: var(--color-cream);
+}
+
+.header__submenu .header__menu-item:hover span {
+  color: var(--color-primary);
+  text-decoration: none;
+  text-underline-offset: unset;
+}
+
+.header__submenu .list-menu__item--active {
+  color: var(--color-primary);
+}
+
+/* Caret next to items with submenus follows the pill hover */
+.header__menu-item .icon-caret {
+  right: 1.2rem;
+}

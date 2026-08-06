@@ -742,7 +742,7 @@
   position: relative;
   display: block;
   background: #ffffff;
-  padding: 1.2rem 1.2rem 1.6rem;
+  padding: 0.8rem 0.8rem 1.2rem;
   border-radius: 0.6rem;
   box-shadow: 0 0.8rem 2rem rgba(74, 52, 24, 0.16);
   text-decoration: none;
@@ -791,10 +791,21 @@
 .vishesh-recipes__placeholder {
   width: 100%;
   aspect-ratio: 1 / 1;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.12);
   display: block;
   background: #ffffff;
   border-radius: 0.4rem;
+}
+
+.vishesh-recipes__card > a,
+.vishesh-recipes__card {
+  overflow: hidden;
+}
+
+.vishesh-recipes__title {
+  margin-top: 0.8rem;
 }
 
 .vishesh-recipes__title {
@@ -1209,13 +1220,13 @@
 
 .vishesh-bestsellers__arch {
   position: absolute;
-  width: 40rem;
-  height: 44rem;
+  width: 44rem;
+  height: 48rem;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -72%);
+  transform: translate(-50%, -64%);
   background: var(--color-accent);
-  border-radius: 14rem 14rem 0 0;
+  border-radius: 15rem 15rem 0 0;
   transition: background 0.4s ease;
 }
 
@@ -1235,11 +1246,22 @@
 
 .vishesh-bestsellers__card {
   position: relative;
-  max-width: 34rem;
+  max-width: 37rem;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.2rem;
+}
+
+/* Side slides recede */
+.vishesh-bestsellers__slide:not(.swiper-slide-active) {
+  opacity: 0.55;
+  transition: opacity 0.35s ease;
+}
+
+.vishesh-bestsellers__slide.swiper-slide-active {
+  opacity: 1;
+  transition: opacity 0.35s ease;
 }
 
 .vishesh-bestsellers__tag {
@@ -1315,11 +1337,17 @@
 }
 
 .vishesh-bestsellers__arrow--prev {
-  left: 26%;
+  left: 29%;
 }
 
 .vishesh-bestsellers__arrow--next {
-  right: 26%;
+  right: 29%;
+}
+
+.vishesh-bestsellers__arrow {
+  width: 5.2rem;
+  height: 5.2rem;
+  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.25);
 }
 
 .vishesh-bestsellers__arrow--prev svg {
@@ -1461,4 +1489,140 @@
 /* Sticky-info column breathing room on the pastel background */
 .product__info-wrapper .product__info-container > *:first-child {
   margin-top: 0;
+}
+
+/* ---------- PLP: full restyle ---------- */
+.collection .card-wrapper,
+.collection-list .card-wrapper,
+.related-products .card-wrapper {
+  background: #ffffff;
+  border-radius: 1.6rem;
+  box-shadow: 0 0.4rem 1.4rem rgba(74, 52, 24, 0.08);
+  padding: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.collection .card-wrapper:hover,
+.related-products .card-wrapper:hover {
+  transform: translateY(-0.6rem) rotate(-0.5deg);
+  box-shadow: 0 1.4rem 3rem rgba(74, 52, 24, 0.16);
+}
+
+.collection .card,
+.related-products .card {
+  background: transparent;
+}
+
+.collection .card--card,
+.collection .card--standard .card__inner {
+  border: none;
+}
+
+.collection .card__inner {
+  background: #ffffff;
+  border-radius: 1.2rem;
+}
+
+.collection .card__media,
+.related-products .card__media {
+  border-radius: 1.2rem;
+}
+
+.collection .card__media img,
+.related-products .card__media img {
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.collection .card__heading a,
+.related-products .card__heading a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.collection .card__heading a:hover {
+  text-decoration: none;
+  color: var(--color-primary-deep);
+}
+
+.collection .price,
+.related-products .price {
+  font-weight: 700;
+  color: var(--color-dark);
+}
+
+.collection .quick-add__submit {
+  border-radius: 99rem;
+}
+
+/* Facets as pills */
+.facets-container {
+  background: #ffffff;
+  border-radius: 1.4rem;
+  box-shadow: 0 0.3rem 1rem rgba(74, 52, 24, 0.07);
+  padding: 1rem 1.6rem;
+}
+
+.facets__disclosure summary,
+.facet-filters__sort {
+  border-radius: 99rem;
+}
+
+.mobile-facets__open {
+  border-radius: 99rem;
+  background: #ffffff;
+}
+
+/* Collection banner: light + editorial */
+.collection-hero {
+  padding: 5rem 0 3.6rem;
+}
+
+.collection-hero__title {
+  color: var(--color-primary);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 5vw, 5.6rem);
+}
+
+.collection-hero__description {
+  max-width: 64rem;
+  font-size: 1.6rem;
+}
+
+/* ---------- PDP: info card + editorial price ---------- */
+.product__info-wrapper .product__info-container {
+  background: #ffffff;
+  border-radius: 2rem;
+  box-shadow: 0 0.8rem 2.4rem rgba(74, 52, 24, 0.1);
+  padding: 3rem 2.8rem;
+}
+
+@media screen and (max-width: 749px) {
+  .product__info-wrapper .product__info-container {
+    padding: 2rem 1.6rem;
+  }
+}
+
+.product__text.caption-with-letter-spacing {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.product__title h1,
+.product__title > *:first-child {
+  color: var(--color-dark);
+  font-weight: 800;
+}
+
+.product .price .price-item {
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 2.4rem;
+}
+
+.product .product-form__submit {
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }

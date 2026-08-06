@@ -136,11 +136,20 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "pdp-marquee": {
+      "type": "vishesh-marquee",
+      "settings": {
+        "text": "Kitchen Se Dil Tak · Spices of Bharat · Trust of 50 Years · No Preservatives",
+        "speed": 25,
+        "color_scheme": "scheme-3"
+      }
     }
   },
   "order": [
     "main",
     "disclosures",
+    "pdp-marquee",
     "related-products"
   ]
 }
