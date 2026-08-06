@@ -1,0 +1,109 @@
+/* Vishesh Masala brand layer — loaded after base.css.
+   Fonts come from Google Fonts (see snippets/vishesh-motion.liquid); these
+   overrides win over the :root vars Dawn emits inline in theme.liquid. */
+
+:root {
+  --font-body-family: var(--font-body);
+  --font-body-style: normal;
+  --font-body-weight: 400;
+  --font-body-weight-bold: 700;
+  --font-heading-family: var(--font-display);
+  --font-heading-style: normal;
+  --font-heading-weight: 600;
+}
+
+/* Headings a touch tighter — Fraunces is generous at display sizes */
+h1,
+h2,
+h3,
+.h0,
+.h1,
+.h2,
+.h3 {
+  letter-spacing: -0.01em;
+}
+
+/* Primary button micro-interaction: turmeric fill wipes in from center.
+   Done with background-size (not a pseudo-element) because Dawn already
+   uses .button::after for its border/shadow treatment. */
+.button:not(.button--secondary):not(.button--tertiary):not(.shopify-payment-button__button) {
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 0% 100%;
+  transition:
+    background-size 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    color 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.button:not(.button--secondary):not(.button--tertiary):not(.shopify-payment-button__button):hover {
+  background-size: 100% 100%;
+  color: var(--color-dark);
+}
+
+/* Announcement bar: quieter, slightly spaced caps */
+.announcement-bar__message {
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Header: brand-maroon scheme is set in header-group.json; keep the logo in
+   display serif and give nav links a warm hover */
+.header__heading-link .h2 {
+  font-family: var(--font-heading-family);
+}
+
+.header__menu-item:hover span {
+  color: var(--color-saffron);
+  text-decoration-thickness: 0.2rem;
+}
+
+/* Floating WhatsApp button (rendered globally from theme.liquid) */
+.vishesh-whatsapp {
+  position: fixed;
+  right: 1.6rem;
+  bottom: 1.6rem;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 50%;
+  background-color: #25d366;
+  box-shadow: 0 0.4rem 1.2rem rgba(43, 26, 18, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.vishesh-whatsapp:hover {
+  transform: scale(1.08);
+}
+
+.vishesh-whatsapp svg {
+  width: 3rem;
+  height: 3rem;
+  fill: #ffffff;
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-whatsapp {
+    width: 4.8rem;
+    height: 4.8rem;
+    right: 1.2rem;
+    bottom: 1.2rem;
+  }
+
+  .vishesh-whatsapp svg {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:not(.button--secondary):not(.button--tertiary):not(.shopify-payment-button__button),
+  .vishesh-whatsapp {
+    transition: none;
+  }
+}

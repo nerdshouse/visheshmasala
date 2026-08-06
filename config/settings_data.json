@@ -6,57 +6,57 @@
       "color_schemes": {
         "scheme-1": {
           "settings": {
-            "background": "#FFFFFF",
+            "background": "#FBF3E7",
             "background_gradient": "",
-            "text": "#121212",
-            "button": "#121212",
-            "button_label": "#FFFFFF",
-            "secondary_button_label": "#121212",
-            "shadow": "#121212"
+            "text": "#2B1A12",
+            "button": "#6B1E1E",
+            "button_label": "#FBF3E7",
+            "secondary_button_label": "#6B1E1E",
+            "shadow": "#2B1A12"
           }
         },
         "scheme-2": {
           "settings": {
-            "background": "#F3F3F3",
+            "background": "#FFF9EF",
             "background_gradient": "",
-            "text": "#121212",
-            "button": "#121212",
-            "button_label": "#F3F3F3",
-            "secondary_button_label": "#121212",
-            "shadow": "#121212"
+            "text": "#2B1A12",
+            "button": "#6B1E1E",
+            "button_label": "#FBF3E7",
+            "secondary_button_label": "#6B1E1E",
+            "shadow": "#2B1A12"
           }
         },
         "scheme-3": {
           "settings": {
-            "background": "#242833",
+            "background": "#6B1E1E",
             "background_gradient": "",
-            "text": "#FFFFFF",
-            "button": "#FFFFFF",
-            "button_label": "#000000",
-            "secondary_button_label": "#FFFFFF",
-            "shadow": "#121212"
+            "text": "#FBF3E7",
+            "button": "#E8A63A",
+            "button_label": "#2B1A12",
+            "secondary_button_label": "#FBF3E7",
+            "shadow": "#2B1A12"
           }
         },
         "scheme-4": {
           "settings": {
-            "background": "#121212",
+            "background": "#2B1A12",
             "background_gradient": "",
-            "text": "#FFFFFF",
-            "button": "#FFFFFF",
-            "button_label": "#121212",
-            "secondary_button_label": "#FFFFFF",
-            "shadow": "#121212"
+            "text": "#FBF3E7",
+            "button": "#E8A63A",
+            "button_label": "#2B1A12",
+            "secondary_button_label": "#FBF3E7",
+            "shadow": "#2B1A12"
           }
         },
         "scheme-5": {
           "settings": {
-            "background": "#334FB4",
+            "background": "#E8A63A",
             "background_gradient": "",
-            "text": "#FFFFFF",
-            "button": "#FFFFFF",
-            "button_label": "#334FB4",
-            "secondary_button_label": "#FFFFFF",
-            "shadow": "#121212"
+            "text": "#2B1A12",
+            "button": "#6B1E1E",
+            "button_label": "#FBF3E7",
+            "secondary_button_label": "#2B1A12",
+            "shadow": "#2B1A12"
           }
         }
       },
@@ -72,7 +72,7 @@
       "animations_hover_elements": "none",
       "buttons_border_thickness": 1,
       "buttons_border_opacity": 100,
-      "buttons_radius": 0,
+      "buttons_radius": 4,
       "buttons_shadow_opacity": 0,
       "buttons_shadow_horizontal_offset": 0,
       "buttons_shadow_vertical_offset": 4,
@@ -86,7 +86,7 @@
       "variant_pills_shadow_blur": 5,
       "inputs_border_thickness": 1,
       "inputs_border_opacity": 55,
-      "inputs_radius": 0,
+      "inputs_radius": 4,
       "inputs_shadow_opacity": 0,
       "inputs_shadow_horizontal_offset": 0,
       "inputs_shadow_vertical_offset": 4,
@@ -97,7 +97,7 @@
       "card_color_scheme": "scheme-2",
       "card_border_thickness": 0,
       "card_border_opacity": 10,
-      "card_corner_radius": 0,
+      "card_corner_radius": 8,
       "card_shadow_opacity": 0,
       "card_shadow_horizontal_offset": 0,
       "card_shadow_vertical_offset": 4,
@@ -153,8 +153,8 @@
       "drawer_shadow_blur": 5,
       "badge_position": "bottom left",
       "badge_corner_radius": 40,
-      "sale_badge_color_scheme": "scheme-4",
-      "sold_out_badge_color_scheme": "scheme-3",
+      "sale_badge_color_scheme": "scheme-5",
+      "sold_out_badge_color_scheme": "scheme-4",
       "brand_headline": "",
       "brand_description": "<p></p>",
       "brand_image_width": 100,

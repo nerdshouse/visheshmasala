@@ -1451,5 +1451,26 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "Vishesh Masala",
+    "settings": [
+      {
+        "type": "header",
+        "content": "WhatsApp"
+      },
+      {
+        "type": "checkbox",
+        "id": "whatsapp_enable",
+        "label": "Show floating WhatsApp button",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp number",
+        "info": "Digits with country code, e.g. 919876543210. Button stays hidden until this is set."
+      }
+    ]
   }
 ]
