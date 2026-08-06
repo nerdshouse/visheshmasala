@@ -128,6 +128,135 @@
   }
 }
 
+/* ---------- Hero extras: spinning badge + sparkles ---------- */
+.vishesh-hero {
+  position: relative;
+}
+
+.vishesh-hero__badge {
+  position: absolute;
+  top: 4rem;
+  right: 4rem;
+  width: 10rem;
+  height: 10rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.vishesh-hero__badge svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-hero__badge {
+    width: 7rem;
+    height: 7rem;
+    top: 2rem;
+    right: 1.6rem;
+  }
+}
+
+.vishesh-sparkle {
+  position: absolute;
+  color: var(--color-primary);
+  font-size: 2.4rem;
+  line-height: 1;
+  pointer-events: none;
+  animation: vishesh-twinkle 2.6s ease-in-out infinite;
+}
+
+.vishesh-sparkle--1 {
+  top: 18%;
+  left: 46%;
+  animation-delay: 0s;
+}
+
+.vishesh-sparkle--2 {
+  top: 62%;
+  left: 55%;
+  font-size: 1.6rem;
+  animation-delay: 0.9s;
+}
+
+.vishesh-sparkle--3 {
+  top: 30%;
+  right: 12%;
+  font-size: 1.8rem;
+  animation-delay: 1.7s;
+}
+
+@keyframes vishesh-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.7) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15) rotate(18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-sparkle {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+/* ---------- Brand marquee ribbon ---------- */
+.vishesh-marquee {
+  overflow: hidden;
+  padding: 1.4rem 0;
+}
+
+.vishesh-marquee__track {
+  display: flex;
+  width: max-content;
+}
+
+.vishesh-marquee__group {
+  display: flex;
+  align-items: center;
+  animation: vishesh-marquee-scroll var(--marquee-duration, 25s) linear infinite;
+}
+
+.vishesh-marquee__item {
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  padding: 0 1.6rem;
+}
+
+.vishesh-marquee__star {
+  color: var(--color-accent);
+  font-size: 1.6rem;
+}
+
+.color-scheme-5 .vishesh-marquee__star,
+.color-scheme-2 .vishesh-marquee__star {
+  color: var(--color-primary);
+}
+
+@keyframes vishesh-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-marquee__group {
+    animation: none;
+  }
+}
+
 /* ---------- Trust strip ---------- */
 .vishesh-trust {
   padding: 3.6rem 0;
@@ -367,6 +496,10 @@
 
 .vishesh-purity__word {
   display: inline-block;
+}
+
+.vishesh-purity__word:not(:last-child) {
+  margin-right: 0.28em;
 }
 
 .vishesh-purity__icons {

@@ -5,7 +5,7 @@
       "settings": {
         "eyebrow": "Trust of 50 Years · Since 1970",
         "heading": "Spices of Bharat",
-        "subheading": "Blended by the Wankawala family since 1970 — trusted in kitchens across India for 50+ years.",
+        "subheading": "Blended by the Wankawala family since 1970 - trusted in kitchens across India for 50+ years.",
         "cta_label": "Shop Masalas",
         "cta2_label": "Our Story",
         "cta2_link": "/pages/our-story",
@@ -208,7 +208,7 @@
     "quote": {
       "type": "heritage-quote",
       "settings": {
-        "quote": "For us, Quality is The GOD — and it is this no-compromise attitude towards quality that gives us the confidence to promise our consumers the Best, and serve them the Purest.",
+        "quote": "For us, Quality is The GOD - and it is this no-compromise attitude towards quality that gives us the confidence to promise our consumers the Best, and serve them the Purest.",
         "attribution": "The Wankawala Family",
         "color_scheme": "scheme-4"
       }
@@ -258,7 +258,7 @@
       "settings": {
         "eyebrow": "Upwas Special",
         "heading": "Our Upwas Special",
-        "text": "Rock salt, shingoda atta, rajgira atta — upwas essentials the family way, clearly labelled.",
+        "text": "Rock salt, shingoda atta, rajgira atta - upwas essentials the family way, clearly labelled.",
         "cta_label": "Shop Upwas Range",
         "cta_link": "/collections/upwas-products",
         "color_scheme": "scheme-5"
@@ -325,20 +325,38 @@
       "type": "newsletter-whatsapp",
       "settings": {
         "heading": "Recipes & new masalas, straight to your inbox",
-        "text": "Or say hello on WhatsApp — we reply like family.",
+        "text": "Or say hello on WhatsApp - we reply like family.",
         "whatsapp_label": "Chat on WhatsApp",
         "color_scheme": "scheme-4"
+      }
+    },
+    "marquee-1": {
+      "type": "vishesh-marquee",
+      "settings": {
+        "text": "Kitchen Se Dil Tak · Spices of Bharat · Trust of 50 Years · No Preservatives",
+        "speed": 25,
+        "color_scheme": "scheme-3"
+      }
+    },
+    "marquee-2": {
+      "type": "vishesh-marquee",
+      "settings": {
+        "text": "Asli Swaad · Agmark Certified Hing · Since 1970 · Surat · Navsari",
+        "speed": 30,
+        "color_scheme": "scheme-5"
       }
     }
   },
   "order": [
     "hero",
     "trust",
+    "marquee-1",
     "categories",
     "purity",
     "bestsellers",
     "quote",
     "recipes",
+    "marquee-2",
     "upwas-spotlight",
     "horeca-cta",
     "stockists",

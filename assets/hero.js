@@ -41,6 +41,27 @@
       });
     }
 
+    // Spinning trust badge — slow continuous rotation
+    var badge = document.querySelector('[data-hero-badge] svg');
+    if (badge) {
+      gsap.to(badge, { rotation: 360, duration: 18, repeat: -1, ease: 'none', transformOrigin: '50% 50%' });
+    }
+
+    // Scroll parallax: spice shapes drift at different speeds as the hero scrolls away
+    if (window.ScrollTrigger) {
+      var hero = document.querySelector('.vishesh-hero');
+      var spices = document.querySelectorAll('[data-hero-float]');
+      if (hero && spices.length) {
+        spices.forEach(function (el, i) {
+          gsap.to(el, {
+            yPercent: (i % 2 === 0 ? -1 : 1) * (30 + i * 15),
+            ease: 'none',
+            scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
+          });
+        });
+      }
+    }
+
     gsap.set(headline, { autoAlpha: 1 });
     gsap.from(chars, {
       y: function () {

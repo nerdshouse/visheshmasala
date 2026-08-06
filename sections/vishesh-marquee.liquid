@@ -1,0 +1,53 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+{%- assign items = section.settings.text | split: '·' -%}
+<div
+  class="vishesh-marquee color-{{ section.settings.color_scheme }} gradient"
+  aria-label="{{ section.settings.text | escape }}"
+>
+  <div class="vishesh-marquee__track" style="--marquee-duration: {{ section.settings.speed }}s;">
+    {%- for i in (1..2) -%}
+      <div class="vishesh-marquee__group" {% if i == 2 %}aria-hidden="true"{% endif %}>
+        {%- for j in (1..3) -%}
+          {%- for item in items -%}
+            <span class="vishesh-marquee__item">{{ item | strip }}</span>
+            <span class="vishesh-marquee__star" aria-hidden="true">&#10022;</span>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Brand Marquee",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Marquee items (separate with ·)",
+      "default": "Kitchen Se Dil Tak · Spices of Bharat · Trust of 50 Years · No Preservatives"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Loop duration",
+      "default": 25
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    }
+  ],
+  "presets": [{ "name": "Brand Marquee" }]
+}
+{% endschema %}
