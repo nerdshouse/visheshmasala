@@ -2,8 +2,8 @@
  * Vishesh Masala global motion setup.
  *
  * Exposes window.VM:
- *   VM.reducedMotion  — true when prefers-reduced-motion: reduce is set
- *   VM.lenis          — Lenis instance (undefined under reduced motion)
+ *   VM.reducedMotion  - true when prefers-reduced-motion: reduce is set
+ *   VM.lenis          - Lenis instance (undefined under reduced motion)
  *
  * Section-scoped modules (hero.js, carousels, …) must check VM.reducedMotion
  * and fall back to a simple opacity fade instead of stagger/scatter effects.
@@ -32,7 +32,7 @@
       }
     }
 
-    // Lenis smooth scrolling — desktop and touch, disabled under reduced motion.
+    // Lenis smooth scrolling - desktop and touch, disabled under reduced motion.
     if (!window.VM.reducedMotion && window.Lenis) {
       var lenis = new Lenis();
       window.VM.lenis = lenis;
@@ -49,6 +49,13 @@
           requestAnimationFrame(raf);
         })(0);
       }
+    }
+
+    // Spinning trust badges - slow continuous rotation
+    if (!window.VM.reducedMotion) {
+      document.querySelectorAll('[data-vishesh-badge] svg').forEach(function (badge) {
+        gsap.to(badge, { rotation: 360, duration: 18, repeat: -1, ease: 'none', transformOrigin: '50% 50%' });
+      });
     }
 
     // Number counters: <span data-counter="50" data-counter-suffix="+">0</span>

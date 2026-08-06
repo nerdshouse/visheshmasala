@@ -42,7 +42,7 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
   }
 
   // Fetches the full cart shape (used to resolve the cart:lines-update event
-  // promise after /cart/add.js, which only returns the added line — not the
+  // promise after /cart/add.js, which only returns the added line - not the
   // post-mutation cart aggregates). De-duplicated across concurrent callers.
   static fetchCartData() {
     if (!CartItems.pendingCartDataPromise) {
@@ -271,7 +271,7 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
   createCartLinesUpdateEvent(action, variantId, quantity, lineKey) {
     const { CartLinesUpdateEvent } = window.StandardEvents || {};
     if (!CartLinesUpdateEvent || !variantId) return null;
-    // No AJAX line key on the row — likely cached HTML rendered before this
+    // No AJAX line key on the row - likely cached HTML rendered before this
     // attribute landed. Skip dispatch rather than emit an event with id: ''.
     if (!lineKey) return null;
 

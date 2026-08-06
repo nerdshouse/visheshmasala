@@ -1,4 +1,4 @@
-/* Vishesh Masala brand layer — loaded after base.css.
+/* Vishesh Masala brand layer - loaded after base.css.
    Fonts come from Google Fonts (see snippets/vishesh-motion.liquid); these
    overrides win over the :root vars Dawn emits inline in theme.liquid. */
 
@@ -12,7 +12,7 @@
   --font-heading-weight: 700;
 }
 
-/* Bold, punchy display headings — matches the brand's packaging type */
+/* Bold, punchy display headings - matches the brand's packaging type */
 h1,
 h2,
 h3,

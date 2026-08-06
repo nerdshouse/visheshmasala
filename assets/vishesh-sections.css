@@ -1,4 +1,4 @@
-/* Vishesh Masala custom sections — shared stylesheet.
+/* Vishesh Masala custom sections - shared stylesheet.
    Scheme colors come from Dawn's per-scheme CSS vars (--color-background etc.);
    brand accents come from the token vars in base.css. */
 
@@ -382,20 +382,6 @@
   width: min(30rem, 70vw);
 }
 
-.vishesh-product-slide {
-  width: min(28rem, 72vw);
-}
-
-.swiper-slide .card-wrapper {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.swiper-slide:hover .card-wrapper,
-.swiper-slide.swiper-slide-active .card-wrapper {
-  transform: scale(1.03);
-  box-shadow: 0 1rem 2.4rem rgba(43, 26, 18, 0.12);
-}
-
 /* Category cards */
 .vishesh-category-card {
   display: flex;
@@ -422,8 +408,9 @@
   height: 22rem;
   flex: none;
   border-radius: 0.8rem;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center;
+  padding: 0.8rem;
 }
 
 .vishesh-category-card__image {
@@ -496,7 +483,7 @@
   margin: 0;
 }
 
-/* ---------- Purity promise (pinned) ---------- */
+/* ---------- Purity promise (pinned sticker cluster) ---------- */
 .vishesh-purity .purity-pin {
   min-height: 100vh;
   display: flex;
@@ -510,9 +497,8 @@
   text-align: center;
 }
 
-/* Brochure-style white pill heading with red bold type */
 .vishesh-purity__heading {
-  margin: 0 0 4.8rem;
+  margin: 0 0 0.8rem;
   display: inline-block;
   background: #ffffff;
   color: var(--color-primary);
@@ -531,85 +517,164 @@
   margin-right: 0.28em;
 }
 
-.vishesh-purity__icons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 3.2rem;
+.vishesh-purity__script {
+  font-size: clamp(2rem, 3vw, 3rem);
+  margin: 0 0 3.2rem;
+  transform: rotate(-2deg);
+}
+
+.vishesh-purity__cluster {
   position: relative;
+  width: min(86rem, 92vw);
+  height: 42rem;
+  margin: 0 auto;
 }
 
-/* Dashed connector behind the promise circles, like the brochure timeline */
-@media screen and (min-width: 990px) {
-  .vishesh-purity__icons::before {
-    content: '';
-    position: absolute;
-    left: 6%;
-    right: 6%;
-    top: 4.4rem;
-    border-top: 0.2rem dashed rgba(var(--color-foreground), 0.35);
-  }
+/* Dashed orbit ring around the badge */
+.vishesh-purity__cluster::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34rem;
+  height: 34rem;
+  transform: translate(-50%, -50%);
+  border: 0.2rem dashed rgba(var(--color-foreground), 0.35);
+  border-radius: 50%;
 }
 
-.vishesh-purity__icon-item {
-  position: relative;
+.vishesh-purity__badge {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 15rem;
+  height: 15rem;
 }
 
-.vishesh-purity__circle {
+.vishesh-purity__badge svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0.6rem 1.4rem rgba(74, 52, 24, 0.25));
+}
+
+.vishesh-purity__sticker {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background: #ffffff;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 1.2rem 2rem;
+  border-radius: 99rem;
+  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.16);
+  white-space: nowrap;
+}
+
+.vishesh-purity__sticker:nth-of-type(1) {
+  top: 6%;
+  left: 12%;
+  transform: rotate(-6deg);
+}
+
+.vishesh-purity__sticker:nth-of-type(2) {
+  top: 4%;
+  right: 10%;
+  transform: rotate(5deg);
+}
+
+.vishesh-purity__sticker:nth-of-type(3) {
+  top: 44%;
+  left: 2%;
+  transform: rotate(-3deg);
+}
+
+.vishesh-purity__sticker:nth-of-type(4) {
+  top: 46%;
+  right: 2%;
+  transform: rotate(4deg);
+}
+
+.vishesh-purity__sticker:nth-of-type(5) {
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+}
+
+.vishesh-purity__sticker:hover {
+  transform: rotate(0deg) scale(1.06);
   transition: transform 0.25s ease;
 }
 
-.vishesh-purity__icon-item:hover .vishesh-purity__circle {
-  transform: rotate(-8deg) scale(1.1);
-}
-
-.vishesh-purity__icon-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.2rem;
-  width: 13rem;
-}
-
-.vishesh-purity__circle {
-  width: 8.8rem;
-  height: 8.8rem;
-  border-radius: 50%;
-  display: flex;
+.vishesh-purity__sticker-icon {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-}
-
-.vishesh-purity__circle svg {
   width: 3.2rem;
   height: 3.2rem;
+  border-radius: 50%;
+  color: #ffffff;
+  flex: none;
 }
 
-.vishesh-purity__circle--0 {
+.vishesh-purity__sticker-icon svg {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.vishesh-purity__sticker-icon--0 {
   background: var(--color-primary);
 }
 
-.vishesh-purity__circle--1 {
-  background: var(--color-terracotta);
-}
-
-.vishesh-purity__circle--2 {
+.vishesh-purity__sticker-icon--1 {
   background: var(--color-sage);
 }
 
-.vishesh-purity__circle--3 {
+.vishesh-purity__sticker-icon--2 {
+  background: var(--color-primary-deep);
+}
+
+.vishesh-purity__sticker-icon--3 {
   background: var(--color-accent);
   color: var(--color-dark);
 }
 
-.vishesh-purity__circle--4 {
-  background: var(--color-dark);
-}
+@media screen and (max-width: 749px) {
+  .vishesh-purity .purity-pin {
+    min-height: auto;
+    padding: 5.2rem 0;
+  }
 
-.vishesh-purity__label {
-  font-weight: 600;
-  font-size: 1.4rem;
+  .vishesh-purity__cluster {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .vishesh-purity__cluster::before {
+    display: none;
+  }
+
+  .vishesh-purity__badge {
+    position: static;
+    transform: none;
+    width: 11rem;
+    height: 11rem;
+    margin-bottom: 1rem;
+  }
+
+  .vishesh-purity__sticker {
+    position: static;
+    white-space: normal;
+  }
+
+  .vishesh-purity__sticker:nth-of-type(n) {
+    transform: rotate(0);
+  }
 }
 
 /* ---------- Heritage quote ---------- */
@@ -647,29 +712,78 @@
   color: rgba(var(--color-foreground), 0.7);
 }
 
-/* ---------- Recipe grid ---------- */
+/* ---------- Recipe grid (polaroid collage) ---------- */
 .vishesh-recipes {
   padding: 5.2rem 0;
+  overflow: hidden;
 }
 
 .vishesh-recipes__header {
   text-align: center;
-  margin-bottom: 3.2rem;
+  margin-bottom: 3.6rem;
+}
+
+.vishesh-recipes__header p {
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 2.8vw, 2.8rem);
+  color: var(--color-primary);
+  transform: rotate(-2deg);
+  margin: 0.6rem 0 0;
 }
 
 .vishesh-recipes__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
+  gap: 2.8rem;
+  align-items: start;
 }
 
 .vishesh-recipes__card {
   position: relative;
   display: block;
-  border-radius: 1.2rem;
-  overflow: hidden;
+  background: #ffffff;
+  padding: 1.2rem 1.2rem 1.6rem;
+  border-radius: 0.6rem;
+  box-shadow: 0 0.8rem 2rem rgba(74, 52, 24, 0.16);
   text-decoration: none;
-  color: rgb(var(--color-foreground));
+  color: var(--color-dark);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.vishesh-recipes__card:nth-child(1) {
+  transform: rotate(-3deg);
+}
+
+.vishesh-recipes__card:nth-child(2) {
+  transform: rotate(2deg) translateY(1.6rem);
+}
+
+.vishesh-recipes__card:nth-child(3) {
+  transform: rotate(-2deg);
+}
+
+.vishesh-recipes__card:nth-child(4) {
+  transform: rotate(3deg) translateY(1.2rem);
+}
+
+.vishesh-recipes__card:hover {
+  transform: rotate(0deg) translateY(-0.6rem) scale(1.03);
+  box-shadow: 0 1.6rem 3.2rem rgba(74, 52, 24, 0.24);
+  z-index: 2;
+}
+
+/* Washi-tape strip on top of each polaroid */
+.vishesh-recipes__card::before {
+  content: '';
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 8rem;
+  height: 2.2rem;
+  background: rgba(255, 197, 10, 0.85);
+  border-radius: 0.2rem;
+  z-index: 1;
 }
 
 .vishesh-recipes__image,
@@ -677,42 +791,26 @@
 .vishesh-recipes__placeholder {
   width: 100%;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   background: #ffffff;
-}
-
-.vishesh-recipes__card .vishesh-recipes__image,
-.vishesh-recipes__card img {
-  transition: transform 0.5s ease;
-}
-
-.vishesh-recipes__card:hover img {
-  transform: scale(1.06) rotate(1deg);
-}
-
-/* Legibility gradient behind the title */
-.vishesh-recipes__card::after {
-  content: '';
-  position: absolute;
-  inset: 55% 0 0 0;
-  background: linear-gradient(to bottom, transparent, rgba(74, 52, 24, 0.82));
-  pointer-events: none;
+  border-radius: 0.4rem;
 }
 
 .vishesh-recipes__title {
-  position: absolute;
-  left: 1.6rem;
-  bottom: 1.2rem;
-  margin: 0;
-  color: #fff;
-  z-index: 1;
+  display: block;
+  text-align: center;
+  margin: 1.2rem 0 0;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 @media screen and (max-width: 749px) {
   .vishesh-recipes__grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.2rem;
+    gap: 2rem;
   }
 }
 
@@ -1063,4 +1161,231 @@
 .vishesh-policy .rte h2 {
   margin-top: 3.2rem;
   font-size: 2.4rem;
+}
+
+/* ---------- Bestsellers centered carousel ---------- */
+.vishesh-bestsellers {
+  padding: 6rem 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.vishesh-bestsellers__header {
+  text-align: center;
+}
+
+.vishesh-bestsellers__heading {
+  margin: 0;
+  position: relative;
+  display: inline-block;
+}
+
+.vishesh-bestsellers__heading-star {
+  position: absolute;
+  top: -1.2rem;
+  right: -2.8rem;
+  font-size: 2.4rem;
+  color: var(--color-accent);
+  animation: vishesh-twinkle 2.6s ease-in-out infinite;
+}
+
+.vishesh-bestsellers__script {
+  font-size: clamp(2rem, 2.6vw, 2.6rem);
+  color: var(--color-primary);
+  transform: rotate(-2deg);
+  margin: 0.4rem 0 0;
+}
+
+.vishesh-bestsellers__stage {
+  position: relative;
+  padding: 0 14rem;
+  margin-top: 9rem;
+}
+
+/* Beat Dawn's div:empty { display: none } rule */
+.vishesh-bestsellers .vishesh-bestsellers__arch {
+  display: block;
+}
+
+.vishesh-bestsellers__arch {
+  position: absolute;
+  width: 40rem;
+  height: 44rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -72%);
+  background: var(--color-accent);
+  border-radius: 14rem 14rem 0 0;
+  transition: background 0.4s ease;
+}
+
+.vishesh-bestsellers__swiper {
+  position: relative;
+  z-index: 1;
+}
+
+.vishesh-bestsellers__slide {
+  display: flex;
+  justify-content: center;
+}
+
+.vishesh-bestsellers__card {
+  position: relative;
+  max-width: 34rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.vishesh-bestsellers__tag {
+  position: absolute;
+  top: -1.6rem;
+  left: -3.2rem;
+  z-index: 2;
+  transform: rotate(-10deg);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-script);
+  font-size: 1.9rem;
+  padding: 0.6rem 1.6rem;
+  border-radius: 99rem;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.4s ease;
+}
+
+.vishesh-bestsellers__image-wrap {
+  display: block;
+}
+
+.vishesh-bestsellers__image {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 1.6rem 2rem rgba(74, 52, 24, 0.28));
+}
+
+.vishesh-bestsellers__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 30rem;
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.vishesh-bestsellers__title {
+  text-decoration: none;
+  color: var(--color-primary);
+  margin: 0;
+  transition: color 0.4s ease;
+}
+
+.vishesh-bestsellers__cta {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 1.1rem 2.4rem;
+  border-radius: 99rem;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.vishesh-bestsellers__cta:hover {
+  background: var(--color-primary-deep);
+  transform: scale(1.05);
+}
+
+.vishesh-bestsellers__slide.swiper-slide-active .vishesh-bestsellers__content,
+.vishesh-bestsellers__slide.swiper-slide-active .vishesh-bestsellers__tag {
+  opacity: 1;
+}
+
+.vishesh-bestsellers__arrow {
+  position: absolute;
+  z-index: 3;
+  top: 34%;
+}
+
+.vishesh-bestsellers__arrow--prev {
+  left: 26%;
+}
+
+.vishesh-bestsellers__arrow--next {
+  right: 26%;
+}
+
+.vishesh-bestsellers__arrow--prev svg {
+  transform: rotate(90deg);
+}
+
+.vishesh-bestsellers__arrow--next svg {
+  transform: rotate(-90deg);
+}
+
+@media only screen and (max-width: 1440px) {
+  .vishesh-bestsellers__arch {
+    width: 32rem;
+    height: 36rem;
+    border-radius: 11rem 11rem 0 0;
+    transform: translate(-50%, -76%);
+  }
+
+  .vishesh-bestsellers__stage {
+    padding: 0 8rem;
+    margin-top: 7.5rem;
+  }
+}
+
+@media only screen and (max-width: 989px) {
+  .vishesh-bestsellers {
+    padding: 4rem 0;
+  }
+
+  .vishesh-bestsellers__stage {
+    padding: 0 1.6rem;
+    margin-top: 7rem;
+  }
+
+  .vishesh-bestsellers__card {
+    max-width: 26rem;
+  }
+
+  .vishesh-bestsellers__arch {
+    width: 24rem;
+    height: 27rem;
+    border-radius: 9rem 9rem 0 0;
+    transform: translate(-50%, -84%);
+  }
+
+  .vishesh-bestsellers__arrow {
+    top: 28%;
+  }
+
+  .vishesh-bestsellers__arrow--prev {
+    left: 0.8rem;
+  }
+
+  .vishesh-bestsellers__arrow--next {
+    right: 0.8rem;
+  }
+
+  .vishesh-bestsellers__tag {
+    left: -1rem;
+    font-size: 1.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-bestsellers__heading-star {
+    animation: none;
+  }
+
+  .vishesh-bestsellers__content,
+  .vishesh-bestsellers__tag {
+    opacity: 1;
+  }
 }

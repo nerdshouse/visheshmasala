@@ -7,8 +7,8 @@
  * in-theme version so forks that change Dawn's cart contract keep
  * working. Remove this file and the built-in defaults take over.
  *
- *   - openCart   — opens <cart-drawer>; falls back to /cart.
- *   - updateCart — after the Storefront API mutation, refreshes the
+ *   - openCart   - opens <cart-drawer>; falls back to /cart.
+ *   - updateCart - after the Storefront API mutation, refreshes the
  *     affected cart sections and publishes `cart-update` so Dawn's
  *     pubsub subscribers react.
  *   - other actions (getCart, etc.) keep the default implementation.
@@ -81,7 +81,7 @@ function collectCartSections() {
 //
 // We always fetch /cart.js (with sections= when we have any) so that
 // `cartData` is defined for subscribers. quick-add-bulk.js reads
-// `event.cartData.items` unconditionally — publishing without cartData
+// `event.cartData.items` unconditionally - publishing without cartData
 // makes it throw.
 async function refreshDawnCartUI() {
   const sections = collectCartSections();

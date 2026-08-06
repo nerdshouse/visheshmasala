@@ -1,0 +1,18 @@
+{% comment %}
+  Spinning "Trust of 50 Years" stamp badge (brochure style).
+  vishesh-motion.js rotates any [data-vishesh-badge] svg unless reduced motion.
+{% endcomment %}
+<div class="vishesh-badge {{ class }}" data-vishesh-badge aria-hidden="true">
+  <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <path id="vishesh-badge-circle-{{ id | default: 'default' }}" d="M 60,60 m -44,0 a 44,44 0 1,1 88,0 a 44,44 0 1,1 -88,0"/>
+    </defs>
+    <circle cx="60" cy="60" r="58" fill="var(--color-primary)"/>
+    <circle cx="60" cy="60" r="30" fill="#ffffff"/>
+    <text fill="#ffffff" font-size="13.5" font-weight="700" letter-spacing="2.5">
+      <textPath href="#vishesh-badge-circle-{{ id | default: 'default' }}">TRUST OF 50 YEARS · TRUST OF 50 YEARS ·</textPath>
+    </text>
+    <text x="60" y="57" text-anchor="middle" fill="var(--color-primary)" font-size="15" font-weight="800">50</text>
+    <text x="60" y="72" text-anchor="middle" fill="var(--color-primary)" font-size="9" font-weight="700">YEARS</text>
+  </svg>
+</div>

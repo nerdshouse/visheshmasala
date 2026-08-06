@@ -89,7 +89,7 @@ class FacetFiltersForm extends HTMLElement {
       );
     } else if (isCollectionPage) {
       // collectionId is null for auto-generated collections (/collections/all,
-      // /collections/vendors/<x>, etc.) — the SSE schema accepts that.
+      // /collections/vendors/<x>, etc.) - the SSE schema accepts that.
       deferred = CollectionUpdateEvent.createPromise();
       dispatchTarget.dispatchEvent(
         new CollectionUpdateEvent({

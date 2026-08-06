@@ -7,17 +7,21 @@
     <span class="vishesh-sparkle vishesh-sparkle--2" aria-hidden="true">&#10022;</span>
     <span class="vishesh-sparkle vishesh-sparkle--3" aria-hidden="true">&#10022;</span>
     <div class="page-width vishesh-purity__inner">
-      <h2 class="vishesh-purity__heading h0">
+      <h2 class="vishesh-purity__heading h1">
         {%- assign heading_words = section.settings.heading | split: ' ' -%}
         {%- for word in heading_words -%}
           <span class="vishesh-purity__word">{{ word }}</span>
           {%- unless forloop.last %} {% endunless -%}
         {%- endfor -%}
       </h2>
-      <div class="vishesh-purity__icons">
+      {%- if section.settings.script_line != blank -%}
+        <p class="vishesh-purity__script vishesh-script">{{ section.settings.script_line }}</p>
+      {%- endif -%}
+      <div class="vishesh-purity__cluster">
+        {% render 'vishesh-badge', class: 'vishesh-purity__badge', id: 'purity' %}
         {%- for block in section.blocks -%}
-          <div class="vishesh-purity__icon-item" {{ block.shopify_attributes }}>
-            <span class="vishesh-purity__circle vishesh-purity__circle--{{ forloop.index0 | modulo: 5 }}">
+          <div class="vishesh-purity__sticker" {{ block.shopify_attributes }}>
+            <span class="vishesh-purity__sticker-icon vishesh-purity__sticker-icon--{{ forloop.index0 | modulo: 4 }}">
               {%- case block.settings.icon -%}
                 {%- when 'leaf' -%}
                   {{ 'icon-leaf.svg' | inline_asset_content }}
@@ -33,7 +37,7 @@
                   {{ 'icon-check-mark.svg' | inline_asset_content }}
               {%- endcase -%}
             </span>
-            <span class="vishesh-purity__label">{{ block.settings.label }}</span>
+            <span class="vishesh-purity__sticker-label">{{ block.settings.label }}</span>
           </div>
         {%- endfor -%}
       </div>
@@ -51,7 +55,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "The Vishesh Promise of Purity"
+      "default": "Why Choose Vishesh?"
+    },
+    {
+      "type": "text",
+      "id": "script_line",
+      "label": "Script subline",
+      "default": "Quality is The GOD"
     },
     {
       "type": "color_scheme",
@@ -88,11 +98,11 @@
     {
       "name": "Purity Promise",
       "blocks": [
-        { "type": "promise", "settings": { "label": "No Fillers", "icon": "check" } },
-        { "type": "promise", "settings": { "label": "No Artificial Colour", "icon": "leaf" } },
-        { "type": "promise", "settings": { "label": "Stone-Ground", "icon": "fire" } },
-        { "type": "promise", "settings": { "label": "Hygienically Packed", "icon": "box" } },
-        { "type": "promise", "settings": { "label": "50+ Yrs Legacy", "icon": "heart" } }
+        { "type": "promise", "settings": { "label": "No Preservatives", "icon": "check" } },
+        { "type": "promise", "settings": { "label": "Authentic Flavour", "icon": "fire" } },
+        { "type": "promise", "settings": { "label": "Family Trusted for Generations", "icon": "heart" } },
+        { "type": "promise", "settings": { "label": "Agmark Certified Hing", "icon": "leaf" } },
+        { "type": "promise", "settings": { "label": "50+ Years of Trust", "icon": "box" } }
       ]
     }
   ]

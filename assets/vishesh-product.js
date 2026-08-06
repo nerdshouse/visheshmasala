@@ -1,8 +1,8 @@
 /**
  * PDP interactions:
- * 1. Sticky mobile add-to-cart bar — shows when the buy buttons leave the
+ * 1. Sticky mobile add-to-cart bar - shows when the buy buttons leave the
  *    viewport, proxies clicks to the real product-form submit button.
- * 2. Add-to-cart success morph (animation #7) — on Cart AJAX success the
+ * 2. Add-to-cart success morph (animation #7) - on Cart AJAX success the
  *    submit button label morphs to a checkmark for 1.5s, then reverts.
  */
 (function () {

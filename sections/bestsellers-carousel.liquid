@@ -1,55 +1,62 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-rating.css' | asset_url | stylesheet_tag }}
-{{ 'quick-add.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'vishesh-carousel.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'vishesh-bestsellers.js' | asset_url }}" defer="defer"></script>
 
 {%- assign collection = section.settings.collection -%}
+{%- assign slide_colors = 'var(--color-primary)|var(--color-sage)|var(--color-primary-deep)' | split: '|' -%}
 
-<div class="vishesh-carousel color-{{ section.settings.color_scheme }} gradient" data-carousel>
-  <div class="page-width">
-    <div class="vishesh-carousel__header" data-animate="fade-up">
-      <h2 class="h1">{{ section.settings.heading }}</h2>
-      <div class="vishesh-carousel__nav">
-        <button class="vishesh-swiper-prev vishesh-carousel__arrow" aria-label="{{ 'general.slider.previous_slide' | t }}">
-          {{ 'icon-caret.svg' | inline_asset_content }}
-        </button>
-        <button class="vishesh-swiper-next vishesh-carousel__arrow" aria-label="{{ 'general.slider.next_slide' | t }}">
-          {{ 'icon-caret.svg' | inline_asset_content }}
-        </button>
-      </div>
-    </div>
+<div class="vishesh-bestsellers color-{{ section.settings.color_scheme }} gradient" data-vishesh-bestsellers>
+  <div class="page-width vishesh-bestsellers__header" data-animate="fade-up">
+    <h2 class="h0 vishesh-bestsellers__heading">
+      {{- section.settings.heading -}}
+      <span class="vishesh-bestsellers__heading-star" aria-hidden="true">&#10022;</span>
+    </h2>
+    {%- if section.settings.script_line != blank -%}
+      <p class="vishesh-script vishesh-bestsellers__script">{{ section.settings.script_line }}</p>
+    {%- endif -%}
   </div>
-  <div class="vishesh-carousel__track page-width">
-    <div class="swiper vishesh-swiper">
+
+  <div class="vishesh-bestsellers__stage">
+    <div class="vishesh-bestsellers__arch" data-bestsellers-arch></div>
+    <div class="swiper vishesh-bestsellers__swiper" data-bestsellers-swiper>
       <div class="swiper-wrapper">
         {%- if collection != blank and collection.products.size > 0 -%}
           {%- for product in collection.products limit: section.settings.products_to_show -%}
-            <div class="swiper-slide vishesh-product-slide">
-              {% render 'card-product',
-                card_product: product,
-                media_aspect_ratio: 'square',
-                show_secondary_image: true,
-                show_quick_add: section.settings.show_quick_add,
-                section_id: section.id
-              %}
-            </div>
-          {%- endfor -%}
-        {%- else -%}
-          {%- for i in (1..4) -%}
-            <div class="swiper-slide vishesh-product-slide">
-              {% render 'card-product' %}
+            {%- assign color_i = forloop.index0 | modulo: 3 -%}
+            {%- assign color = slide_colors[color_i] -%}
+            <div class="swiper-slide vishesh-bestsellers__slide" data-color="{{ color }}">
+              <div class="vishesh-bestsellers__card">
+                <span class="vishesh-bestsellers__tag">{{ section.settings.tag_label }}</span>
+                <a href="{{ product.url }}" class="vishesh-bestsellers__image-wrap">
+                  {%- if product.featured_image -%}
+                    {{
+                      product.featured_image
+                      | image_url: width: 900
+                      | image_tag: loading: 'lazy', class: 'vishesh-bestsellers__image', widths: '450, 700, 900', alt: product.title
+                    }}
+                  {%- endif -%}
+                </a>
+                <div class="vishesh-bestsellers__content">
+                  <a href="{{ product.url }}" class="vishesh-bestsellers__title h2">{{ product.title }}</a>
+                  <a href="{{ product.url }}" class="vishesh-bestsellers__cta">
+                    <span>{{ 'products.product.add_to_cart' | t }} | {{ product.price | money }}</span>
+                  </a>
+                </div>
+              </div>
             </div>
           {%- endfor -%}
         {%- endif -%}
       </div>
     </div>
+    <button class="vishesh-carousel__arrow vishesh-bestsellers__arrow vishesh-bestsellers__arrow--prev" data-bestsellers-prev aria-label="{{ 'general.slider.previous_slide' | t }}">
+      {{ 'icon-caret.svg' | inline_asset_content }}
+    </button>
+    <button class="vishesh-carousel__arrow vishesh-bestsellers__arrow vishesh-bestsellers__arrow--next" data-bestsellers-next aria-label="{{ 'general.slider.next_slide' | t }}">
+      {{ 'icon-caret.svg' | inline_asset_content }}
+    </button>
   </div>
+
   {%- if section.settings.show_view_all and collection != blank -%}
     <div class="page-width vishesh-carousel__viewall" data-animate="fade-up">
       <a href="{{ collection.url }}" class="button button--secondary">
@@ -72,10 +79,21 @@
       "default": "Bestsellers"
     },
     {
+      "type": "text",
+      "id": "script_line",
+      "label": "Script subline",
+      "default": "Har ghar ka favourite"
+    },
+    {
+      "type": "text",
+      "id": "tag_label",
+      "label": "Sticker label on active card",
+      "default": "Bestseller"
+    },
+    {
       "type": "collection",
       "id": "collection",
-      "label": "Collection",
-      "info": "Create a \"Bestsellers\" collection and pick it here."
+      "label": "Collection"
     },
     {
       "type": "range",
@@ -85,12 +103,6 @@
       "step": 1,
       "label": "Products to show",
       "default": 8
-    },
-    {
-      "type": "checkbox",
-      "id": "show_quick_add",
-      "label": "Show quick add button",
-      "default": true
     },
     {
       "type": "checkbox",
