@@ -174,52 +174,76 @@
           "type": "milestone",
           "settings": {
             "year": "1970",
-            "text": "Humble start with a small rented production unit at Udhna, Surat."
+            "text": "Our story of manifestation of dreams & aspirations started with a small rental production unit in Udhna, Surat — an epicentre of manufacturing. Hing (Asafoetida) was our first product, in a 15 kg tin pack and 5 kg loose."
           }
         },
         "t1971": {
           "type": "milestone",
           "settings": {
             "year": "1971",
-            "text": "Extended our production unit, manufacturing only Hing for five years."
+            "text": "Expanded infrastructure with another production unit at Katargam, Surat. For the first 5 years, only Hing was manufactured at the facility."
+          }
+        },
+        "t1976": {
+          "type": "milestone",
+          "settings": {
+            "year": "1976",
+            "text": "First mover in the market with blended spices. Our first masala was Dalshak Masala — known as Laxmi Chaap Masala in those days — sold in bulk at mom-and-pop shops, delivered the traditional way: by bullock cart."
+          }
+        },
+        "t1988": {
+          "type": "milestone",
+          "settings": {
+            "year": "1988",
+            "text": "The young gen-next joined core management as a second line of leadership — Shri Sundeep Wankawala and Shri Nilesh Wankawala."
           }
         },
         "t1990": {
           "type": "milestone",
           "settings": {
             "year": "1990",
-            "text": "Received our first Agmark certification for Hing."
+            "text": "A major milestone: our first Agmark certification for Hing & other spices."
           }
         },
         "t1991": {
           "type": "milestone",
           "settings": {
             "year": "1991",
-            "text": "First mover in the market with Rajwadi Garam Masala and other spices."
+            "text": "Entered consumer packs of 50g, 100g, 200g and 500g. First products under the Dhanhar Masala brand: Agmark Hing (now Premium Hing) and Rajwadi Garam Masala."
+          }
+        },
+        "t1996": {
+          "type": "milestone",
+          "settings": {
+            "year": "1996",
+            "text": "Introduced the Dealership Model and built a distribution channel, enlarging our product portfolio."
           }
         },
         "t2009": {
           "type": "milestone",
           "settings": {
             "year": "2009",
-            "text": "The family parted ways and introduced Vishesh Masala to the market."
+            "text": "After the split between family promoters of Dhanhar Masala, Shri Sundeep & Shri Nilesh Wankawala — with hard work, experience and sheer values — introduced a new brand: Vishesh Masala."
           }
         },
-        "t2022": {
+        "t2021": {
           "type": "milestone",
           "settings": {
-            "year": "2022",
-            "text": "Installed our state-of-the-art production facility at Navsari, Gujarat."
+            "year": "2021",
+            "text": "Shifted manufacturing to Navsari, Gujarat — a state-of-the-art facility with the latest technology machinery."
           }
         }
       },
       "block_order": [
         "t1970",
         "t1971",
+        "t1976",
+        "t1988",
         "t1990",
         "t1991",
+        "t1996",
         "t2009",
-        "t2022"
+        "t2021"
       ],
       "settings": {
         "heading": "Our Journey",
