@@ -7,13 +7,16 @@ collection-component {
    (sampled from the official catalogue/brochure PDFs) */
 :root {
   --color-primary: #f21c26; /* Vishesh red - logo, headings, primary buttons */
-  --color-primary-deep: #c4130f; /* darker red - hovers, full-bleed dark sections */
+  --color-primary-deep: #c4130f; /* darker red - hovers */
   --color-accent: #ffc50a; /* bright brand yellow - CTAs, highlights, badges */
+  --color-orange: #f99e3d; /* warm orange - supporting accent, arches, soft bands */
+  --color-green: #5fa843; /* fresh green - herbs, veg cues, accents */
+  --color-cream: #fff3d6; /* soft pastel yellow - light section backgrounds */
   --color-bg: #ffffff; /* white - page background */
   --color-dark: #4a3418; /* dark brown - body text on yellow bands */
-  --color-terracotta: #f21c26; /* category tag color 1 (red) */
+  --color-terracotta: #f99e3d; /* category tag color 1 (orange) */
   --color-saffron: #ffc50a; /* category tag color 2 (yellow) */
-  --color-sage: #e39703; /* category tag color 3 (deep golden) */
+  --color-sage: #5fa843; /* category tag color 3 (green) */
   --font-display: 'Poppins', sans-serif; /* headings - bold rounded sans */
   --font-body: 'Poppins', sans-serif; /* body copy */
   --font-script: 'Kaushan Script', cursive; /* brush-script accents ("Kitchen Se Dil Tak") */

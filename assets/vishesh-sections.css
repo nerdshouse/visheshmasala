@@ -1222,6 +1222,10 @@
 .vishesh-bestsellers__swiper {
   position: relative;
   z-index: 1;
+  /* let the scaled-up active card, sticker and shadow breathe -
+     horizontal containment comes from the section's overflow:hidden */
+  overflow: visible;
+  padding-top: 3.2rem;
 }
 
 .vishesh-bestsellers__slide {
@@ -1388,4 +1392,73 @@
   .vishesh-bestsellers__tag {
     opacity: 1;
   }
+}
+
+/* ---------- PDP: light, rounded, reference-style ---------- */
+.product__media-wrapper .product__media-list .product__media-item,
+.product__media-wrapper .product__media-item {
+  background: #ffffff;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 0.8rem 2.4rem rgba(74, 52, 24, 0.1);
+}
+
+.product .product__info-container .product-form__submit,
+.product .shopify-payment-button__button--unbranded {
+  border-radius: 99rem;
+}
+
+.product .product__info-container .quantity {
+  border-radius: 99rem;
+  overflow: hidden;
+}
+
+.product .product__info-container .product-form__input--pill input[type='radio'] + label {
+  border-radius: 99rem;
+}
+
+/* Accordions as white rounded cards */
+.product .product__accordion .accordion,
+.product .accordion {
+  background: #ffffff;
+  border-radius: 1.2rem;
+  border: none;
+  box-shadow: 0 0.4rem 1.2rem rgba(74, 52, 24, 0.08);
+  padding: 0 1.6rem;
+  margin-top: 1.2rem;
+}
+
+.product .accordion summary {
+  font-weight: 600;
+}
+
+.product .accordion .icon-accordion {
+  color: var(--color-primary);
+}
+
+/* Benefit icon row (icon-with-text block) */
+.product .icon-with-text {
+  background: #ffffff;
+  border-radius: 1.2rem;
+  box-shadow: 0 0.4rem 1.2rem rgba(74, 52, 24, 0.08);
+  padding: 1.4rem 1rem;
+}
+
+.product .icon-with-text--horizontal {
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.product .icon-with-text .icon-with-text__item {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.product .icon-with-text svg {
+  color: var(--color-primary);
+}
+
+/* Sticky-info column breathing room on the pastel background */
+.product__info-wrapper .product__info-container > *:first-child {
+  margin-top: 0;
 }

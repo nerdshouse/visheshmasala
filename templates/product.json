@@ -68,6 +68,18 @@
             "content": "",
             "page": ""
           }
+        },
+        "perks": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "horizontal",
+            "icon_1": "check_mark",
+            "icon_2": "fire",
+            "icon_3": "heart",
+            "heading_1": "No Preservatives",
+            "heading_2": "Authentic Flavour",
+            "heading_3": "Trusted for Generations"
+          }
         }
       },
       "block_order": [
@@ -77,6 +89,7 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "perks",
         "description",
         "ingredients",
         "fssai",
@@ -85,7 +98,7 @@
       ],
       "settings": {
         "enable_sticky_info": true,
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-2",
         "media_position": "left",
         "gallery_layout": "stacked",
         "media_size": "large",
