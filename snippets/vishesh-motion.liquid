@@ -1,0 +1,27 @@
+{% comment %}
+  Vishesh Masala: brand fonts + motion stack (GSAP, ScrollTrigger, SplitText, Lenis).
+  Rendered once in theme.liquid <head>.
+
+  Swiper is intentionally NOT loaded here — carousel sections load
+  swiper-bundle.min.js / swiper-bundle.min.css themselves so non-carousel
+  pages don't pay for it (India-first mobile performance budget).
+
+  Reduced motion: vishesh-motion.js checks prefers-reduced-motion at runtime.
+  When set, Lenis is never initialized and GSAP effects fall back to simple
+  opacity fades (see window.VM.reducedMotion).
+{% endcomment %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Inter:wght@400..700&display=swap"
+  rel="stylesheet"
+>
+
+{{ 'lenis.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'gsap.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'ScrollTrigger.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'SplitText.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'lenis.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'vishesh-motion.js' | asset_url }}" defer="defer"></script>
