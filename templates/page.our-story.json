@@ -1,0 +1,157 @@
+{
+  "sections": {
+    "journey": {
+      "type": "rich-text",
+      "blocks": {
+        "journey-caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Since the early 70's",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "journey-heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Vishesh Journey",
+            "heading_size": "h0"
+          }
+        },
+        "journey-text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>With over 50+ years of experience in the business of Spices (Masala) production, Wankawala family has taken the legacy forward with a brand VISHESH MASALA under the eminent leadership of Mr. Sundeep Wankawala and Mr. Nilesh Wankawala.</p><p>The foundation of Vishesh is based on strong values of simplicity, honesty and the company's dynamic workforce — its biggest asset — that blends a remarkable history and legacy with visionary growth and innovation.</p><p>Vishesh Masala has always remained committed to creating uncompromised quality and exceptional taste, and continues to expand its circle of committed stakeholders and ever-growing loyal customer base.</p>"
+          }
+        }
+      },
+      "block_order": ["journey-caption", "journey-heading", "journey-text"],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-1",
+        "full_width": true,
+        "padding_top": 80,
+        "padding_bottom": 52
+      }
+    },
+    "founder": {
+      "type": "image-with-text",
+      "blocks": {
+        "founder-caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Our Journey",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "founder-heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Late Shri Jagdishchandra Ishwarlal Wankawala",
+            "heading_size": "h1"
+          }
+        },
+        "founder-text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Driven by vision, passion and the desire to create a mark in the world of spices, Vishesh Masala — formerly known as Dhanhar Masala — was incepted from a very humble beginning in the early 70's, founded by a young B.Sc. (Microbiology) and D.T.C. graduate from M.S. University, Vadodara: Late Shri Jagdishchandra Ishwarlal Wankawala.</p><p>Initially he joined his family business — a spices shop under the name Dhansukhlal Harkishandas &amp; Sons at Surat — from which the Dhanhar brand was derived.</p><p>By delivering excellence in quality products, he grew from strength to strength, achieving one milestone at a time. His discipline, honesty, passion and empathy, ingrained since the early days of his work, reflect even today in the company's culture — and that, we believe, is our constant achievement.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": ["founder-caption", "founder-heading", "founder-text"],
+      "settings": {
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-2",
+        "color_scheme": "scheme-2",
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
+    "vision-promise": {
+      "type": "multicolumn",
+      "blocks": {
+        "vision": {
+          "type": "column",
+          "settings": {
+            "title": "Vishesh Vision",
+            "text": "<p>To become the most opted brand of spices, spice blends and seasonings across every food service segment — retail, wholesale, HORECA and e-commerce — by consistently providing the highest quality, value-for-money products.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "promise": {
+          "type": "column",
+          "settings": {
+            "title": "Vishesh Brand Promise",
+            "text": "<p>For us, Quality is The GOD — and it is this no-compromise attitude towards quality that gives us the confidence to promise our consumers the Best, and serve them the Purest.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": ["vision", "promise"],
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "scheme-4",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
+    },
+    "infrastructure": {
+      "type": "rich-text",
+      "blocks": {
+        "infra-caption": {
+          "type": "caption",
+          "settings": {
+            "caption": "Navsari, Gujarat",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "infra-heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "From a home-grown venture to state-of-the-art infrastructure",
+            "heading_size": "h1"
+          }
+        },
+        "infra-text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>From a modest home-grown venture to a brand with state-of-the-art infrastructure, cutting-edge machinery and a path-breaking R&amp;D department for unmatched quality — spread over 3 acres at Navsari, Gujarat, with 24x7 availability of electricity and water.</p>"
+          }
+        }
+      },
+      "block_order": ["infra-caption", "infra-heading", "infra-text"],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-5",
+        "full_width": true,
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    }
+  },
+  "order": ["journey", "founder", "vision-promise", "infrastructure"]
+}
