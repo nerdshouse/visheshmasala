@@ -1,0 +1,82 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+<div class="vishesh-timeline color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="h1 vishesh-timeline__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    <ol class="vishesh-timeline__list" data-animate-group role="list">
+      {%- for block in section.blocks -%}
+        <li class="vishesh-timeline__item" {{ block.shopify_attributes }}>
+          <span class="vishesh-timeline__pin" aria-hidden="true">
+            <span class="vishesh-timeline__year">{{ block.settings.year }}</span>
+          </span>
+          <p class="vishesh-timeline__text">{{ block.settings.text }}</p>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Vishesh Timeline",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Journey"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Milestone",
+      "settings": [
+        { "type": "text", "id": "year", "label": "Year" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vishesh Timeline",
+      "blocks": [
+        {
+          "type": "milestone",
+          "settings": { "year": "1970", "text": "Humble start with a small rented production unit at Udhna, Surat." }
+        },
+        {
+          "type": "milestone",
+          "settings": { "year": "1971", "text": "Extended our production unit, manufacturing only Hing for five years." }
+        },
+        {
+          "type": "milestone",
+          "settings": { "year": "1990", "text": "Received our first Agmark certification for Hing." }
+        },
+        {
+          "type": "milestone",
+          "settings": { "year": "1991", "text": "First mover in the market with Rajwadi Garam Masala and other spices." }
+        },
+        {
+          "type": "milestone",
+          "settings": { "year": "2009", "text": "The family parted ways and introduced Vishesh Masala to the market." }
+        },
+        {
+          "type": "milestone",
+          "settings": { "year": "2022", "text": "Installed our state-of-the-art production facility at Navsari, Gujarat." }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

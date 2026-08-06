@@ -1,0 +1,83 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+<div class="vishesh-recipes color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="vishesh-recipes__header" data-animate="fade-up">
+      <h2 class="h1">{{ section.settings.heading }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p>{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+    <div class="vishesh-recipes__grid" data-animate-group>
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.link | default: '#' }}"
+          class="vishesh-recipes__card"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.image != blank -%}
+            {{
+              block.settings.image
+              | image_url: width: 800
+              | image_tag: loading: 'lazy', class: 'vishesh-recipes__image', widths: '400, 600, 800'
+            }}
+          {%- else -%}
+            <div class="vishesh-recipes__placeholder">{{ 'image' | placeholder_svg_tag: 'vishesh-recipes__placeholder-svg' }}</div>
+          {%- endif -%}
+          <span class="vishesh-recipes__title h3">{{ block.settings.title }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Recipe Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Cooked with Vishesh"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Ghar ka khaana, Vishesh swaad ke saath."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "recipe",
+      "name": "Recipe card",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recipe Grid",
+      "blocks": [
+        { "type": "recipe", "settings": { "title": "Pav Bhaji" } },
+        { "type": "recipe", "settings": { "title": "Dal" } },
+        { "type": "recipe", "settings": { "title": "Masala Chai" } },
+        { "type": "recipe", "settings": { "title": "Farsan" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

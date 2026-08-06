@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "policy": {
+      "type": "policy-page",
+      "settings": {
+        "updated_note": "",
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": ["policy"]
+}

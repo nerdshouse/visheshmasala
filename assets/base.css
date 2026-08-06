@@ -3,17 +3,20 @@ collection-component {
   display: block;
 }
 
-/* Vishesh Masala design tokens */
+/* Vishesh Masala design tokens — brand palette: red, yellow, white
+   (sampled from the official catalogue/brochure PDFs) */
 :root {
-  --color-primary: #6b1e1e; /* deep masala maroon - headers, footer, primary buttons */
-  --color-accent: #e8a63a; /* turmeric mustard - CTAs, highlights, badges */
-  --color-bg: #fbf3e7; /* warm cream - page background */
-  --color-dark: #2b1a12; /* espresso brown - full-bleed quote/footer sections */
-  --color-terracotta: #c1592c; /* category tag color 1 */
-  --color-saffron: #f4c95d; /* category tag color 2 */
-  --color-sage: #6e8b5a; /* category tag color 3 (herbs) */
-  --font-display: 'Fraunces', serif; /* headings - bold condensed slab/serif */
-  --font-body: 'Inter', sans-serif; /* body copy */
+  --color-primary: #f21c26; /* Vishesh red - logo, headings, primary buttons */
+  --color-primary-deep: #c4130f; /* darker red - hovers, full-bleed dark sections */
+  --color-accent: #ffc50a; /* bright brand yellow - CTAs, highlights, badges */
+  --color-bg: #ffffff; /* white - page background */
+  --color-dark: #4a3418; /* dark brown - body text on yellow bands */
+  --color-terracotta: #f21c26; /* category tag color 1 (red) */
+  --color-saffron: #ffc50a; /* category tag color 2 (yellow) */
+  --color-sage: #e39703; /* category tag color 3 (deep golden) */
+  --font-display: 'Poppins', sans-serif; /* headings - bold rounded sans */
+  --font-body: 'Poppins', sans-serif; /* body copy */
+  --font-script: 'Kaushan Script', cursive; /* brush-script accents ("Kitchen Se Dil Tak") */
 }
 
 :root {

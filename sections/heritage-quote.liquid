@@ -1,0 +1,40 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+<div class="vishesh-quote color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width vishesh-quote__inner" data-animate="fade-up">
+    <span class="vishesh-quote__mark" aria-hidden="true">&ldquo;</span>
+    <blockquote class="vishesh-quote__text">{{ section.settings.quote }}</blockquote>
+    {%- if section.settings.attribution != blank -%}
+      <cite class="vishesh-quote__attribution">&mdash; {{ section.settings.attribution }}</cite>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Heritage Quote",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "For us, Quality is The GOD — and it is this no-compromise attitude towards quality that gives us the confidence to promise our consumers the Best, and serve them the Purest."
+    },
+    {
+      "type": "text",
+      "id": "attribution",
+      "label": "Attribution",
+      "default": "The Wankawala Family"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-4"
+    }
+  ],
+  "presets": [{ "name": "Heritage Quote" }]
+}
+{% endschema %}

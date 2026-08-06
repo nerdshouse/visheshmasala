@@ -1,0 +1,128 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'vishesh-carousel.js' | asset_url }}" defer="defer"></script>
+
+<div class="vishesh-carousel color-{{ section.settings.color_scheme }} gradient" data-carousel>
+  <div class="page-width">
+    <div class="vishesh-carousel__header" data-animate="fade-up">
+      <h2 class="h1">{{ section.settings.heading }}</h2>
+      <div class="vishesh-carousel__nav">
+        <button class="vishesh-swiper-prev vishesh-carousel__arrow" aria-label="{{ 'general.slider.previous_slide' | t }}">
+          {{ 'icon-caret.svg' | inline_asset_content }}
+        </button>
+        <button class="vishesh-swiper-next vishesh-carousel__arrow" aria-label="{{ 'general.slider.next_slide' | t }}">
+          {{ 'icon-caret.svg' | inline_asset_content }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="vishesh-carousel__track page-width">
+    <div class="swiper vishesh-swiper">
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          <div class="swiper-slide vishesh-category-card-slide" {{ block.shopify_attributes }}>
+            <a
+              href="{{ block.settings.link | default: routes.all_products_collection_url }}"
+              class="vishesh-category-card vishesh-category-card--{{ block.settings.tag_color }}"
+            >
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 600
+                  | image_tag: loading: 'lazy', class: 'vishesh-category-card__image', widths: '300, 450, 600'
+                }}
+              {%- else -%}
+                <div class="vishesh-category-card__swatch" aria-hidden="true"></div>
+              {%- endif -%}
+              <span class="vishesh-category-card__tag">{{ block.settings.tag_label }}</span>
+              <span class="vishesh-category-card__title h3">{{ block.settings.title }}</span>
+            </a>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Category Carousel",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "tag_label", "label": "Tag label" },
+        {
+          "type": "select",
+          "id": "tag_color",
+          "label": "Tag color",
+          "options": [
+            { "value": "terracotta", "label": "Terracotta" },
+            { "value": "saffron", "label": "Saffron" },
+            { "value": "sage", "label": "Sage" },
+            { "value": "maroon", "label": "Maroon" },
+            { "value": "accent", "label": "Turmeric" }
+          ],
+          "default": "terracotta"
+        },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "image_picker", "id": "image", "label": "Image" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Carousel",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": { "title": "Asafoetida (Hing)", "tag_label": "Signature", "tag_color": "saffron" }
+        },
+        {
+          "type": "category",
+          "settings": { "title": "Authentic Blended Spice", "tag_label": "Blends", "tag_color": "terracotta" }
+        },
+        {
+          "type": "category",
+          "settings": { "title": "Easy to Cook", "tag_label": "Quick", "tag_color": "accent" }
+        },
+        {
+          "type": "category",
+          "settings": { "title": "Herbs", "tag_label": "Herbs", "tag_color": "sage" }
+        },
+        {
+          "type": "category",
+          "settings": { "title": "Essential Products", "tag_label": "Everyday", "tag_color": "maroon" }
+        },
+        {
+          "type": "category",
+          "settings": { "title": "H.O.R.E.C.A. Products", "tag_label": "Bulk", "tag_color": "terracotta" }
+        },
+        {
+          "type": "category",
+          "settings": { "title": "Upwas Products", "tag_label": "Fasting-friendly", "tag_color": "saffron" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

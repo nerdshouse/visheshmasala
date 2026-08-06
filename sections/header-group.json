@@ -5,7 +5,7 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "settings": {
-        "color_scheme": "scheme-5",
+        "color_scheme": "scheme-3",
         "show_line_separator": false,
         "show_social": false,
         "auto_rotate": false,
@@ -17,9 +17,9 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Asli Masala. Ghar Jaisa Swaad.",
+            "text": "Kitchen Se Dil Tak · Trust of 50 Years",
             "text_alignment": "center",
-            "color_scheme": "scheme-5",
+            "color_scheme": "scheme-3",
             "link": ""
           }
         }
@@ -31,8 +31,8 @@
     "header": {
       "type": "header",
       "settings": {
-        "color_scheme": "scheme-3",
-        "menu_color_scheme": "scheme-3",
+        "color_scheme": "scheme-5",
+        "menu_color_scheme": "scheme-5",
         "logo_position": "middle-left",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",

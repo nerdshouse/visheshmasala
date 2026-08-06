@@ -8,12 +8,14 @@
         "brand-seal": {
           "type": "text",
           "settings": {
-            "heading": "Vishesh Masala",
-            "subtext": "<p>Asli Masala. Ghar Jaisa Swaad.</p><p>Hand-blended in Surat by the Wankawala family.</p>"
+            "heading": "Dhanhar Vishesh Masala",
+            "subtext": "<p>Kitchen Se Dil Tak.</p><p>Spices of Bharat — blended by the Wankawala family since 1970.</p>"
           }
         }
       },
-      "block_order": ["brand-seal"],
+      "block_order": [
+        "brand-seal"
+      ],
       "settings": {
         "color_scheme": "scheme-3",
         "newsletter_enable": true,
@@ -30,5 +32,7 @@
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

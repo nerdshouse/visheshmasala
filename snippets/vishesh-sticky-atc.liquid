@@ -1,0 +1,20 @@
+{% comment %}
+  Sticky add-to-cart bar, mobile only (CLAUDE.md §3 product template).
+  Appears when the main buy buttons scroll out of view; the button proxies
+  a click to the real product form submit so all Dawn cart logic applies.
+  Accepts: product (required)
+{% endcomment %}
+
+{%- if product != blank -%}
+  <div class="vishesh-sticky-atc" data-sticky-atc aria-hidden="true">
+    <div class="vishesh-sticky-atc__info">
+      <span class="vishesh-sticky-atc__title">{{ product.title | escape }}</span>
+      <span class="vishesh-sticky-atc__price" data-sticky-atc-price>
+        {{- product.selected_or_first_available_variant.price | money -}}
+      </span>
+    </div>
+    <button type="button" class="button" data-sticky-atc-button>
+      {{ 'products.product.add_to_cart' | t }}
+    </button>
+  </div>
+{%- endif -%}

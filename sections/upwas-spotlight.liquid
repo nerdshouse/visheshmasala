@@ -1,0 +1,89 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign show_banner = true
+  assign today = 'now' | date: '%Y-%m-%d'
+  if section.settings.start_date != blank and today < section.settings.start_date
+    assign show_banner = false
+  endif
+  if section.settings.end_date != blank and today > section.settings.end_date
+    assign show_banner = false
+  endif
+-%}
+
+{%- if show_banner -%}
+  <div class="vishesh-upwas color-{{ section.settings.color_scheme }} gradient">
+    <div class="page-width vishesh-upwas__inner" data-animate="fade-up">
+      <div class="vishesh-upwas__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="vishesh-upwas__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="h1">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}
+          <p>{{ section.settings.text }}</p>
+        {%- endif -%}
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_link | default: '#' }}" class="button">{{ section.settings.cta_label }}</a>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.image != blank -%}
+        <div class="vishesh-upwas__media">
+          {{
+            section.settings.image
+            | image_url: width: 900
+            | image_tag: loading: 'lazy', widths: '450, 700, 900'
+          }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Upwas Spotlight",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Seasonal banner for fasting periods. Set start/end dates (YYYY-MM-DD) to auto show/hide; leave blank to always show."
+    },
+    { "type": "text", "id": "start_date", "label": "Start date (YYYY-MM-DD)" },
+    { "type": "text", "id": "end_date", "label": "End date (YYYY-MM-DD)" },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Upwas Special"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Fasting-friendly, full of swaad"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Shingoda atta, rock salt and upwas-appropriate essentials — clearly labelled, no onion, no garlic."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Shop Upwas Range"
+    },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-5"
+    }
+  ],
+  "presets": [{ "name": "Upwas Spotlight" }]
+}
+{% endschema %}

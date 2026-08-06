@@ -1,0 +1,828 @@
+/* Vishesh Masala custom sections — shared stylesheet.
+   Scheme colors come from Dawn's per-scheme CSS vars (--color-background etc.);
+   brand accents come from the token vars in base.css. */
+
+/* ---------- Hero ---------- */
+.vishesh-hero {
+  overflow: hidden;
+}
+
+.vishesh-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  align-items: center;
+  gap: 4rem;
+  min-height: min(78vh, 72rem);
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.vishesh-hero__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.65);
+  margin: 0 0 1.6rem;
+}
+
+.vishesh-hero__headline {
+  font-size: clamp(3.6rem, 7vw, 7.2rem);
+  line-height: 1.04;
+  margin: 0 0 1.2rem;
+  color: var(--color-primary);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.vishesh-hero__script {
+  font-size: clamp(2.4rem, 3.6vw, 3.6rem);
+  color: var(--color-dark);
+  margin: 0 0 1.6rem;
+  transform: rotate(-2deg);
+}
+
+.vishesh-hero__char {
+  display: inline-block;
+  will-change: transform;
+}
+
+.vishesh-hero__sub {
+  font-size: 1.8rem;
+  max-width: 44rem;
+  margin: 0 0 3rem;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+.vishesh-hero__ctas {
+  display: flex;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+}
+
+.vishesh-hero__media {
+  position: relative;
+  min-height: 30rem;
+}
+
+.vishesh-hero__image {
+  width: 100%;
+  height: auto;
+  border-radius: 1.2rem;
+}
+
+.vishesh-hero__spices {
+  position: absolute;
+  inset: 0;
+}
+
+.vishesh-hero__spice {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.vishesh-hero__spice--terracotta {
+  width: 11rem;
+  height: 11rem;
+  background: var(--color-terracotta);
+  top: 8%;
+  left: 12%;
+}
+
+.vishesh-hero__spice--saffron {
+  width: 7rem;
+  height: 7rem;
+  background: var(--color-saffron);
+  top: 46%;
+  right: 14%;
+}
+
+.vishesh-hero__spice--sage {
+  width: 5.5rem;
+  height: 5.5rem;
+  background: var(--color-sage);
+  bottom: 12%;
+  left: 28%;
+}
+
+.vishesh-hero__spice--maroon {
+  width: 8.5rem;
+  height: 8.5rem;
+  background: var(--color-primary-deep);
+  bottom: 26%;
+  right: 38%;
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-hero__inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    min-height: auto;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .vishesh-hero__media {
+    min-height: 18rem;
+  }
+}
+
+/* ---------- Trust strip ---------- */
+.vishesh-trust {
+  padding: 3.6rem 0;
+}
+
+.vishesh-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.vishesh-trust__value {
+  display: block;
+  color: var(--color-primary);
+  margin-bottom: 0.4rem;
+}
+
+.color-scheme-3 .vishesh-trust__value,
+.color-scheme-4 .vishesh-trust__value {
+  color: var(--color-saffron);
+}
+
+.vishesh-trust__label {
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-trust__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------- Carousels (category + bestsellers) ---------- */
+.vishesh-carousel {
+  padding: 5.2rem 0;
+}
+
+.vishesh-carousel__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2.8rem;
+}
+
+.vishesh-carousel__header h2 {
+  margin: 0;
+}
+
+.vishesh-carousel__nav {
+  display: none;
+  gap: 1rem;
+}
+
+@media screen and (min-width: 990px) {
+  .vishesh-carousel__nav {
+    display: flex;
+  }
+}
+
+.vishesh-carousel__arrow {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.vishesh-carousel__arrow svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.vishesh-carousel__arrow.vishesh-swiper-prev svg {
+  transform: rotate(90deg);
+}
+
+.vishesh-carousel__arrow.vishesh-swiper-next svg {
+  transform: rotate(-90deg);
+}
+
+.vishesh-carousel__arrow:hover {
+  background: var(--color-accent);
+  transform: scale(1.06);
+}
+
+.vishesh-carousel__arrow.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.vishesh-carousel__track .swiper {
+  overflow: visible;
+}
+
+.vishesh-carousel__viewall {
+  margin-top: 2.8rem;
+  text-align: center;
+}
+
+/* Peek-next sizing: ~15% of the next card visible */
+.vishesh-category-card-slide {
+  width: min(30rem, 70vw);
+}
+
+.vishesh-product-slide {
+  width: min(28rem, 72vw);
+}
+
+.swiper-slide .card-wrapper {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.swiper-slide:hover .card-wrapper,
+.swiper-slide.swiper-slide-active .card-wrapper {
+  transform: scale(1.03);
+  box-shadow: 0 1rem 2.4rem rgba(43, 26, 18, 0.12);
+}
+
+/* Category cards */
+.vishesh-category-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 2rem;
+  border-radius: 1.2rem;
+  background: rgb(var(--color-background));
+  box-shadow: 0 0.2rem 0.8rem rgba(43, 26, 18, 0.07);
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vishesh-category-card:hover {
+  transform: scale(1.03) translateY(-0.2rem);
+  box-shadow: 0 1rem 2.4rem rgba(43, 26, 18, 0.14);
+}
+
+.vishesh-category-card__image,
+.vishesh-category-card__swatch {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.8rem;
+  object-fit: cover;
+}
+
+.vishesh-category-card__swatch {
+  background: linear-gradient(135deg, rgba(var(--color-foreground), 0.06), rgba(var(--color-foreground), 0.12));
+}
+
+.vishesh-category-card--terracotta .vishesh-category-card__swatch {
+  background: linear-gradient(135deg, var(--color-terracotta), #a34523);
+}
+
+.vishesh-category-card--saffron .vishesh-category-card__swatch {
+  background: linear-gradient(135deg, var(--color-saffron), #e0b13e);
+}
+
+.vishesh-category-card--sage .vishesh-category-card__swatch {
+  background: linear-gradient(135deg, var(--color-sage), #55703f);
+}
+
+.vishesh-category-card--maroon .vishesh-category-card__swatch {
+  background: linear-gradient(135deg, var(--color-primary), #4c1414);
+}
+
+.vishesh-category-card--accent .vishesh-category-card__swatch {
+  background: linear-gradient(135deg, var(--color-accent), #c98a25);
+}
+
+.vishesh-category-card__tag {
+  align-self: flex-start;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  color: #fff;
+}
+
+.vishesh-category-card--terracotta .vishesh-category-card__tag {
+  background: var(--color-terracotta);
+}
+
+.vishesh-category-card--saffron .vishesh-category-card__tag {
+  background: var(--color-saffron);
+  color: var(--color-dark);
+}
+
+.vishesh-category-card--sage .vishesh-category-card__tag {
+  background: var(--color-sage);
+}
+
+.vishesh-category-card--maroon .vishesh-category-card__tag {
+  background: var(--color-primary);
+}
+
+.vishesh-category-card--accent .vishesh-category-card__tag {
+  background: var(--color-accent);
+  color: var(--color-dark);
+}
+
+.vishesh-category-card__title {
+  margin: 0;
+}
+
+/* ---------- Purity promise (pinned) ---------- */
+.vishesh-purity .purity-pin {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.vishesh-purity__inner {
+  width: 100%;
+  text-align: center;
+}
+
+.vishesh-purity__heading {
+  margin: 0 0 4.8rem;
+}
+
+.vishesh-purity__word {
+  display: inline-block;
+}
+
+.vishesh-purity__icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3.2rem;
+}
+
+.vishesh-purity__icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  width: 13rem;
+}
+
+.vishesh-purity__circle {
+  width: 8.8rem;
+  height: 8.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.vishesh-purity__circle svg {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.vishesh-purity__circle--0 {
+  background: var(--color-primary);
+}
+
+.vishesh-purity__circle--1 {
+  background: var(--color-terracotta);
+}
+
+.vishesh-purity__circle--2 {
+  background: var(--color-sage);
+}
+
+.vishesh-purity__circle--3 {
+  background: var(--color-accent);
+  color: var(--color-dark);
+}
+
+.vishesh-purity__circle--4 {
+  background: var(--color-dark);
+}
+
+.vishesh-purity__label {
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+/* ---------- Heritage quote ---------- */
+.vishesh-quote {
+  padding: 8rem 0;
+}
+
+.vishesh-quote__inner {
+  max-width: 82rem;
+  text-align: center;
+  position: relative;
+}
+
+.vishesh-quote__mark {
+  font-family: var(--font-heading-family);
+  font-size: 12rem;
+  line-height: 0.5;
+  display: block;
+  color: var(--color-saffron);
+  margin-bottom: 1rem;
+}
+
+.vishesh-quote__text {
+  font-family: var(--font-heading-family);
+  font-size: clamp(2.2rem, 3.4vw, 3.2rem);
+  line-height: 1.35;
+  margin: 0 0 2.4rem;
+}
+
+.vishesh-quote__attribution {
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+/* ---------- Recipe grid ---------- */
+.vishesh-recipes {
+  padding: 5.2rem 0;
+}
+
+.vishesh-recipes__header {
+  text-align: center;
+  margin-bottom: 3.2rem;
+}
+
+.vishesh-recipes__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.vishesh-recipes__card {
+  position: relative;
+  display: block;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+}
+
+.vishesh-recipes__image,
+.vishesh-recipes__placeholder svg,
+.vishesh-recipes__placeholder {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  background: rgba(var(--color-foreground), 0.06);
+}
+
+.vishesh-recipes__card .vishesh-recipes__image,
+.vishesh-recipes__card img {
+  transition: transform 0.5s ease;
+}
+
+.vishesh-recipes__card:hover img {
+  transform: scale(1.05);
+}
+
+.vishesh-recipes__title {
+  position: absolute;
+  left: 1.6rem;
+  bottom: 1.2rem;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 0.2rem 0.8rem rgba(43, 26, 18, 0.55);
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-recipes__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+}
+
+/* ---------- Upwas spotlight ---------- */
+.vishesh-upwas {
+  padding: 5.2rem 0;
+}
+
+.vishesh-upwas__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3.2rem;
+  align-items: center;
+}
+
+.vishesh-upwas__inner:not(:has(.vishesh-upwas__media)) {
+  grid-template-columns: 1fr;
+  text-align: center;
+}
+
+.vishesh-upwas__eyebrow,
+.vishesh-horeca__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.vishesh-upwas .button {
+  margin-top: 1.6rem;
+}
+
+.vishesh-upwas__media img {
+  width: 100%;
+  height: auto;
+  border-radius: 1.2rem;
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-upwas__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- HORECA CTA ---------- */
+.vishesh-horeca {
+  padding: 4.8rem 0;
+}
+
+.vishesh-horeca__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3.2rem;
+  flex-wrap: wrap;
+}
+
+.vishesh-horeca__inner h2 {
+  margin: 0 0 0.8rem;
+}
+
+.vishesh-horeca__inner p {
+  margin: 0;
+  max-width: 52rem;
+}
+
+/* ---------- Stockists ---------- */
+.vishesh-stockists {
+  padding: 4rem 0;
+}
+
+.vishesh-stockists__heading {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.6);
+  margin: 0 0 2.4rem;
+}
+
+.vishesh-stockists__row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem 4rem;
+}
+
+.vishesh-stockists__logo img {
+  max-height: 4.8rem;
+  width: auto;
+  opacity: 0.75;
+  filter: grayscale(1);
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.vishesh-stockists__logo img:hover {
+  opacity: 1;
+  filter: none;
+}
+
+.vishesh-stockists__placeholder {
+  display: inline-block;
+  padding: 1rem 2.2rem;
+  border: 0.1rem dashed rgba(var(--color-foreground), 0.3);
+  border-radius: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(var(--color-foreground), 0.55);
+}
+
+/* ---------- Newsletter + WhatsApp ---------- */
+.vishesh-newsletter {
+  padding: 6rem 0;
+}
+
+.vishesh-newsletter__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3.2rem;
+  align-items: center;
+}
+
+.vishesh-newsletter__copy h2 {
+  margin: 0 0 1rem;
+}
+
+.vishesh-newsletter__actions .newsletter-form {
+  max-width: 40rem;
+}
+
+.vishesh-newsletter__wa {
+  margin-top: 1.6rem;
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-newsletter__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- PLP: staggered grid reveal ---------- */
+.vishesh-plp-animate .grid__item {
+  opacity: 0;
+}
+
+.vm-reduced-motion .vishesh-plp-animate .grid__item,
+.no-js .vishesh-plp-animate .grid__item {
+  opacity: 1;
+}
+
+/* ---------- PDP: sticky mobile add-to-cart bar ---------- */
+.vishesh-sticky-atc {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem 1.6rem calc(1rem + env(safe-area-inset-bottom));
+  background: rgb(var(--color-background));
+  box-shadow: 0 -0.4rem 1.6rem rgba(43, 26, 18, 0.14);
+  transform: translateY(110%);
+  transition: transform 0.3s ease;
+}
+
+.vishesh-sticky-atc.is-visible {
+  transform: translateY(0);
+}
+
+.vm-reduced-motion .vishesh-sticky-atc {
+  transition: none;
+}
+
+.vishesh-sticky-atc__info {
+  min-width: 0;
+  flex: 1;
+}
+
+.vishesh-sticky-atc__title {
+  display: block;
+  font-weight: 600;
+  font-size: 1.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.vishesh-sticky-atc__price {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.vishesh-sticky-atc .button {
+  flex-shrink: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .vishesh-sticky-atc {
+    display: none;
+  }
+}
+
+/* ---------- ATC success morph ---------- */
+.button--atc-success {
+  position: relative;
+  color: transparent !important;
+}
+
+.button--atc-success::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1.8rem;
+  border-right: 0.3rem solid currentColor;
+  border-bottom: 0.3rem solid currentColor;
+  color: rgb(var(--color-button-text));
+  transform: translate(-50%, -60%) rotate(45deg);
+}
+
+/* ---------- Timeline (red map-pins, brochure style) ---------- */
+.vishesh-timeline {
+  padding: 5.6rem 0;
+}
+
+.vishesh-timeline__heading {
+  text-align: center;
+  margin: 0 0 4rem;
+}
+
+.vishesh-timeline__list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 64rem;
+  position: relative;
+}
+
+.vishesh-timeline__list::before {
+  content: '';
+  position: absolute;
+  left: 3.9rem;
+  top: 1rem;
+  bottom: 1rem;
+  border-left: 0.2rem dashed rgba(var(--color-foreground), 0.35);
+}
+
+.vishesh-timeline__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.4rem;
+  margin-bottom: 3.2rem;
+  position: relative;
+}
+
+.vishesh-timeline__pin {
+  flex-shrink: 0;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50% 50% 50% 0.6rem;
+  transform: rotate(-45deg);
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.4rem 1rem rgba(74, 52, 24, 0.25);
+}
+
+.vishesh-timeline__year {
+  transform: rotate(45deg);
+  background: #ffffff;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 50%;
+}
+
+.vishesh-timeline__text {
+  margin: 1.6rem 0 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+/* ---------- Policy pages ---------- */
+.vishesh-policy .main-page-title {
+  font-size: clamp(3rem, 5vw, 4.8rem);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.vishesh-policy .rte {
+  max-width: 72rem;
+  margin: 0 auto;
+  font-size: 1.6rem;
+  line-height: 1.8;
+}
+
+.vishesh-policy .rte h2 {
+  margin-top: 3.2rem;
+  font-size: 2.4rem;
+}

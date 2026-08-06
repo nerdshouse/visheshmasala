@@ -25,7 +25,11 @@
           }
         }
       },
-      "block_order": ["journey-caption", "journey-heading", "journey-text"],
+      "block_order": [
+        "journey-caption",
+        "journey-heading",
+        "journey-text"
+      ],
       "settings": {
         "desktop_content_position": "center",
         "content_alignment": "center",
@@ -61,7 +65,11 @@
           }
         }
       },
-      "block_order": ["founder-caption", "founder-heading", "founder-text"],
+      "block_order": [
+        "founder-caption",
+        "founder-heading",
+        "founder-text"
+      ],
       "settings": {
         "height": "adapt",
         "desktop_image_width": "medium",
@@ -71,8 +79,8 @@
         "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
         "mobile_content_alignment": "left",
-        "section_color_scheme": "scheme-2",
-        "color_scheme": "scheme-2",
+        "section_color_scheme": "scheme-1",
+        "color_scheme": "scheme-1",
         "padding_top": 52,
         "padding_bottom": 52
       }
@@ -99,7 +107,10 @@
           }
         }
       },
-      "block_order": ["vision", "promise"],
+      "block_order": [
+        "vision",
+        "promise"
+      ],
       "settings": {
         "title": "",
         "heading_size": "h1",
@@ -142,7 +153,11 @@
           }
         }
       },
-      "block_order": ["infra-caption", "infra-heading", "infra-text"],
+      "block_order": [
+        "infra-caption",
+        "infra-heading",
+        "infra-text"
+      ],
       "settings": {
         "desktop_content_position": "center",
         "content_alignment": "center",
@@ -151,7 +166,72 @@
         "padding_top": 64,
         "padding_bottom": 64
       }
+    },
+    "timeline": {
+      "type": "vishesh-timeline",
+      "blocks": {
+        "t1970": {
+          "type": "milestone",
+          "settings": {
+            "year": "1970",
+            "text": "Humble start with a small rented production unit at Udhna, Surat."
+          }
+        },
+        "t1971": {
+          "type": "milestone",
+          "settings": {
+            "year": "1971",
+            "text": "Extended our production unit, manufacturing only Hing for five years."
+          }
+        },
+        "t1990": {
+          "type": "milestone",
+          "settings": {
+            "year": "1990",
+            "text": "Received our first Agmark certification for Hing."
+          }
+        },
+        "t1991": {
+          "type": "milestone",
+          "settings": {
+            "year": "1991",
+            "text": "First mover in the market with Rajwadi Garam Masala and other spices."
+          }
+        },
+        "t2009": {
+          "type": "milestone",
+          "settings": {
+            "year": "2009",
+            "text": "The family parted ways and introduced Vishesh Masala to the market."
+          }
+        },
+        "t2022": {
+          "type": "milestone",
+          "settings": {
+            "year": "2022",
+            "text": "Installed our state-of-the-art production facility at Navsari, Gujarat."
+          }
+        }
+      },
+      "block_order": [
+        "t1970",
+        "t1971",
+        "t1990",
+        "t1991",
+        "t2009",
+        "t2022"
+      ],
+      "settings": {
+        "heading": "Our Journey",
+        "color_scheme": "scheme-2"
+      }
     }
   },
-  "order": ["journey", "founder", "vision-promise", "infrastructure"]
+  "order": [
+    "journey",
+    "timeline",
+    "founder",
+    "vision-promise",
+    "infrastructure"
+  ]
 }

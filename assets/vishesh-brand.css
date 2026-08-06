@@ -6,13 +6,13 @@
   --font-body-family: var(--font-body);
   --font-body-style: normal;
   --font-body-weight: 400;
-  --font-body-weight-bold: 700;
+  --font-body-weight-bold: 600;
   --font-heading-family: var(--font-display);
   --font-heading-style: normal;
-  --font-heading-weight: 600;
+  --font-heading-weight: 700;
 }
 
-/* Headings a touch tighter — Fraunces is generous at display sizes */
+/* Bold, punchy display headings — matches the brand's packaging type */
 h1,
 h2,
 h3,
@@ -21,6 +21,13 @@ h3,
 .h2,
 .h3 {
   letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+.vishesh-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 /* Primary button micro-interaction: turmeric fill wipes in from center.

@@ -51,6 +51,51 @@
       }
     }
 
+    // Number counters: <span data-counter="50" data-counter-suffix="+">0</span>
+    // tweens 0 → target when scrolled into view.
+    document.querySelectorAll('[data-counter]').forEach(function (el) {
+      var target = parseFloat(el.getAttribute('data-counter'));
+      var suffix = el.getAttribute('data-counter-suffix') || '';
+      if (isNaN(target)) return;
+      if (window.VM.reducedMotion || !window.ScrollTrigger) {
+        el.textContent = target + suffix;
+        return;
+      }
+      var state = { val: 0 };
+      el.textContent = '0' + suffix;
+      gsap.to(state, {
+        val: target,
+        duration: 1.6,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        onUpdate: function () {
+          el.textContent = Math.round(state.val) + suffix;
+        },
+      });
+    });
+
+    // Staggered group reveal: children of [data-animate-group] rise in sequence.
+    document.querySelectorAll('[data-animate-group]').forEach(function (group) {
+      var items = group.children;
+      if (!items.length) return;
+      if (window.VM.reducedMotion || !window.ScrollTrigger) {
+        gsap.fromTo(items, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'none' });
+        return;
+      }
+      gsap.fromTo(
+        items,
+        { autoAlpha: 0, y: 24 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.08,
+          scrollTrigger: { trigger: group, start: 'top 85%', once: true },
+        }
+      );
+    });
+
     // Global section-entry animation: any [data-animate="fade-up"] element
     // fades in + rises 24px when scrolled into view, once.
     var animated = document.querySelectorAll('[data-animate="fade-up"]');

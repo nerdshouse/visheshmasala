@@ -172,7 +172,16 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <div class="header__heading-logo-wrapper">
+            <img
+              src="{{ 'vishesh-logo.png' | asset_url }}"
+              class="header__heading-logo motion-reduce"
+              width="110"
+              height="90"
+              alt="{{ shop.name | escape }}"
+              style="width: 11rem; height: auto;"
+            >
+          </div>
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
@@ -215,7 +224,16 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <div class="header__heading-logo-wrapper">
+            <img
+              src="{{ 'vishesh-logo.png' | asset_url }}"
+              class="header__heading-logo motion-reduce"
+              width="110"
+              height="90"
+              alt="{{ shop.name | escape }}"
+              style="width: 11rem; height: auto;"
+            >
+          </div>
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}

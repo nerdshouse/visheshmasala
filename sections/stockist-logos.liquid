@@ -1,0 +1,68 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+<div class="vishesh-stockists color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <p class="vishesh-stockists__heading" data-animate="fade-up">{{ section.settings.heading }}</p>
+    {%- endif -%}
+    <div class="vishesh-stockists__row" data-animate-group>
+      {%- for block in section.blocks -%}
+        <div class="vishesh-stockists__logo" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{
+              block.settings.image
+              | image_url: width: 300
+              | image_tag: loading: 'lazy', widths: '150, 300'
+            }}
+          {%- else -%}
+            <span class="vishesh-stockists__placeholder">{{ block.settings.name | default: 'Stockist' }}</span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Stockist Logos",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Available at"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name (shown until logo uploaded)" },
+        { "type": "image_picker", "id": "image", "label": "Logo image" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stockist Logos",
+      "blocks": [
+        { "type": "logo", "settings": { "name": "Stockist 1" } },
+        { "type": "logo", "settings": { "name": "Stockist 2" } },
+        { "type": "logo", "settings": { "name": "Stockist 3" } },
+        { "type": "logo", "settings": { "name": "Stockist 4" } },
+        { "type": "logo", "settings": { "name": "Stockist 5" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

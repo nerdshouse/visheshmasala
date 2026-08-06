@@ -1,0 +1,94 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+<div class="vishesh-trust color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <ul class="vishesh-trust__grid" data-animate-group role="list">
+      {%- for block in section.blocks -%}
+        <li class="vishesh-trust__item" {{ block.shopify_attributes }}>
+          <span class="vishesh-trust__value h1">
+            {%- if block.settings.counter_value != blank and block.settings.counter_value > 0 -%}
+              <span
+                data-counter="{{ block.settings.counter_value }}"
+                data-counter-suffix="{{ block.settings.counter_suffix | escape }}"
+              >
+                {{- block.settings.counter_value }}{{ block.settings.counter_suffix -}}
+              </span>
+            {%- else -%}
+              {{ block.settings.static_value }}
+            {%- endif -%}
+          </span>
+          <span class="vishesh-trust__label">{{ block.settings.label }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust Strip",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "number",
+          "id": "counter_value",
+          "label": "Number to count up to",
+          "info": "Leave at 0 to show static text instead."
+        },
+        {
+          "type": "text",
+          "id": "counter_suffix",
+          "label": "Suffix after number",
+          "default": "+"
+        },
+        {
+          "type": "text",
+          "id": "static_value",
+          "label": "Static value (used when number is 0)"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Strip",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": { "counter_value": 50, "counter_suffix": "+", "label": "Years of legacy" }
+        },
+        {
+          "type": "stat",
+          "settings": { "counter_value": 0, "static_value": "3rd", "label": "Generation family-run" }
+        },
+        {
+          "type": "stat",
+          "settings": { "counter_value": 100, "counter_suffix": "%", "label": "Vegetarian · Jain-friendly" }
+        },
+        {
+          "type": "stat",
+          "settings": { "counter_value": 0, "static_value": "FSSAI", "label": "Certified" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

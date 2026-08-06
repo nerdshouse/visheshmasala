@@ -1,75 +1,347 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Trust of 50 Years · Since 1970",
+        "heading": "Spices of Bharat",
+        "subheading": "Blended by the Wankawala family since 1970 — trusted in kitchens across India for 50+ years.",
+        "cta_label": "Shop Masalas",
+        "cta2_label": "Our Story",
+        "cta2_link": "/pages/our-story",
+        "color_scheme": "scheme-1",
+        "script_line": "Kitchen Se Dil Tak"
+      }
+    },
+    "trust": {
+      "type": "trust-strip",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "years": {
+          "type": "stat",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "counter_value": 50,
+            "counter_suffix": "+",
+            "static_value": "",
+            "label": "Years of Trust"
           }
         },
-        "button": {
-          "type": "buttons",
+        "generation": {
+          "type": "stat",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "counter_value": 1990,
+            "counter_suffix": "",
+            "static_value": "",
+            "label": "First Agmark certification"
+          }
+        },
+        "veg": {
+          "type": "stat",
+          "settings": {
+            "counter_value": 100,
+            "counter_suffix": "%",
+            "static_value": "",
+            "label": "Vegetarian"
+          }
+        },
+        "fssai": {
+          "type": "stat",
+          "settings": {
+            "counter_value": 0,
+            "counter_suffix": "",
+            "static_value": "Zero",
+            "label": "Preservatives"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "years",
+        "generation",
+        "veg",
+        "fssai"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "color_scheme": "scheme-1"
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "categories": {
+      "type": "category-carousel",
+      "blocks": {
+        "hing": {
+          "type": "category",
+          "settings": {
+            "title": "Asafoetida (Hing)",
+            "tag_label": "Signature",
+            "tag_color": "saffron",
+            "link": "/collections/asafoetida-hing"
+          }
+        },
+        "blends": {
+          "type": "category",
+          "settings": {
+            "title": "Authentic Blended Spice",
+            "tag_label": "Blends",
+            "tag_color": "terracotta",
+            "link": "/collections/authentic-blended-spice"
+          }
+        },
+        "easy": {
+          "type": "category",
+          "settings": {
+            "title": "Easy to Cook",
+            "tag_label": "Quick",
+            "tag_color": "accent",
+            "link": "/collections/easy-to-cook"
+          }
+        },
+        "herbs": {
+          "type": "category",
+          "settings": {
+            "title": "Herbs",
+            "tag_label": "Herbs",
+            "tag_color": "sage",
+            "link": "/collections/herbs"
+          }
+        },
+        "essentials": {
+          "type": "category",
+          "settings": {
+            "title": "Essential Products",
+            "tag_label": "Everyday",
+            "tag_color": "maroon",
+            "link": "/collections/essential-products"
+          }
+        },
+        "horeca": {
+          "type": "category",
+          "settings": {
+            "title": "H.O.R.E.C.A. Products",
+            "tag_label": "Bulk",
+            "tag_color": "terracotta",
+            "link": "/collections/horeca-products"
+          }
+        },
+        "upwas": {
+          "type": "category",
+          "settings": {
+            "title": "Upwas Products",
+            "tag_label": "Fasting-friendly",
+            "tag_color": "saffron",
+            "link": "/collections/upwas-products"
+          }
+        }
+      },
+      "block_order": [
+        "hing",
+        "blends",
+        "easy",
+        "herbs",
+        "essentials",
+        "horeca",
+        "upwas"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
+        "heading": "Shop by Category",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "purity": {
+      "type": "purity-promise",
+      "blocks": {
+        "p1": {
+          "type": "promise",
+          "settings": {
+            "label": "No Preservatives",
+            "icon": "check"
+          }
+        },
+        "p2": {
+          "type": "promise",
+          "settings": {
+            "label": "Authentic Flavour",
+            "icon": "fire"
+          }
+        },
+        "p3": {
+          "type": "promise",
+          "settings": {
+            "label": "Family Trusted for Generations",
+            "icon": "heart"
+          }
+        },
+        "p4": {
+          "type": "promise",
+          "settings": {
+            "label": "Agmark Certified Hing",
+            "icon": "leaf"
+          }
+        },
+        "p5": {
+          "type": "promise",
+          "settings": {
+            "label": "50+ Years of Trust",
+            "icon": "box"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "settings": {
+        "heading": "Why Choose Vishesh?",
+        "color_scheme": "scheme-2"
+      }
+    },
+    "bestsellers": {
+      "type": "bestsellers-carousel",
+      "settings": {
+        "heading": "Bestsellers",
         "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
+        "show_quick_add": true,
         "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "color_scheme": "scheme-1"
+      }
+    },
+    "quote": {
+      "type": "heritage-quote",
+      "settings": {
+        "quote": "For us, Quality is The GOD — and it is this no-compromise attitude towards quality that gives us the confidence to promise our consumers the Best, and serve them the Purest.",
+        "attribution": "The Wankawala Family",
+        "color_scheme": "scheme-4"
+      }
+    },
+    "recipes": {
+      "type": "recipe-grid",
+      "blocks": {
+        "r1": {
+          "type": "recipe",
+          "settings": {
+            "title": "Pav Bhaji"
+          }
+        },
+        "r2": {
+          "type": "recipe",
+          "settings": {
+            "title": "Dal"
+          }
+        },
+        "r3": {
+          "type": "recipe",
+          "settings": {
+            "title": "Masala Chai"
+          }
+        },
+        "r4": {
+          "type": "recipe",
+          "settings": {
+            "title": "Farsan"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "settings": {
+        "heading": "Cooked with Vishesh",
+        "subheading": "Ghar ka khaana, Vishesh swaad ke saath.",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "upwas-spotlight": {
+      "type": "upwas-spotlight",
+      "settings": {
+        "eyebrow": "Upwas Special",
+        "heading": "Our Upwas Special",
+        "text": "Rock salt, shingoda atta, rajgira atta — upwas essentials the family way, clearly labelled.",
+        "cta_label": "Shop Upwas Range",
+        "cta_link": "/collections/upwas-products",
+        "color_scheme": "scheme-5"
+      }
+    },
+    "horeca-cta": {
+      "type": "horeca-cta",
+      "settings": {
+        "eyebrow": "Hotels · Restaurants · Caterers",
+        "heading": "Vishesh for your kitchen, at scale",
+        "text": "Bulk packs and consistent blends for professional kitchens across retail, wholesale and HORECA.",
+        "cta_label": "Request a Quote",
+        "cta_link": "/pages/contact",
+        "color_scheme": "scheme-3"
+      }
+    },
+    "stockists": {
+      "type": "stockist-logos",
+      "blocks": {
+        "s1": {
+          "type": "logo",
+          "settings": {
+            "name": "Stockist 1"
+          }
+        },
+        "s2": {
+          "type": "logo",
+          "settings": {
+            "name": "Stockist 2"
+          }
+        },
+        "s3": {
+          "type": "logo",
+          "settings": {
+            "name": "Stockist 3"
+          }
+        },
+        "s4": {
+          "type": "logo",
+          "settings": {
+            "name": "Stockist 4"
+          }
+        },
+        "s5": {
+          "type": "logo",
+          "settings": {
+            "name": "Stockist 5"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5"
+      ],
+      "settings": {
+        "heading": "Available at",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter-whatsapp",
+      "settings": {
+        "heading": "Recipes & new masalas, straight to your inbox",
+        "text": "Or say hello on WhatsApp — we reply like family.",
+        "whatsapp_label": "Chat on WhatsApp",
+        "color_scheme": "scheme-4"
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero",
+    "trust",
+    "categories",
+    "purity",
+    "bestsellers",
+    "quote",
+    "recipes",
+    "upwas-spotlight",
+    "horeca-cta",
+    "stockists",
+    "newsletter"
   ]
 }

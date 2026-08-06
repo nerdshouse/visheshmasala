@@ -1,0 +1,42 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+<div class="vishesh-policy color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width" style="padding-top: 5rem; padding-bottom: 6rem;">
+    <h1 class="main-page-title page-title h0" data-animate="fade-up">{{ page.title | escape }}</h1>
+    {%- if section.settings.updated_note != blank -%}
+      <p class="vishesh-policy__updated" data-animate="fade-up" style="text-align:center; color: rgba(var(--color-foreground), 0.6); font-size: 1.3rem;">
+        {{ section.settings.updated_note }}
+      </p>
+    {%- endif -%}
+    <div class="rte" data-animate="fade-up">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        <p><em>Policy content pending — add it to this page in Shopify admin (Online Store → Pages).</em></p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Policy Page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "updated_note",
+      "label": "Last-updated note",
+      "info": "e.g. \"Last updated: 1 August 2026\". Leave blank to hide."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [{ "name": "Policy Page" }]
+}
+{% endschema %}

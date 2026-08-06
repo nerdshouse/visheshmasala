@@ -1,0 +1,97 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'purity-promise.js' | asset_url }}" defer="defer"></script>
+
+<div class="vishesh-purity color-{{ section.settings.color_scheme }} gradient">
+  <div class="purity-pin">
+    <div class="page-width vishesh-purity__inner">
+      <h2 class="vishesh-purity__heading h0">
+        {%- assign heading_words = section.settings.heading | split: ' ' -%}
+        {%- for word in heading_words -%}
+          <span class="vishesh-purity__word">{{ word }}</span>
+          {%- unless forloop.last %} {% endunless -%}
+        {%- endfor -%}
+      </h2>
+      <div class="vishesh-purity__icons">
+        {%- for block in section.blocks -%}
+          <div class="vishesh-purity__icon-item" {{ block.shopify_attributes }}>
+            <span class="vishesh-purity__circle vishesh-purity__circle--{{ forloop.index0 | modulo: 5 }}">
+              {%- case block.settings.icon -%}
+                {%- when 'leaf' -%}
+                  {{ 'icon-leaf.svg' | inline_asset_content }}
+                {%- when 'plant' -%}
+                  {{ 'icon-plant.svg' | inline_asset_content }}
+                {%- when 'fire' -%}
+                  {{ 'icon-fire.svg' | inline_asset_content }}
+                {%- when 'box' -%}
+                  {{ 'icon-box.svg' | inline_asset_content }}
+                {%- when 'heart' -%}
+                  {{ 'icon-heart.svg' | inline_asset_content }}
+                {%- else -%}
+                  {{ 'icon-check-mark.svg' | inline_asset_content }}
+              {%- endcase -%}
+            </span>
+            <span class="vishesh-purity__label">{{ block.settings.label }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Purity Promise",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Vishesh Promise of Purity"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promise",
+      "name": "Promise",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "check", "label": "Checkmark" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "plant", "label": "Plant" },
+            { "value": "fire", "label": "Fire" },
+            { "value": "box", "label": "Box" },
+            { "value": "heart", "label": "Heart" }
+          ],
+          "default": "check"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purity Promise",
+      "blocks": [
+        { "type": "promise", "settings": { "label": "No Fillers", "icon": "check" } },
+        { "type": "promise", "settings": { "label": "No Artificial Colour", "icon": "leaf" } },
+        { "type": "promise", "settings": { "label": "Stone-Ground", "icon": "fire" } },
+        { "type": "promise", "settings": { "label": "Hygienically Packed", "icon": "box" } },
+        { "type": "promise", "settings": { "label": "50+ Yrs Legacy", "icon": "heart" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
