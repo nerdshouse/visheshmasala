@@ -11,9 +11,17 @@
             "heading": "Dhanhar Vishesh Masala",
             "subtext": "<p>Kitchen Se Dil Tak.</p><p>Spices of Bharat - blended by the Wankawala family since 1970.</p>"
           }
+        },
+        "quick-links": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Quick links",
+            "menu": "footer"
+          }
         }
       },
       "block_order": [
+        "quick-links",
         "brand-seal"
       ],
       "settings": {

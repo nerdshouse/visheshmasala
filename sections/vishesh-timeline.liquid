@@ -1,11 +1,14 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'vishesh-timeline.js' | asset_url }}" defer="defer"></script>
 
-<div class="vishesh-timeline color-{{ section.settings.color_scheme }} gradient">
-  <div class="page-width">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="h1 vishesh-timeline__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
-    {%- endif -%}
-    <ol class="vishesh-timeline__list" data-animate-group role="list">
+<div class="vishesh-timeline color-{{ section.settings.color_scheme }} gradient" data-timeline>
+  <div class="vishesh-timeline__pin-area">
+    <div class="page-width">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="h1 vishesh-timeline__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+    <ol class="vishesh-timeline__list page-width" data-timeline-track role="list">
       {%- for block in section.blocks -%}
         <li class="vishesh-timeline__item" {{ block.shopify_attributes }}>
           <span class="vishesh-timeline__pin" aria-hidden="true">
