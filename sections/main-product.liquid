@@ -82,6 +82,9 @@
     <div class="page-width">
       <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
         <div class="grid__item product__media-wrapper">
+          {%- if product.tags contains 'bestseller' -%}
+            <span class="vishesh-pdp-ribbon">Bestseller</span>
+          {%- endif -%}
           {% render 'product-media-gallery', variant_images: variant_images %}
         </div>
         <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
@@ -507,6 +510,20 @@
                     section_id: section.id,
                     show_pickup_availability: true
                   -%}
+                  <ul class="vishesh-assurance-row" role="list">
+                    <li>
+                      {{- 'icon-lock.svg' | inline_asset_content -}}
+                      <span>Secure Checkout</span>
+                    </li>
+                    <li>
+                      {{- 'icon-return.svg' | inline_asset_content -}}
+                      <a href="{{ pages['return-and-refund-policy'].url | default: '#' }}">Easy Returns</a>
+                    </li>
+                    <li>
+                      {{- 'icon-truck.svg' | inline_asset_content -}}
+                      <span>Dispatched Fresh</span>
+                    </li>
+                  </ul>
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
                     <div class="rating-wrapper">
