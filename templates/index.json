@@ -28,10 +28,10 @@
         "generation": {
           "type": "stat",
           "settings": {
-            "counter_value": 1990,
+            "counter_value": 0,
             "counter_suffix": "",
-            "static_value": "",
-            "label": "First Agmark certification"
+            "static_value": "3rd",
+            "label": "Generation Family-Run"
           }
         },
         "veg": {
@@ -177,7 +177,7 @@
         "p4": {
           "type": "promise",
           "settings": {
-            "label": "Agmark Certified Hing",
+            "label": "Hygienically Packed",
             "icon": "leaf"
           }
         },
@@ -352,7 +352,7 @@
     "marquee-2": {
       "type": "vishesh-marquee",
       "settings": {
-        "text": "Asli Swaad · Agmark Certified Hing · Since 1970 · Surat · Navsari",
+        "text": "Asli Swaad · Since 1970 · Surat · Navsari",
         "speed": 30,
         "color_scheme": "scheme-5"
       }

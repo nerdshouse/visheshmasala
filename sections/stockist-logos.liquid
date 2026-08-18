@@ -1,27 +1,44 @@
-{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Hidden until the brand supplies real stockist logos - a section full of
+  "Stockist 1-5" placeholder pills reads as unfinished, so it only renders
+  once at least one block has a real logo image uploaded. In the theme
+  editor (request.design_mode), placeholders still show so merchants can
+  see and edit the section while building it out.
+{%- endcomment -%}
+{%- assign has_real_logo = false -%}
+{%- for block in section.blocks -%}
+  {%- if block.settings.image != blank -%}
+    {%- assign has_real_logo = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
 
-<div class="vishesh-stockists color-{{ section.settings.color_scheme }} gradient">
-  <div class="page-width">
-    {%- if section.settings.heading != blank -%}
-      <p class="vishesh-stockists__heading" data-animate="fade-up">{{ section.settings.heading }}</p>
-    {%- endif -%}
-    <div class="vishesh-stockists__row" data-animate-group>
-      {%- for block in section.blocks -%}
-        <div class="vishesh-stockists__logo" {{ block.shopify_attributes }}>
-          {%- if block.settings.image != blank -%}
-            {{
-              block.settings.image
-              | image_url: width: 300
-              | image_tag: loading: 'lazy', widths: '150, 300'
-            }}
-          {%- else -%}
-            <span class="vishesh-stockists__placeholder">{{ block.settings.name | default: 'Stockist' }}</span>
-          {%- endif -%}
-        </div>
-      {%- endfor -%}
+{%- if has_real_logo or request.design_mode -%}
+  {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+  <div class="vishesh-stockists color-{{ section.settings.color_scheme }} gradient">
+    <div class="page-width">
+      {%- if section.settings.heading != blank -%}
+        <p class="vishesh-stockists__heading" data-animate="fade-up">{{ section.settings.heading }}</p>
+      {%- endif -%}
+      <div class="vishesh-stockists__row" data-animate-group>
+        {%- for block in section.blocks -%}
+          <div class="vishesh-stockists__logo" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 300
+                | image_tag: loading: 'lazy', widths: '150, 300'
+              }}
+            {%- else -%}
+              <span class="vishesh-stockists__placeholder">{{ block.settings.name | default: 'Stockist' }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
     </div>
   </div>
-</div>
+{%- endif -%}
 
 {% schema %}
 {

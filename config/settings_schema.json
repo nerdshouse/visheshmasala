@@ -1470,6 +1470,17 @@
         "id": "whatsapp_number",
         "label": "WhatsApp number",
         "info": "Digits with country code, e.g. 919876543210. Button stays hidden until this is set."
+      },
+      {
+        "type": "header",
+        "content": "Product sound"
+      },
+      {
+        "type": "checkbox",
+        "id": "sound_button_enable",
+        "label": "Enable product sound button",
+        "default": true,
+        "info": "Click-to-play only, never autoplay. Until real clips are supplied, it plays a short generated tone - see assets/vishesh-sound.js."
       }
     ]
   }

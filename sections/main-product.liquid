@@ -43,6 +43,9 @@
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'vishesh-product.js' | asset_url }}" defer="defer"></script>
+  {%- if settings.sound_button_enable -%}
+    <script src="{{ 'vishesh-sound.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
   {%- if product.quantity_price_breaks_configured? -%}
     <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
@@ -109,13 +112,16 @@
                     </a>
                   </div>
                 {%- when 'price' -%}
-                  <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
-                    {%- render 'price',
-                      product: product,
-                      use_variant: true,
-                      show_badges: true,
-                      price_class: 'price--large'
-                    -%}
+                  <div class="vishesh-price-row">
+                    <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                      {%- render 'price',
+                        product: product,
+                        use_variant: true,
+                        show_badges: true,
+                        price_class: 'price--large'
+                      -%}
+                    </div>
+                    {% render 'vishesh-sound-button', product: product %}
                   </div>
                   {%- if product.quantity_price_breaks_configured? -%}
                     <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
@@ -213,7 +219,7 @@
                 {%- when 'custom_liquid' -%}
                   {{ block.settings.custom_liquid }}
                 {%- when 'collapsible_tab' -%}
-                  <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
+                  <div class="product__accordion accordion quick-add-hidden" data-animate="fade-up" {{ block.shopify_attributes }}>
                     <details id="Details-{{ block.id }}-{{ section.id }}">
                       <summary>
                         <div class="summary__title">
@@ -753,6 +759,7 @@
       </script>
     </div>
   </product-component>
+  {% render 'vishesh-city-scene', product: product %}
 </product-info>
 
 {% render 'vishesh-sticky-atc', product: product %}

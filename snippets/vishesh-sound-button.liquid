@@ -1,0 +1,51 @@
+{% comment %}
+  Product page sound button - click to play only, never autoplay.
+  Maps the product to a category clip via its primary collection, with a
+  per-product override through the "custom.sound_clip" metafield (single
+  line text - the filename under assets/sounds/, e.g. "hing-grind.mp3").
+
+  Until real recorded/licensed clips are supplied, assets/vishesh-sound.js
+  plays a short generated tone instead (see the STUB flag in that file) -
+  this button and its markup do not change when real audio ships, only
+  the JS stops stubbing.
+
+  Accepts: product (required)
+{% endcomment %}
+
+{%- if settings.sound_button_enable and product != blank -%}
+  {%- assign sound_key = 'default' -%}
+  {%- assign primary_handle = product.collections.first.handle -%}
+  {%- assign known_categories = 'asafoetida-hing,authentic-blended-spice,easy-to-cook,herbs,essential-products,horeca-products,upwas-products' | split: ',' -%}
+  {%- if known_categories contains primary_handle -%}
+    {%- assign sound_key = primary_handle -%}
+  {%- endif -%}
+
+  {%- assign sound_override = product.metafields.custom.sound_clip.value -%}
+
+  <button
+    type="button"
+    class="vishesh-sound-btn"
+    data-sound-key="{{ sound_key }}"
+    {%- if sound_override != blank %}
+      data-sound-src="{{ sound_override | prepend: 'sounds/' | asset_url }}"
+    {%- endif %}
+    aria-pressed="false"
+    aria-label="Play sound"
+    data-label-play="Play sound"
+    data-label-stop="Stop sound"
+  >
+    <span class="vishesh-sound-btn__icon vishesh-sound-btn__icon--off" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 9v6h4l5 5V4L8 9H4Z" fill="currentColor"/>
+        <path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="vishesh-sound-btn__icon vishesh-sound-btn__icon--on" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 9v6h4l5 5V4L8 9H4Z" fill="currentColor"/>
+        <path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M19 6a9 9 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </button>
+{%- endif -%}
