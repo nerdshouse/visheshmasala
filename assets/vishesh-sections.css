@@ -1850,10 +1850,35 @@
 }
 
 /* Bug fix: breathing room between the gallery and the info card on
-   desktop - they read as glued together without it. */
+   desktop - they read as glued together without it.
+
+   Dawn sizes .product__media-wrapper and .product__info-wrapper with
+   explicit width percentages that already sum to 100% of the container,
+   with no space reserved for a gap. Adding column-gap on top of that
+   overflows the flex row and forces it to wrap onto two lines - i.e. it
+   breaks the two-column layout entirely instead of just spacing it.
+   Padding (with border-box, so it doesn't add to the specified width)
+   carves out the same visual gap without touching that width math. */
 @media screen and (min-width: 750px) {
-  .product.grid {
-    column-gap: 4.8rem;
+  .product__media-wrapper,
+  .product__info-wrapper {
+    box-sizing: border-box;
+  }
+
+  .product--left .product__media-wrapper {
+    padding-right: 2.4rem;
+  }
+
+  .product--left .product__info-wrapper {
+    padding-left: 2.4rem;
+  }
+
+  .product--right .product__media-wrapper {
+    padding-left: 2.4rem;
+  }
+
+  .product--right .product__info-wrapper {
+    padding-right: 2.4rem;
   }
 }
 
@@ -2012,4 +2037,49 @@
   .vishesh-assurance-row {
     gap: 1.2rem 1.6rem;
   }
+}
+
+/* ---------- PDP: flat white layout (Zoff-style reference) ----------
+   Overrides the earlier pastel-background "floating card" treatment -
+   the whole PDP now runs on scheme-1 (white), so cards/shadows read as
+   redundant clutter instead of contrast. Flatten everything to sit
+   directly on the white page, the way the reference site does. */
+.product__info-wrapper .product__info-container {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.product__media-wrapper .product__media-list .product__media-item,
+.product__media-wrapper .product__media-item {
+  background: transparent;
+  border-radius: 0.8rem;
+  box-shadow: none;
+}
+
+/* Perks row: plain inline badges, no card float */
+.product .icon-with-text {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 1.2rem 0;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+/* Accordion: simple divider rows, not floating cards */
+.product .product__accordion .accordion,
+.product .accordion {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin-top: 0;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.12);
+}
+
+.product .accordion summary {
+  padding-top: 1.6rem;
+  padding-bottom: 1.6rem;
 }
