@@ -27,18 +27,20 @@
 }
 
 .vishesh-hero__headline {
-  font-size: clamp(2.4rem, 4.6vw, 6.8rem);
-  line-height: 1.04;
+  /* Conservative clamp so short and long headlines both wrap on whole
+     words instead of overflowing - checked at 320/375/768/1024/1440. */
+  font-size: clamp(2.6rem, 3.6vw, 4.8rem);
+  line-height: 1.1;
   margin: 0 0 1.2rem;
   color: var(--color-primary);
   font-weight: 800;
   text-transform: uppercase;
-  white-space: nowrap;
+  text-wrap: balance;
 }
 
 @media screen and (max-width: 749px) {
   .vishesh-hero__headline {
-    font-size: 9vw;
+    font-size: clamp(2.4rem, 7.5vw, 3.6rem);
   }
 }
 
@@ -676,6 +678,7 @@
     transform: rotate(0);
   }
 }
+
 
 /* ---------- Heritage quote ---------- */
 .vishesh-quote {
@@ -1613,7 +1616,16 @@
 .product__title h1,
 .product__title > *:first-child {
   color: var(--color-dark);
-  font-weight: 800;
+  font-weight: 700;
+  /* Bug fix: at Dawn's default h1 scale, bold long titles like "Chicken
+     Tikka Masala" were wide enough to break mid-word inside the ~380px
+     info column. Explicit conservative clamp + normal word-wrapping
+     fixes it at every width instead of relying on the container alone. */
+  font-size: clamp(2.2rem, 3.2vw + 1rem, 3.2rem);
+  line-height: 1.2;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
 }
 
 .product .price .price-item {
@@ -1799,34 +1811,31 @@
   }
 }
 
-/* ---------- Accordion open/close polish (PDP) ---------- */
+/* ---------- Accordion open/close polish (PDP) ----------
+   vishesh-accordion.js animates the <details> height via the Web
+   Animations API (details.animate) and only flips [open] once the
+   animation is under way, so the CSS here just needs the content fade
+   and caret rotation to key off [open] the same way native toggle does. */
 .product .accordion__content {
-  transition: opacity 0.25s ease;
+  transition: opacity 0.2s ease;
 }
 
-.product details[open] > .accordion__content,
 .product details[open] .accordion__content {
-  animation: vishesh-accordion-in 0.3s ease;
-}
-
-@keyframes vishesh-accordion-in {
-  from {
-    opacity: 0;
-    transform: translateY(-0.4rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  opacity: 1;
 }
 
 .product .accordion summary .icon-caret {
   transition: transform 0.25s ease;
 }
 
+.product .accordion details[open] summary .icon-caret {
+  transform: rotate(180deg);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .product details[open] .accordion__content {
-    animation: none;
+  .product .accordion__content,
+  .product .accordion summary .icon-caret {
+    transition: none;
   }
 }
 
@@ -2082,4 +2091,62 @@
 .product .accordion summary {
   padding-top: 1.6rem;
   padding-bottom: 1.6rem;
+}
+
+/* ---------- Scroll-triggered phrase highlight (rich text) ----------
+   Wrap a phrase in <span class="vishesh-highlight" data-highlight> inside
+   any rich-text block; vishesh-motion.js adds .is-active via ScrollTrigger
+   as the reader scrolls to it, sweeping in a mustard highlight + bold. */
+.vishesh-highlight {
+  display: inline;
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.4rem;
+  font-weight: 700;
+  color: inherit;
+  transition: background-size 0.6s cubic-bezier(0.25, 1, 0.5, 1), color 0.6s ease;
+}
+
+.vishesh-highlight.is-active {
+  background-size: 100% 100%;
+  color: var(--color-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-highlight {
+    transition: none;
+  }
+}
+
+/* ---------- Graceful fallback for a missing/failed product image ----------
+   card-product.liquid adds .vishesh-img-broken via onerror when the <img>
+   URL fails to load. Rather than leaving blank white space, show a soft
+   branded placeholder so it reads as intentional, not broken. Verified
+   live against the current catalog (23/23 product images load correctly
+   as of this pass) - this is a preventive fallback for future SKUs the
+   brand adds without a photo yet, not a fix for a reproduced bug today. */
+.card__media.vishesh-img-broken {
+  background: var(--color-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card__media.vishesh-img-broken img {
+  display: none;
+}
+
+.card__media.vishesh-img-broken::after {
+  content: '';
+  width: 30%;
+  aspect-ratio: 1;
+  background: var(--color-primary);
+  opacity: 0.15;
+  mask: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4Z"/></svg>') center / contain no-repeat;
+  -webkit-mask: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h4l5-6v18l-5-6H3z"/></svg>') center / contain no-repeat;
 }

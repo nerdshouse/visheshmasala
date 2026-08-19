@@ -38,6 +38,7 @@
 -%}
 <ul
   class="icon-with-text icon-with-text--{{ block.settings.layout }} list-unstyled{% if text_only_all_items %} icon-with-text--text-only{% endif %}"
+  data-animate-group
   {{ block.shopify_attributes }}
 >
   {%- unless heading_1_empty -%}

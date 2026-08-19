@@ -10,6 +10,24 @@
     if (!window.gsap) return;
     var reduced = window.VM && window.VM.reducedMotion;
 
+    // Gallery + info-panel entrance on load, same fade-in family as the
+    // global <main> fade in vishesh-motion.js: gallery first, then the
+    // price/CTA column follows with a slight stagger.
+    var mediaWrapper = document.querySelector('.product__media-wrapper');
+    var infoWrapper = document.querySelector('.product__info-wrapper');
+    if ((mediaWrapper || infoWrapper) && !document.body.dataset.pdpEntranceDone) {
+      document.body.dataset.pdpEntranceDone = 'true';
+      if (reduced) {
+        gsap.set([mediaWrapper, infoWrapper], { autoAlpha: 1 });
+      } else {
+        gsap.fromTo(
+          [mediaWrapper, infoWrapper].filter(Boolean),
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.12, delay: 0.1 }
+        );
+      }
+    }
+
     // Kinetic product title - same letter-scatter as the hero headline
     var title = document.querySelector('.product__title h1, .product__title > *:first-child');
     if (title && !title.dataset.kineticDone) {

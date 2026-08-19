@@ -132,6 +132,67 @@
         );
       }
     });
+
+    // Scroll-triggered phrase highlight.
+    // Shopify's rich-text setting sanitizes stored HTML and strips custom
+    // class/data-* attributes, so highlight spans can't live in the saved
+    // content - instead we wrap plain text phrases into
+    // <span class="vishesh-highlight" data-highlight> here, client-side,
+    // right after render, then observe them with ScrollTrigger below.
+    // Wraps only the first occurrence of each phrase per .rte block.
+    function wrapTextPhrase(root, phrase) {
+      if (!root || !phrase) return false;
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+      var node;
+      while ((node = walker.nextNode())) {
+        var idx = node.nodeValue.indexOf(phrase);
+        if (idx === -1) continue;
+        var range = document.createRange();
+        range.setStart(node, idx);
+        range.setEnd(node, idx + phrase.length);
+        var span = document.createElement('span');
+        span.className = 'vishesh-highlight';
+        span.setAttribute('data-highlight', '');
+        range.surroundContents(span);
+        return true;
+      }
+      return false;
+    }
+
+    var HIGHLIGHT_PHRASES = [
+      '50+ years of experience',
+      'VISHESH MASALA',
+      "simplicity, honesty and the company's dynamic workforce",
+      'uncompromised quality and exceptional taste',
+      'Late Shri Jagdishchandra Ishwarlal Wankawala',
+      '1,15,155 sq.ft.',
+      '24x7 availability of electricity and water',
+    ];
+
+    document.querySelectorAll('.rte').forEach(function (rte) {
+      HIGHLIGHT_PHRASES.forEach(function (phrase) {
+        wrapTextPhrase(rte, phrase);
+      });
+    });
+
+    // Any <span class="vishesh-highlight" data-highlight> inside rich text
+    // lights up (mustard sweep + bold) once as the reader scrolls to it -
+    // used on Our Story to call out key phrases (50+ years of experience,
+    // founder's name, facility size, ...).
+    document.querySelectorAll('[data-highlight]').forEach(function (el) {
+      if (window.VM.reducedMotion || !window.ScrollTrigger) {
+        el.classList.add('is-active');
+        return;
+      }
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 78%',
+        once: true,
+        onEnter: function () {
+          el.classList.add('is-active');
+        },
+      });
+    });
   }
 
   if (document.readyState === 'loading') {

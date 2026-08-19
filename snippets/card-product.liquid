@@ -82,6 +82,7 @@
                   {% endunless %}
                   width="{{ card_product.featured_media.width }}"
                   height="{{ card_product.featured_media.height }}"
+                  onerror="this.closest('.card__media').classList.add('vishesh-img-broken')"
                 >
                 {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
 
