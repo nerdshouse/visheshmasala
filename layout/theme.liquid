@@ -408,6 +408,10 @@
 
     <script src="{{ 'vishesh-accordion.js' | asset_url }}" defer="defer"></script>
 
+    {%- if settings.welcome_sound_enable -%}
+      <script src="{{ 'vishesh-welcome-sound.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
     {% render 'vishesh-whatsapp' %}
   </body>
 </html>

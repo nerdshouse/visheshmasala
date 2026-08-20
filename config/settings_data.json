@@ -202,7 +202,8 @@
         }
       },
       "whatsapp_enable": true,
-      "whatsapp_number": "919499543431"
+      "whatsapp_number": "919499543431",
+      "welcome_sound_enable": true
     }
   }
 }

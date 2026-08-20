@@ -1481,6 +1481,17 @@
         "label": "Enable product sound button",
         "default": true,
         "info": "Click-to-play only, never autoplay. Until real clips are supplied, it plays a short generated tone - see assets/vishesh-sound.js."
+      },
+      {
+        "type": "header",
+        "content": "Welcome sound"
+      },
+      {
+        "type": "checkbox",
+        "id": "welcome_sound_enable",
+        "label": "Enable welcome sound",
+        "default": true,
+        "info": "Plays once per browser session. True unprompted autoplay isn't possible in any current browser without a prior user gesture - this attempts to play immediately on load (works for some returning visitors) and always plays on the visitor's first tap/click/scroll as the reliable fallback. Skipped entirely under reduced-motion. See assets/vishesh-welcome-sound.js."
       }
     ]
   }
