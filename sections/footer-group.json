@@ -19,7 +19,7 @@
       "settings": {
         "color_scheme": "scheme-3",
         "newsletter_enable": true,
-        "newsletter_heading": "Recipes & new masalas, straight to your inbox",
+        "newsletter_heading": "",
         "enable_follow_on_shop": false,
         "show_social": false,
         "enable_country_selector": false,
