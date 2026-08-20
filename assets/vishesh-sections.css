@@ -770,7 +770,15 @@
 .vishesh-recipes__image,
 .vishesh-recipes__placeholder svg,
 .vishesh-recipes__placeholder {
+  /* image_tag sets width/height HTML attributes from the source photo's
+     own dimensions (to avoid layout shift) - without an explicit
+     height: auto here, those attributes win over aspect-ratio for the
+     used height value, distorting/stretching any photo whose native
+     ratio isn't already 1:1. height: auto lets aspect-ratio (not the
+     source photo's own ratio) drive the box, same as any other image
+     with a forced crop ratio. */
   width: 100%;
+  height: auto;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   object-position: center;

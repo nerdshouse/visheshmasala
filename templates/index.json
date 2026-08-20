@@ -227,28 +227,28 @@
           "type": "recipe",
           "settings": {
             "title": "Pav Bhaji",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Pavbhaji_Rs_10_Front_3D.png"
+            "image": "shopify://shop_images/photo-1626132647523-66f5bf380027.jpg"
           }
         },
         "r2": {
           "type": "recipe",
           "settings": {
-            "title": "Khichdi",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Khichdi_Rs_10_Front_3D.png"
+            "title": "Frankie",
+            "image": "shopify://shop_images/photo-1604908816649-c8bdfc3ca68b.jpg"
           }
         },
         "r3": {
           "type": "recipe",
           "settings": {
             "title": "Masala Chai",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Tea_Rs_10_Front_3D.png"
+            "image": "shopify://shop_images/Tea.jpg"
           }
         },
         "r4": {
           "type": "recipe",
           "settings": {
-            "title": "Dabeli",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Dabeli_Rs_10_Front_3D.png"
+            "title": "Chicken Tikka",
+            "image": "shopify://shop_images/photo-1603894584373-5ac82b2ae398.jpg"
           }
         }
       },
