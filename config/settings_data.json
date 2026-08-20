@@ -61,7 +61,7 @@
         }
       },
       "type_header_font": "assistant_n4",
-      "heading_scale": 82,
+      "heading_scale": 100,
       "type_body_font": "assistant_n4",
       "body_scale": 100,
       "page_width": 1200,
@@ -171,7 +171,7 @@
       "predictive_search_show_vendor": false,
       "predictive_search_show_price": false,
       "currency_code_enabled": false,
-      "cart_type": "notification",
+      "cart_type": "drawer",
       "show_vendor": false,
       "show_cart_note": false,
       "cart_drawer_collection": "",
@@ -189,7 +189,9 @@
             "color_scheme": "scheme-1"
           }
         }
-      }
+      },
+      "whatsapp_enable": true,
+      "whatsapp_number": "919499543431"
     }
   }
 }

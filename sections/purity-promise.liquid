@@ -1,12 +1,22 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'purity-promise.js' | asset_url }}" defer="defer"></script>
 
+{% comment %}
+  Editorial rework (Phase 3/6): the previous dashed-orbit-ring +
+  absolute-positioned sticker cluster was tuned for one viewport and
+  overflowed at others (the whole reason absolute-positioned decorative
+  elements are risky). This version uses normal document flow only -
+  a centered heading, then a wrapping row of icon items - so it cannot
+  overflow at any width by construction. The pinned-scroll reveal
+  mechanic is kept (assets/purity-promise.js), just driving opacity/
+  transform on in-flow elements instead of scattered absolute ones.
+{% endcomment %}
 <div class="vishesh-purity color-{{ section.settings.color_scheme }} gradient">
   <div class="purity-pin">
-    <span class="vishesh-sparkle vishesh-sparkle--1" aria-hidden="true">&#10022;</span>
-    <span class="vishesh-sparkle vishesh-sparkle--2" aria-hidden="true">&#10022;</span>
-    <span class="vishesh-sparkle vishesh-sparkle--3" aria-hidden="true">&#10022;</span>
     <div class="page-width vishesh-purity__inner">
+      <div class="vishesh-purity__badge-wrap">
+        {% render 'vishesh-badge', class: 'vishesh-purity__badge', id: 'purity' %}
+      </div>
       <h2 class="vishesh-purity__heading h1">
         {%- assign heading_words = section.settings.heading | split: ' ' -%}
         {%- for word in heading_words -%}
@@ -17,11 +27,10 @@
       {%- if section.settings.script_line != blank -%}
         <p class="vishesh-purity__script vishesh-script">{{ section.settings.script_line }}</p>
       {%- endif -%}
-      <div class="vishesh-purity__cluster">
-        {% render 'vishesh-badge', class: 'vishesh-purity__badge', id: 'purity' %}
+      <ul class="vishesh-purity__row" role="list">
         {%- for block in section.blocks -%}
-          <div class="vishesh-purity__sticker" {{ block.shopify_attributes }}>
-            <span class="vishesh-purity__sticker-icon vishesh-purity__sticker-icon--{{ forloop.index0 | modulo: 4 }}">
+          <li class="vishesh-purity__item" {{ block.shopify_attributes }}>
+            <span class="vishesh-purity__icon">
               {%- case block.settings.icon -%}
                 {%- when 'leaf' -%}
                   {{ 'icon-leaf.svg' | inline_asset_content }}
@@ -37,10 +46,10 @@
                   {{ 'icon-check-mark.svg' | inline_asset_content }}
               {%- endcase -%}
             </span>
-            <span class="vishesh-purity__sticker-label">{{ block.settings.label }}</span>
-          </div>
+            <span class="vishesh-purity__label">{{ block.settings.label }}</span>
+          </li>
         {%- endfor -%}
-      </div>
+      </ul>
     </div>
   </div>
 </div>

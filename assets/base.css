@@ -3,6 +3,20 @@ collection-component {
   display: block;
 }
 
+/* Bug fix: wide decorative elements (the marquee ribbons in particular -
+   their track is deliberately wider than the viewport for the infinite
+   scroll effect, clipped visually by their own parent's overflow:hidden)
+   were still contributing to document.documentElement.scrollWidth in
+   some engines, causing page-wide horizontal rubber-band scroll on both
+   mobile and desktop. This is the standard, safe fix: contain overflow
+   at the document root. Vertical scroll and JS-driven horizontal
+   scrollers (Swiper, etc.) are unaffected - they manage their own
+   scroll containers independently of this. */
+html,
+body {
+  overflow-x: hidden;
+}
+
 /* Vishesh Masala design tokens — brand palette: red, yellow, white
    (sampled from the official catalogue/brochure PDFs) */
 :root {

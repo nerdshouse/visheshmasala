@@ -485,30 +485,47 @@
   margin: 0;
 }
 
-/* ---------- Purity promise (pinned sticker cluster) ---------- */
+/* ---------- Purity promise (pinned, editorial - Phase 6 rework) ----------
+   Everything below lives in normal document flow - no absolute
+   positioning anywhere in this block. That is the actual fix for the
+   "breaks out of the viewport" bug: the previous cluster positioned
+   stickers with absolute top/left/right percentages tuned for one
+   viewport and never re-checked at others. A wrapping flex row cannot
+   overflow its container by construction, at any width. */
 .vishesh-purity .purity-pin {
-  min-height: 100vh;
+  min-height: auto;
+  padding: 7.2rem 0;
   display: flex;
   align-items: center;
-  position: relative;
-  overflow: hidden;
 }
 
 .vishesh-purity__inner {
   width: 100%;
+  max-width: 78rem;
+  margin: 0 auto;
   text-align: center;
+}
+
+.vishesh-purity__badge-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.vishesh-purity__badge {
+  width: 9rem;
+  height: 9rem;
+}
+
+.vishesh-purity__badge svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0.4rem 1rem rgba(74, 52, 24, 0.2));
 }
 
 .vishesh-purity__heading {
   margin: 0 0 0.8rem;
-  display: inline-block;
-  background: #ffffff;
-  color: var(--color-primary);
-  padding: 1.2rem 3.2rem;
-  border-radius: 1.6rem;
-  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.18);
-  text-transform: uppercase;
-  font-weight: 800;
+  color: var(--color-dark);
 }
 
 .vishesh-purity__word {
@@ -520,162 +537,70 @@
 }
 
 .vishesh-purity__script {
-  font-size: clamp(2rem, 3vw, 3rem);
-  margin: 0 0 3.2rem;
-  transform: rotate(-2deg);
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  margin: 0 0 4rem;
+  color: var(--color-primary);
 }
 
-.vishesh-purity__cluster {
-  position: relative;
-  width: min(86rem, 92vw);
-  height: 42rem;
-  margin: 0 auto;
+.vishesh-purity__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.8rem 2.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 3.2rem 0 0;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.14);
 }
 
-/* Dashed orbit ring around the badge */
-.vishesh-purity__cluster::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 34rem;
-  height: 34rem;
-  transform: translate(-50%, -50%);
-  border: 0.2rem dashed rgba(var(--color-foreground), 0.35);
-  border-radius: 50%;
-}
-
-.vishesh-purity__badge {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 15rem;
-  height: 15rem;
-}
-
-.vishesh-purity__badge svg {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 0.6rem 1.4rem rgba(74, 52, 24, 0.25));
-}
-
-.vishesh-purity__sticker {
-  position: absolute;
-  display: inline-flex;
+.vishesh-purity__item {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 1rem;
-  background: #ffffff;
-  color: var(--color-primary);
-  font-weight: 700;
-  font-size: 1.5rem;
-  padding: 1.2rem 2rem;
-  border-radius: 99rem;
-  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.16);
-  white-space: nowrap;
+  width: 12rem;
 }
 
-.vishesh-purity__sticker:nth-of-type(1) {
-  top: 6%;
-  left: 12%;
-  transform: rotate(-6deg);
-}
-
-.vishesh-purity__sticker:nth-of-type(2) {
-  top: 4%;
-  right: 10%;
-  transform: rotate(5deg);
-}
-
-.vishesh-purity__sticker:nth-of-type(3) {
-  top: 44%;
-  left: 2%;
-  transform: rotate(-3deg);
-}
-
-.vishesh-purity__sticker:nth-of-type(4) {
-  top: 46%;
-  right: 2%;
-  transform: rotate(4deg);
-}
-
-.vishesh-purity__sticker:nth-of-type(5) {
-  bottom: 4%;
-  left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
-}
-
-.vishesh-purity__sticker:hover {
-  transform: rotate(0deg) scale(1.06);
-  transition: transform 0.25s ease;
-}
-
-.vishesh-purity__sticker-icon {
-  display: inline-flex;
+.vishesh-purity__icon {
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.2rem;
-  height: 3.2rem;
+  width: 5.6rem;
+  height: 5.6rem;
   border-radius: 50%;
-  color: #ffffff;
-  flex: none;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.16);
+  color: var(--color-primary);
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-.vishesh-purity__sticker-icon svg {
-  width: 1.7rem;
-  height: 1.7rem;
+.vishesh-purity__icon svg {
+  width: 2.2rem;
+  height: 2.2rem;
 }
 
-.vishesh-purity__sticker-icon--0 {
-  background: var(--color-primary);
+.vishesh-purity__item:hover .vishesh-purity__icon {
+  border-color: var(--color-primary);
+  transform: translateY(-0.2rem);
 }
 
-.vishesh-purity__sticker-icon--1 {
-  background: var(--color-sage);
-}
-
-.vishesh-purity__sticker-icon--2 {
-  background: var(--color-primary-deep);
-}
-
-.vishesh-purity__sticker-icon--3 {
-  background: var(--color-accent);
+.vishesh-purity__label {
+  font-size: 1.3rem;
+  font-weight: 600;
   color: var(--color-dark);
+  line-height: 1.35;
 }
 
 @media screen and (max-width: 749px) {
   .vishesh-purity .purity-pin {
-    min-height: auto;
     padding: 5.2rem 0;
   }
 
-  .vishesh-purity__cluster {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.4rem;
+  .vishesh-purity__row {
+    gap: 2.4rem 1.8rem;
   }
 
-  .vishesh-purity__cluster::before {
-    display: none;
-  }
-
-  .vishesh-purity__badge {
-    position: static;
-    transform: none;
-    width: 11rem;
-    height: 11rem;
-    margin-bottom: 1rem;
-  }
-
-  .vishesh-purity__sticker {
-    position: static;
-    white-space: normal;
-  }
-
-  .vishesh-purity__sticker:nth-of-type(n) {
-    transform: rotate(0);
+  .vishesh-purity__item {
+    width: 10rem;
   }
 }
 
@@ -2256,4 +2181,133 @@
   height: 1.6rem;
   color: var(--color-accent);
   flex: none;
+}
+
+/* ---------- Footer mobile accordion (Shop / About / Help) ----------
+   Desktop: always open, summary is inert (no caret, no click). Mobile
+   (<990px, matching the theme's existing mobile-nav breakpoint): a real
+   tap-to-expand accordion, animated the same way as the PDP accordion
+   (assets/vishesh-accordion.js reuses its details.animate() mechanism). */
+.vishesh-footer-accordion {
+  border: none;
+}
+
+.vishesh-footer-accordion__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+}
+
+.vishesh-footer-accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.vishesh-footer-accordion__icon {
+  display: none;
+  color: rgba(255, 255, 255, 0.7);
+  transition: transform 0.25s ease;
+}
+
+.vishesh-footer-accordion__icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.vishesh-footer-accordion[open] .vishesh-footer-accordion__icon {
+  transform: rotate(180deg);
+}
+
+@media screen and (max-width: 989px) {
+  .vishesh-footer-accordion__summary {
+    padding: 1.4rem 0;
+    border-bottom: 0.1rem solid rgba(255, 255, 255, 0.16);
+  }
+
+  .vishesh-footer-accordion__icon {
+    display: inline-flex;
+  }
+
+  .vishesh-footer-accordion .footer-block__details-content {
+    padding: 1.2rem 0 0.4rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .vishesh-footer-accordion__summary {
+    cursor: default;
+  }
+}
+
+/* ---------- Chilli Flakes spice-particle effect (city-scene registry) ----------
+   Continuous drift-and-settle loop, CSS keyframes only - no canvas/JS.
+   Each flake's <path> carries no SVG transform attribute of its own (its
+   static X offset lives on the wrapping <g>), so the CSS transform
+   animation below is the only transform in play - no fighting between an
+   SVG presentation attribute and an animated CSS one. */
+.vishesh-chilli-flake {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: vishesh-flake-fall 5.5s ease-in infinite;
+}
+
+.vishesh-chilli-flake--1 {
+  animation-delay: 0s;
+  animation-duration: 5.2s;
+}
+.vishesh-chilli-flake--2 {
+  animation-delay: 0.7s;
+  animation-duration: 6.1s;
+}
+.vishesh-chilli-flake--3 {
+  animation-delay: 1.6s;
+  animation-duration: 5.6s;
+}
+.vishesh-chilli-flake--4 {
+  animation-delay: 0.3s;
+  animation-duration: 6.4s;
+}
+.vishesh-chilli-flake--5 {
+  animation-delay: 2.1s;
+  animation-duration: 5.4s;
+}
+.vishesh-chilli-flake--6 {
+  animation-delay: 1.1s;
+  animation-duration: 6.2s;
+}
+.vishesh-chilli-flake--7 {
+  animation-delay: 2.6s;
+  animation-duration: 5.8s;
+}
+.vishesh-chilli-flake--8 {
+  animation-delay: 1.9s;
+  animation-duration: 6s;
+}
+
+@keyframes vishesh-flake-fall {
+  0% {
+    transform: translateY(-18px) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  78% {
+    transform: translateY(150px) rotate(160deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(168px) rotate(190deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-chilli-flake {
+    animation: none;
+    opacity: 1;
+    transform: translateY(150px) rotate(90deg);
+  }
 }

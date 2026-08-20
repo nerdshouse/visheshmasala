@@ -1,11 +1,13 @@
 {% comment %}
-  Playful, illustrated "city scene" strip for the product page - an
-  associative styling device (this dish is often eaten in X city), not a
-  factual origin claim. Set per product via the "custom.city_theme"
-  metafield (single line text, e.g. "mumbai" or "delhi"). Renders nothing
-  when unset or unrecognised - no forced placeholder.
+  Playful, illustrated product-page strip driven by the "custom.city_theme"
+  metafield (single line text). Two kinds of entries share this registry:
+  city scenes ("mumbai", "delhi") - an associative styling device (this
+  dish is often eaten in X city), not a factual origin claim - and
+  product-specific effects ("chilli-flakes") for a product whose visual
+  treatment doesn't fit the city-scene idea at all. Renders nothing when
+  unset or unrecognised - no forced placeholder.
 
-  Registry pattern: to add a third city, drop in one more {%- when -%}
+  Registry pattern: to add another entry, drop in one more {%- when -%}
   block below with its own inline SVG and a matching CSS block in
   vishesh-sections.css (.vishesh-city-scene--<key> ...). Flat-design
   vector line art, brand palette only, no photography, no trademarked
@@ -22,14 +24,16 @@
 
 {%- assign city = product.metafields.custom.city_theme.value | default: '' | downcase | strip -%}
 
-{%- if city == 'mumbai' or city == 'delhi' -%}
+{%- if city == 'mumbai' or city == 'delhi' or city == 'chilli-flakes' -%}
   <div class="vishesh-city-scene vishesh-city-scene--{{ city }}" data-animate="fade-up">
     <div class="page-width vishesh-city-scene__header">
       <p class="vishesh-city-scene__caption">
         {%- if city == 'mumbai' -%}
           A taste that feels like Mumbai's streets
-        {%- else -%}
+        {%- elsif city == 'delhi' -%}
           A taste that feels like Delhi's galis
+        {%- else -%}
+          A pinch of heat in every batch
         {%- endif -%}
       </p>
     </div>
@@ -224,6 +228,75 @@
               <circle cx="18" cy="40" r="3.4" fill="var(--color-cream)" opacity="0.7"/>
               <circle cx="60" cy="40" r="9" fill="var(--color-dark)"/>
               <circle cx="60" cy="40" r="3.4" fill="var(--color-cream)" opacity="0.7"/>
+            </g>
+          </svg>
+        {%- when 'chilli-flakes' -%}
+          {%- comment -%}
+            Spice-particle treatment for Chilli Flakes (and any future
+            product that opts in via the same metafield value): small
+            flake fragments drift down and fade near a shallow bowl, on a
+            continuous loop - CSS keyframes only, no canvas/JS, matching
+            the featherweight budget of the other city-scene entries.
+            Each flake is a <g> for its static X position (untouched by
+            CSS) wrapping a <path> that CSS alone animates on Y/rotation -
+            keeps the SVG transform attribute and the CSS transform
+            animation from fighting over the same element.
+          {%- endcomment -%}
+          <svg
+            class="vishesh-city-scene__svg"
+            viewBox="0 0 800 220"
+            preserveAspectRatio="xMidYMax slice"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="vc-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="var(--color-cream)"/>
+                <stop offset="1" stop-color="#fdf1e2"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="800" height="220" fill="url(#vc-sky)"/>
+
+            <!-- ground -->
+            <rect x="0" y="178" width="800" height="2" fill="var(--color-dark)" opacity="0.25"/>
+
+            <!-- shallow bowl catching the flakes -->
+            <g>
+              <ellipse cx="400" cy="182" rx="118" ry="14" fill="var(--color-dark)" opacity="0.12"/>
+              <path
+                d="M292 168 Q292 200 400 200 Q508 200 508 168 Z"
+                fill="var(--color-cream)"
+                stroke="var(--color-dark)"
+                stroke-width="2"
+                opacity="0.9"
+              />
+              <ellipse cx="400" cy="168" rx="108" ry="12" fill="none" stroke="var(--color-dark)" stroke-width="2" opacity="0.5"/>
+              <ellipse cx="400" cy="170" rx="70" ry="6" fill="var(--color-terracotta)" opacity="0.35"/>
+            </g>
+
+            <!-- drifting flakes, staggered position/delay/duration for a natural, non-repeating feel -->
+            <g transform="translate(96,0)">
+              <path class="vishesh-chilli-flake vishesh-chilli-flake--1" d="M0 0 L9 -3 L12 5 L4 10 L-4 6 Z" fill="var(--color-terracotta)"/>
+            </g>
+            <g transform="translate(190,0)">
+              <path class="vishesh-chilli-flake vishesh-chilli-flake--2" d="M0 0 L7 -4 L11 3 L5 9 L-3 5 Z" fill="var(--color-primary)"/>
+            </g>
+            <g transform="translate(268,0)">
+              <path class="vishesh-chilli-flake vishesh-chilli-flake--3" d="M0 0 L8 -2 L10 6 L3 9 L-4 4 Z" fill="var(--color-accent)"/>
+            </g>
+            <g transform="translate(350,0)">
+              <path class="vishesh-chilli-flake vishesh-chilli-flake--4" d="M0 0 L9 -3 L12 5 L4 10 L-4 6 Z" fill="var(--color-terracotta)"/>
+            </g>
+            <g transform="translate(430,0)">
+              <path class="vishesh-chilli-flake vishesh-chilli-flake--5" d="M0 0 L7 -4 L11 3 L5 9 L-3 5 Z" fill="var(--color-primary)"/>
+            </g>
+            <g transform="translate(510,0)">
+              <path class="vishesh-chilli-flake vishesh-chilli-flake--6" d="M0 0 L8 -2 L10 6 L3 9 L-4 4 Z" fill="var(--color-terracotta)"/>
+            </g>
+            <g transform="translate(590,0)">
+              <path class="vishesh-chilli-flake vishesh-chilli-flake--7" d="M0 0 L9 -3 L12 5 L4 10 L-4 6 Z" fill="var(--color-accent)"/>
+            </g>
+            <g transform="translate(670,0)">
+              <path class="vishesh-chilli-flake vishesh-chilli-flake--8" d="M0 0 L7 -4 L11 3 L5 9 L-3 5 Z" fill="var(--color-primary)"/>
             </g>
           </svg>
       {%- endcase -%}

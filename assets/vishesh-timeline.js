@@ -41,11 +41,37 @@
       return Math.max(0, track.scrollWidth - track.clientWidth);
     };
 
+    // Bug fix: each card used to get its own ScrollTrigger nested inside
+    // the horizontal-scrub one via `containerAnimation: gsap.getTweensOf
+    // (track)[0]`. That lookup is timing-fragile - when it silently
+    // failed to resolve, cards stayed at their gsap.from() starting
+    // state (autoAlpha: 0) forever, which reads as "the section is
+    // empty" even though every card is correctly in the DOM. Replaced
+    // with a single onUpdate on the main tween that checks each card's
+    // own screen position directly - no nested-trigger lookup, so
+    // nothing to silently fail.
+    items.forEach(function (item) {
+      gsap.set(item, { autoAlpha: 0, y: 40 });
+    });
+
+    var revealed = [];
+
     gsap.to(track, {
       x: function () {
         return -scrollAmount();
       },
       ease: 'none',
+      onUpdate: function () {
+        var sectionRect = section.getBoundingClientRect();
+        items.forEach(function (item, i) {
+          if (revealed[i]) return;
+          var itemRect = item.getBoundingClientRect();
+          if (itemRect.left < sectionRect.right * 0.85) {
+            revealed[i] = true;
+            gsap.to(item, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'back.out(1.6)' });
+          }
+        });
+      },
       scrollTrigger: {
         trigger: section,
         pin: true,
@@ -56,23 +82,21 @@
         scrub: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
-      },
-    });
-
-    items.forEach(function (item, i) {
-      gsap.from(item, {
-        autoAlpha: 0,
-        y: 40,
-        rotation: i % 2 === 0 ? -3 : 3,
-        duration: 0.5,
-        ease: 'back.out(1.6)',
-        scrollTrigger: {
-          trigger: item,
-          containerAnimation: gsap.getTweensOf(track)[0],
-          start: 'left 85%',
-          once: true,
+        onRefresh: function () {
+          // Whatever is on screen right after layout settles (e.g. the
+          // first card or two before any scrolling has happened) should
+          // already be visible, not waiting for a scrub event.
+          var sectionRect = section.getBoundingClientRect();
+          items.forEach(function (item, i) {
+            if (revealed[i]) return;
+            var itemRect = item.getBoundingClientRect();
+            if (itemRect.left < sectionRect.right * 0.85) {
+              revealed[i] = true;
+              gsap.set(item, { autoAlpha: 1, y: 0 });
+            }
+          });
         },
-      });
+      },
     });
   }
 

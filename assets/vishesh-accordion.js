@@ -19,8 +19,17 @@
     var animation = null;
     var isClosing = false;
     var isOpening = false;
+    var isFooterAccordion = details.classList.contains('vishesh-footer-accordion');
 
     summary.addEventListener('click', function (event) {
+      // Footer Shop/About/Help columns collapse on mobile only - on
+      // desktop (and tablet, matching the theme's existing 990px mobile
+      // nav breakpoint) they stay permanently open, so let the click do
+      // nothing there rather than accidentally collapsing a column.
+      if (isFooterAccordion && window.matchMedia('(min-width: 990px)').matches) {
+        event.preventDefault();
+        return;
+      }
       var reduced = window.VM && window.VM.reducedMotion;
       if (reduced || typeof details.animate !== 'function') return; // let native toggle happen
 
@@ -88,6 +97,17 @@
 
   function init() {
     document.querySelectorAll('.product .accordion details').forEach(setup);
+
+    var footerDetails = document.querySelectorAll('.vishesh-footer-accordion');
+    footerDetails.forEach(setup);
+    // Start collapsed on mobile (progressive enhancement - the `open`
+    // attribute in the markup is the no-JS/desktop default so content
+    // is never hidden without a way to reach it).
+    if (window.matchMedia('(max-width: 989px)').matches) {
+      footerDetails.forEach(function (details) {
+        details.open = false;
+      });
+    }
   }
 
   if (document.readyState === 'loading') {

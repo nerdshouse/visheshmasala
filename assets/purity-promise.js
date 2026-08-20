@@ -1,7 +1,9 @@
 /**
- * "Why Choose Vishesh?" pinned reveal, sticker-cluster edition.
- * Scrubbed while pinned: heading words rise in, the trust badge stamps in,
- * then each promise sticker pops around it with a playful back-out.
+ * "Why Choose Vishesh?" pinned reveal, editorial edition (Phase 6).
+ * Scrubbed while pinned: badge settles in, heading rises word by word,
+ * then the icon row fades/rises in as a restrained stagger - no scatter,
+ * no scale-bounce, no absolute positioning anywhere (that was the root
+ * cause of the overflow bug this replaces).
  * Mobile / reduced motion: no pin, simple staggered reveal.
  */
 (function () {
@@ -10,18 +12,18 @@
     if (!pin || !window.gsap || pin.dataset.purityDone) return;
     pin.dataset.purityDone = 'true';
 
+    var badge = pin.querySelector('.vishesh-purity__badge svg');
     var words = pin.querySelectorAll('.vishesh-purity__word');
     var script = pin.querySelector('.vishesh-purity__script');
-    var badge = pin.querySelector('.vishesh-purity__badge');
-    var stickers = pin.querySelectorAll('.vishesh-purity__sticker');
+    var items = pin.querySelectorAll('.vishesh-purity__item');
     var reduced = window.VM && window.VM.reducedMotion;
     var desktop = window.matchMedia('(min-width: 750px)').matches;
 
     if (reduced || !desktop || !window.ScrollTrigger) {
-      var everything = [words, script, badge, stickers];
+      var everything = [badge, words, script, items];
       gsap.fromTo(
         everything,
-        { autoAlpha: 0, y: reduced ? 0 : 20 },
+        { autoAlpha: 0, y: reduced ? 0 : 16 },
         {
           autoAlpha: 1,
           y: 0,
@@ -29,7 +31,7 @@
           ease: 'power2.out',
           stagger: reduced ? 0 : 0.06,
           scrollTrigger: window.ScrollTrigger
-            ? { trigger: pin, start: 'top 75%', once: true }
+            ? { trigger: pin, start: 'top 80%', once: true }
             : undefined,
         }
       );
@@ -41,36 +43,29 @@
         trigger: pin,
         pin: true,
         start: 'top top',
-        end: '+=1000',
+        end: '+=800',
         scrub: true,
         anticipatePin: 1,
       },
     });
 
+    if (badge) {
+      tl.fromTo(badge, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, ease: 'power2.out', duration: 0.5 });
+    }
     tl.fromTo(
       words,
-      { autoAlpha: 0, y: 36 },
-      { autoAlpha: 1, y: 0, stagger: 0.1, ease: 'power2.out', duration: 0.8 }
+      { autoAlpha: 0, y: 24 },
+      { autoAlpha: 1, y: 0, stagger: 0.08, ease: 'power2.out', duration: 0.6 },
+      '-=0.1'
     );
     if (script) {
-      tl.fromTo(
-        script,
-        { autoAlpha: 0, scale: 0.8, rotation: -6 },
-        { autoAlpha: 1, scale: 1, rotation: -2, ease: 'back.out(2)', duration: 0.5 },
-        '-=0.3'
-      );
-    }
-    if (badge) {
-      tl.fromTo(
-        badge,
-        { autoAlpha: 0, scale: 0.4, rotation: -30 },
-        { autoAlpha: 1, scale: 1, rotation: 0, ease: 'back.out(1.8)', duration: 0.7 }
-      );
+      tl.fromTo(script, { autoAlpha: 0 }, { autoAlpha: 1, ease: 'power2.out', duration: 0.4 }, '-=0.2');
     }
     tl.fromTo(
-      stickers,
-      { autoAlpha: 0, scale: 0.5, y: 24 },
-      { autoAlpha: 1, scale: 1, y: 0, stagger: 0.18, ease: 'back.out(2.2)', duration: 0.8 }
+      items,
+      { autoAlpha: 0, y: 18 },
+      { autoAlpha: 1, y: 0, stagger: 0.1, ease: 'power2.out', duration: 0.5 },
+      '-=0.1'
     );
   }
 

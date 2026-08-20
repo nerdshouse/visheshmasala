@@ -43,7 +43,7 @@
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'vishesh-product.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'vishesh-accordion.js' | asset_url }}" defer="defer"></script>
+  {%- comment -%}vishesh-accordion.js now loads globally from theme.liquid (footer needs it on every page too){%- endcomment -%}
   {%- if settings.sound_button_enable -%}
     <script src="{{ 'vishesh-sound.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
