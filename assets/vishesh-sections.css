@@ -630,7 +630,44 @@
 
 /* ---------- Heritage quote ---------- */
 .vishesh-quote {
-  padding: 11rem 0;
+  /* Restrained on purpose - a tasteful editorial moment, not a
+     full-viewport block. Compact padding, not min-height driven. */
+  padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.vishesh-quote__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.vishesh-quote__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 12%;
+  display: block;
+  /* Source portrait is 500x561 (nearly square) stretched across a wide,
+     short section - object-fit: cover on its own zooms in heavily and
+     reads as a random crop rather than a portrait. Desaturating and
+     darkening it here (on top of the scrim below) shifts it from "a
+     photo the text sits on" to a quiet, moody texture the text sits
+     in - the intent per the brief (legible, restrained), not a full
+     clear portrait treatment this crop can't support gracefully. */
+  filter: grayscale(0.25) brightness(0.75) contrast(1.05);
+}
+
+.vishesh-quote__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 11, 7, 0.93) 0%, rgba(20, 11, 7, 0.9) 55%, rgba(20, 11, 7, 0.95) 100%);
+}
+
+.vishesh-quote--has-image .vishesh-quote__inner {
+  position: relative;
+  z-index: 1;
 }
 
 .vishesh-quote__inner {
@@ -685,7 +722,7 @@
 
 @media screen and (max-width: 749px) {
   .vishesh-quote {
-    padding: 7.2rem 0;
+    padding: 5.6rem 0;
   }
 
   .vishesh-quote__mark {

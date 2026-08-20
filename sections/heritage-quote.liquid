@@ -1,6 +1,16 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 
-<div class="vishesh-quote color-{{ section.settings.color_scheme }} gradient">
+<div class="vishesh-quote color-{{ section.settings.color_scheme }} gradient{% if section.settings.background_image != blank %} vishesh-quote--has-image{% endif %}">
+  {%- if section.settings.background_image != blank -%}
+    <div class="vishesh-quote__media" aria-hidden="true">
+      {{
+        section.settings.background_image
+        | image_url: width: 1600
+        | image_tag: loading: 'lazy', class: 'vishesh-quote__image', widths: '750, 1100, 1600', sizes: '100vw'
+      }}
+      <div class="vishesh-quote__scrim"></div>
+    </div>
+  {%- endif -%}
   <div class="page-width vishesh-quote__inner" data-animate="fade-up">
     <span class="vishesh-quote__mark" aria-hidden="true">&ldquo;</span>
     <blockquote class="vishesh-quote__text">{{ section.settings.quote }}</blockquote>
@@ -27,6 +37,12 @@
       "id": "attribution",
       "label": "Attribution",
       "default": "The Wankawala Family"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background photo",
+      "info": "Optional. A heritage/production/family photo works best - a dark scrim is applied automatically so the quote stays legible on top of it."
     },
     {
       "type": "color_scheme",
