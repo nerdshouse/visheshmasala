@@ -18,20 +18,29 @@
     var desktop = window.matchMedia('(min-width: 990px)').matches;
 
     if (reduced || !desktop || !window.ScrollTrigger) {
-      gsap.fromTo(
-        items,
-        { autoAlpha: 0, y: reduced ? 0 : 24 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-          stagger: reduced ? 0 : 0.1,
-          scrollTrigger: window.ScrollTrigger
-            ? { trigger: section, start: 'top 80%', once: true }
-            : undefined,
-        }
-      );
+      // Each milestone gets its own trigger (not one shared trigger on
+      // the whole section) so it reveals as IT crosses into view while
+      // scrolling, not all together the moment the section starts -
+      // on a tall vertical list that one-shared-trigger version played
+      // its ~1.5s stagger the instant the top of the list appeared, so
+      // every card below the fold was already fully visible long before
+      // the user actually scrolled down to it - reads as "no animation"
+      // for most of the list even though it technically had one.
+      items.forEach(function (item, i) {
+        gsap.fromTo(
+          item,
+          { autoAlpha: 0, y: reduced ? 0 : 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+            scrollTrigger: window.ScrollTrigger
+              ? { trigger: item, start: 'top 85%', once: true }
+              : undefined,
+          }
+        );
+      });
       return;
     }
 
