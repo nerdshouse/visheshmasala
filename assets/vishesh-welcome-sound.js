@@ -131,7 +131,20 @@
   // the page. Only one of these fires (whichever happens first), and the
   // listeners remove themselves either way once a gesture has occurred,
   // regardless of whether step 1 already played the sound.
-  var gestureEvents = ['pointerdown', 'touchstart', 'keydown', 'wheel'];
+  //
+  // Deliberately NOT listening for 'wheel' here (Phase 9 fix). This was
+  // originally in the list ("first click, tap, or scroll" per the
+  // brief), but it's the one event type this file and the quick-add/
+  // cart-drawer scroll-lock fix (vishesh-motion.js) both listen for on
+  // document, and after it went in, scroll started freezing sitewide
+  // after exactly one gesture - matching "a stray once: true on a
+  // scroll-related listener... interfering with the general scroll
+  // pipeline" closely enough that it's not worth the risk of keeping.
+  // click/tap/key already cover the vast majority of first interactions;
+  // a visitor who only ever scrolls (no click/tap/key) simply doesn't
+  // get the welcome sound this session, which is a fully acceptable
+  // trade next to freezing the page for everyone.
+  var gestureEvents = ['pointerdown', 'touchstart', 'keydown'];
   function onFirstGesture() {
     gestureEvents.forEach(function (type) {
       document.removeEventListener(type, onFirstGesture);

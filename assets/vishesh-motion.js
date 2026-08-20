@@ -92,13 +92,35 @@
       // stopping propagation on the way up to window only blocks Lenis
       // from receiving the event - it doesn't touch the target's own
       // scroll behavior.
-      ['wheel', 'touchmove'].forEach(function (type) {
-        document.addEventListener(type, function (event) {
-          if (event.target.closest && event.target.closest('[data-lenis-prevent]')) {
-            event.stopPropagation();
-          }
-        });
+      //
+      // Phase 9 change: this used to be permanently attached from page
+      // load, running on every single wheel/touchmove event site-wide
+      // for the entire session regardless of whether a modal was ever
+      // opened. After it shipped, scroll started freezing sitewide after
+      // exactly one gesture. Root cause wasn't pinned down with full
+      // certainty (see the commit this change ships in for the full
+      // account), but a permanent site-wide listener on the same event
+      // type Lenis itself depends on every frame is a real, unnecessary
+      // risk regardless - it's only ever needed while a modal/drawer is
+      // actually open, so it's now installed and removed along with the
+      // same body.overflow-hidden toggle every modal/drawer already uses
+      // to lock background scroll, instead of running unconditionally
+      // for the page's entire lifetime.
+      function preventLenisOnModalContent(event) {
+        if (event.target.closest && event.target.closest('[data-lenis-prevent]')) {
+          event.stopPropagation();
+        }
+      }
+      var modalScrollLockObserver = new MutationObserver(function () {
+        if (document.body.classList.contains('overflow-hidden')) {
+          document.addEventListener('wheel', preventLenisOnModalContent);
+          document.addEventListener('touchmove', preventLenisOnModalContent);
+        } else {
+          document.removeEventListener('wheel', preventLenisOnModalContent);
+          document.removeEventListener('touchmove', preventLenisOnModalContent);
+        }
       });
+      modalScrollLockObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     }
 
     // Spinning trust badges - slow continuous rotation
