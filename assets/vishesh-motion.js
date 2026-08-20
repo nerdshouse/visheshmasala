@@ -43,6 +43,20 @@
           lenis.raf(time * 1000);
         });
         gsap.ticker.lagSmoothing(0);
+
+        // Keep Lenis's internal scroll limit in sync with ScrollTrigger's
+        // pin spacers. Without this, Lenis can cache a max-scroll value
+        // from before a pinned section's spacer settles, then clamp all
+        // further scroll input at that stale limit - the page reads as
+        // permanently stuck even though a direct scrollTo() still moves
+        // it, because Lenis's own render loop overwrites the position
+        // back to its (wrong) cached limit on the very next frame.
+        ScrollTrigger.addEventListener('refresh', function () {
+          lenis.resize();
+        });
+        window.addEventListener('load', function () {
+          ScrollTrigger.refresh();
+        });
       } else {
         (function raf(time) {
           lenis.raf(time);

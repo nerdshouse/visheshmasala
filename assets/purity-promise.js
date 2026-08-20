@@ -43,9 +43,20 @@
         trigger: pin,
         pin: true,
         start: 'top top',
-        end: '+=800',
+        // Function form (not a fixed '+=800') so ScrollTrigger re-evaluates
+        // this on every refresh/resize instead of caching one number. A
+        // fixed magic number that happened to work at typical desktop
+        // heights produced a pin whose end fell in the wrong place at
+        // short-but-wide viewports (~1568x467), which left the page
+        // permanently stuck mid-pin - scroll input stopped moving the
+        // page at all past that point. Tying it to viewport height keeps
+        // the pin duration proportionate at any height.
+        end: function () {
+          return '+=' + Math.round(window.innerHeight * 1.2);
+        },
         scrub: true,
         anticipatePin: 1,
+        invalidateOnRefresh: true,
       },
     });
 
