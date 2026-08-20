@@ -50,16 +50,6 @@
   -%}
     {%- unless only_empty_brand -%}
       <div class="footer__content-top page-width">
-        <ul class="vishesh-footer-trustmarks vishesh-footer-trustmarks--top" role="list">
-          <li>
-            {{- 'icon-check-mark.svg' | inline_asset_content -}}
-            <span>FSSAI Certified</span>
-          </li>
-          <li>
-            {{- 'icon-leaf.svg' | inline_asset_content -}}
-            <span>100% Vegetarian</span>
-          </li>
-        </ul>
         {%- if section.blocks.size > 0 -%}
           {%- liquid
             if section.blocks.size == 9
@@ -246,6 +236,17 @@
           </div>
         {%- endif -%}
 
+        {%- liquid
+          assign show_follow_on_shop = false
+          if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop
+            assign show_follow_on_shop = true
+          endif
+          assign show_social_icons = false
+          if section.settings.show_social and has_social_icons
+            assign show_social_icons = true
+          endif
+        -%}
+        {%- if section.settings.newsletter_enable or show_follow_on_shop or show_social_icons -%}
         <div
           class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {% if settings.animations_reveal_on_scroll %}
@@ -323,16 +324,17 @@
             </div>
           {%- endif -%}
 
-          {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
+          {%- if show_follow_on_shop -%}
             <div class="footer__follow-on-shop">
               {{ shop | login_button: action: 'follow' }}
             </div>
           {%- endif -%}
 
-          {%- if section.settings.show_social and has_social_icons -%}
+          {%- if show_social_icons -%}
             {%- render 'social-icons', class: 'footer__list-social' -%}
           {%- endif -%}
         </div>
+        {%- endif -%}
       </div>
     {%- endunless -%}
   {%- endif -%}

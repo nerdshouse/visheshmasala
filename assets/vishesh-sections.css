@@ -2264,42 +2264,6 @@
   height: auto;
 }
 
-.vishesh-footer-trustmarks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 1.6rem;
-  list-style: none;
-  margin: 1.8rem 0 0;
-  padding: 1.4rem 0 0;
-  border-top: 0.1rem solid rgba(255, 255, 255, 0.18);
-}
-
-/* Top-of-footer placement: no leading border/margin since it's now the
-   first thing in the footer rather than trailing the brand text. */
-.vishesh-footer-trustmarks--top {
-  margin: 0 0 2.8rem;
-  padding: 0 0 2rem;
-  border-top: none;
-  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.18);
-  justify-content: center;
-}
-
-.vishesh-footer-trustmarks li {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.vishesh-footer-trustmarks svg {
-  width: 1.6rem;
-  height: 1.6rem;
-  color: var(--color-accent);
-  flex: none;
-}
-
 /* ---------- Footer mobile accordion (Shop / About / Help) ----------
    Desktop: always open, summary is inert (no caret, no click). Mobile
    (<990px, matching the theme's existing mobile-nav breakpoint): a real
