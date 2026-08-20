@@ -9,19 +9,11 @@
           "type": "text",
           "settings": {
             "heading": "Dhanhar Vishesh Masala",
-            "subtext": "<p>Kitchen Se Dil Tak.</p><p>Spices of Bharat - blended by the Wankawala family since 1970.</p>"
-          }
-        },
-        "quick-links": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Quick links",
-            "menu": "footer"
+            "subtext": "<p>Asli Masala. Ghar Jaisa Swaad.</p><p>Spices of Bharat - blended by the Wankawala family since 1970.</p>"
           }
         }
       },
       "block_order": [
-        "quick-links",
         "brand-seal"
       ],
       "settings": {
@@ -29,7 +21,7 @@
         "newsletter_enable": true,
         "newsletter_heading": "Recipes & new masalas, straight to your inbox",
         "enable_follow_on_shop": false,
-        "show_social": true,
+        "show_social": false,
         "enable_country_selector": false,
         "enable_language_selector": false,
         "payment_enable": true,

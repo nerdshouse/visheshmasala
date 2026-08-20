@@ -37,7 +37,7 @@
               </summary>
               <div
                 id="MegaMenu-Content-{{ forloop.index }}"
-                class="vishesh-mega__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                class="mega-menu__content vishesh-mega__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
                 tabindex="-1"
               >
                 <div class="page-width vishesh-mega__grid">
@@ -62,33 +62,51 @@
                   <div class="vishesh-mega__panels">
                     {%- for childlink in link.links -%}
                       {%- assign cat_collection = childlink.object -%}
+                      {%- assign is_fallback = false -%}
+                      {%- if cat_collection != blank and cat_collection.products.size > 0 -%}
+                        {%- assign cat_products = cat_collection.products -%}
+                      {%- elsif collections['bestsellers'].products.size > 0 -%}
+                        {%- comment -%}
+                          This category has no products of its own yet (or is
+                          the "All Products" link, which has no linked
+                          collection to query) - fall back to real bestsellers
+                          rather than leaving the panel empty. Labelled
+                          "Popular right now" below so it never implies these
+                          items belong to a category they don't.
+                        {%- endcomment -%}
+                        {%- assign cat_products = collections['bestsellers'].products -%}
+                        {%- assign is_fallback = true -%}
+                      {%- else -%}
+                        {%- assign cat_products = blank -%}
+                      {%- endif -%}
                       <div
                         class="vishesh-mega__panel{% if forloop.first %} is-active{% endif %}"
                         data-mega-panel="{{ forloop.index0 }}"
                       >
+                        {%- if is_fallback and cat_products.size > 0 -%}
+                          <p class="vishesh-mega__panel-note">Popular right now</p>
+                        {%- endif -%}
                         <div class="vishesh-mega__quicklinks">
-                          {%- if cat_collection != blank and cat_collection.products.size > 0 -%}
-                            {%- for product in cat_collection.products limit: 4 -%}
-                              <a
-                                id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ product.handle }}"
-                                href="{{ product.url }}"
-                                class="vishesh-mega__quicklink"
-                              >
-                                <span class="vishesh-mega__quicklink-badge">
-                                  {%- if product.featured_image -%}
-                                    {{
-                                      product.featured_image
-                                      | image_url: width: 80
-                                      | image_tag: loading: 'lazy', widths: '40, 80', alt: product.title
-                                    }}
-                                  {%- else -%}
-                                    {{- 'icon-box.svg' | inline_asset_content -}}
-                                  {%- endif -%}
-                                </span>
-                                <span class="vishesh-mega__quicklink-label">{{ product.title }}</span>
-                              </a>
-                            {%- endfor -%}
-                          {%- endif -%}
+                          {%- for product in cat_products limit: 4 -%}
+                            <a
+                              id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ product.handle }}"
+                              href="{{ product.url }}"
+                              class="vishesh-mega__quicklink"
+                            >
+                              <span class="vishesh-mega__quicklink-badge">
+                                {%- if product.featured_image -%}
+                                  {{
+                                    product.featured_image
+                                    | image_url: width: 80
+                                    | image_tag: loading: 'lazy', widths: '40, 80', alt: product.title
+                                  }}
+                                {%- else -%}
+                                  {{- 'icon-box.svg' | inline_asset_content -}}
+                                {%- endif -%}
+                              </span>
+                              <span class="vishesh-mega__quicklink-label">{{ product.title }}</span>
+                            </a>
+                          {%- endfor -%}
                         </div>
                         <a href="{{ childlink.url }}" class="vishesh-mega__viewall">
                           {{ 'sections.featured_collection.view_all' | t }}

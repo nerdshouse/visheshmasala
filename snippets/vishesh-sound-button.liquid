@@ -34,17 +34,27 @@
     data-label-play="Play sound"
     data-label-stop="Stop sound"
   >
+    {% comment %}
+      Custom icon treatment, not a stock mute/volume glyph - matches the
+      brand's own visual language: the idle state reuses the exact
+      sparkle mark (✦) already used in the hero, purity-promise and
+      bestsellers sections, and the playing state is a small masala-jar
+      silhouette with a stagger of "flavour waves" (styled like a mini
+      equaliser) rather than a generic speaker icon.
+    {% endcomment %}
     <span class="vishesh-sound-btn__icon vishesh-sound-btn__icon--off" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 9v6h4l5 5V4L8 9H4Z" fill="currentColor"/>
-        <path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path
+          d="M12 2.5 13.9 9 20.5 9.9 15.7 14.2 17 20.8 12 17.4 7 20.8 8.3 14.2 3.5 9.9 10.1 9Z"
+          fill="currentColor"
+        />
       </svg>
     </span>
     <span class="vishesh-sound-btn__icon vishesh-sound-btn__icon--on" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 9v6h4l5 5V4L8 9H4Z" fill="currentColor"/>
-        <path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        <path d="M19 6a9 9 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <rect class="vishesh-sound-btn__bar vishesh-sound-btn__bar--1" x="5.5" y="10" width="3" height="8" rx="1.5" fill="currentColor"/>
+        <rect class="vishesh-sound-btn__bar vishesh-sound-btn__bar--2" x="10.5" y="5.5" width="3" height="13" rx="1.5" fill="currentColor"/>
+        <rect class="vishesh-sound-btn__bar vishesh-sound-btn__bar--3" x="15.5" y="8" width="3" height="10.5" rx="1.5" fill="currentColor"/>
       </svg>
     </span>
   </button>

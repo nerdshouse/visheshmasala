@@ -1477,12 +1477,28 @@
 
 .product .icon-with-text--horizontal {
   justify-content: space-around;
-  gap: 1rem;
+  gap: 0.6rem;
 }
 
 .product .icon-with-text .icon-with-text__item {
   font-weight: 600;
   font-size: 1.3rem;
+  /* Bug fix: at 3-up on a narrow PDP column each item only has ~108px,
+     and "Preservatives" alone was ~2px wider than that at Dawn's .h4
+     size (15px) - just enough to force a mid-word break even with
+     word-break: normal set. Shrinking the label and widening the item
+     itself gives it real margin instead of a knife's-edge fit. */
+  min-width: 0;
+  flex: 1 1 0;
+  text-align: center;
+}
+
+.product .icon-with-text .icon-with-text__item .h4 {
+  font-size: 1.2rem;
+  line-height: 1.3;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
 }
 
 .product .icon-with-text svg {
@@ -1709,6 +1725,44 @@
   }
 }
 
+/* Equaliser bars for the "playing" icon state */
+.vishesh-sound-btn__bar {
+  transform-origin: center bottom;
+  transform-box: fill-box;
+}
+
+.vishesh-sound-btn--playing .vishesh-sound-btn__bar {
+  animation: vishesh-sound-bar 0.9s ease-in-out infinite;
+}
+
+.vishesh-sound-btn__bar--1 {
+  animation-delay: -0.6s;
+}
+
+.vishesh-sound-btn__bar--2 {
+  animation-delay: -0.3s;
+}
+
+.vishesh-sound-btn__bar--3 {
+  animation-delay: 0s;
+}
+
+@keyframes vishesh-sound-bar {
+  0%,
+  100% {
+    transform: scaleY(0.5);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-sound-btn--playing .vishesh-sound-btn__bar {
+    animation: none;
+  }
+}
+
 /* ---------- PDP: city scene strip ---------- */
 .vishesh-city-scene {
   margin-top: 4rem;
@@ -1763,19 +1817,19 @@
 
 @keyframes vishesh-rickshaw-drive {
   0% {
-    transform: translate(-90px, 170px);
+    transform: translate(-110px, 148px);
   }
   100% {
-    transform: translate(880px, 170px);
+    transform: translate(860px, 148px);
   }
 }
 
 @keyframes vishesh-train-drive {
   0% {
-    transform: translate(-160px, 150px);
+    transform: translate(-220px, 120px);
   }
   100% {
-    transform: translate(880px, 150px);
+    transform: translate(860px, 120px);
   }
 }
 
@@ -1792,12 +1846,12 @@
 @media (prefers-reduced-motion: reduce) {
   .vishesh-city-scene__rickshaw {
     animation: none;
-    transform: translate(320px, 170px);
+    transform: translate(340px, 148px);
   }
 
   .vishesh-city-scene__train {
     animation: none;
-    transform: translate(280px, 150px);
+    transform: translate(280px, 120px);
   }
 
   .vishesh-city-scene__kite {
@@ -1895,12 +1949,19 @@
   position: relative;
 }
 
-/* Bestseller ribbon on the gallery */
+/* Bestseller ribbon on the gallery.
+   Bug fix: it was rendering correctly (confirmed via DOM inspection -
+   normal 114x54 box, not CSS-clipped) but almost entirely hidden behind
+   Dawn's own zoom/lightbox toggle button, which paints above it despite
+   the ribbon's z-index - only a sliver poked out to the left of the
+   button's hit area. Raising the ribbon well above that button's
+   stacking level (and Dawn's sticky header, which also competes for
+   z-index on this page) fixes it without touching Dawn's own component. */
 .vishesh-pdp-ribbon {
   position: absolute;
   top: 1.6rem;
   left: -0.6rem;
-  z-index: 2;
+  z-index: 15;
   background: var(--color-primary);
   color: #ffffff;
   font-family: var(--font-script);
@@ -1909,6 +1970,7 @@
   border-radius: 0 99rem 99rem 0;
   box-shadow: 0 0.4rem 1rem rgba(74, 52, 24, 0.25);
   transform: rotate(-4deg);
+  pointer-events: none;
 }
 
 /* Price: bigger, bolder, with breathing room from the sound button */
@@ -2149,4 +2211,49 @@
   opacity: 0.15;
   mask: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4Z"/></svg>') center / contain no-repeat;
   -webkit-mask: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h4l5-6v18l-5-6H3z"/></svg>') center / contain no-repeat;
+}
+
+/* ---------- Footer rebuild: Shop / About / Help + trust marks ---------- */
+.vishesh-footer-static .footer-block__heading {
+  margin-bottom: 1.2rem;
+}
+
+.vishesh-footer-logo {
+  display: inline-block;
+  margin-bottom: 1.6rem;
+  padding: 0.8rem;
+  background: #ffffff;
+  border-radius: 1.2rem;
+}
+
+.vishesh-footer-logo img {
+  display: block;
+  width: 7rem;
+  height: auto;
+}
+
+.vishesh-footer-trustmarks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.6rem;
+  list-style: none;
+  margin: 1.8rem 0 0;
+  padding: 1.4rem 0 0;
+  border-top: 0.1rem solid rgba(255, 255, 255, 0.18);
+}
+
+.vishesh-footer-trustmarks li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.vishesh-footer-trustmarks svg {
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--color-accent);
+  flex: none;
 }

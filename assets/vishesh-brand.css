@@ -154,6 +154,13 @@ h3,
   background: #ffffff;
   border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
   box-shadow: 0 1.6rem 3.2rem rgba(74, 52, 24, 0.12);
+  /* Bug fix: this used to be the only class on the panel, and it had no
+     position of its own, so the dropdown pushed into normal document
+     flow and shoved the header logo down instead of overlaying the
+     page. Dawn's own .mega-menu__content (kept alongside this class in
+     the markup) supplies position: absolute; top: 100%; left: 0; right: 0 -
+     this rule just makes sure it stacks above everything below it. */
+  z-index: 30;
 }
 
 .vishesh-mega__grid {
@@ -271,6 +278,15 @@ h3,
 
 .vishesh-mega__quicklink:hover .vishesh-mega__quicklink-label {
   color: var(--color-primary);
+}
+
+.vishesh-mega__panel-note {
+  margin: 0 0 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(var(--color-foreground), 0.5);
 }
 
 .vishesh-mega__viewall {
