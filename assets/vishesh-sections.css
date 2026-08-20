@@ -516,16 +516,13 @@
    stickers with absolute top/left/right percentages tuned for one
    viewport and never re-checked at others. A wrapping flex row cannot
    overflow its container by construction, at any width. */
-.vishesh-purity .purity-pin {
-  min-height: auto;
+.vishesh-purity {
   padding: 7.2rem 0;
-  display: flex;
-  align-items: center;
 }
 
 .vishesh-purity__inner {
   width: 100%;
-  max-width: 78rem;
+  max-width: 84rem;
   margin: 0 auto;
   text-align: center;
 }
@@ -533,12 +530,12 @@
 .vishesh-purity__badge-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.4rem;
 }
 
 .vishesh-purity__badge {
-  width: 9rem;
-  height: 9rem;
+  width: 8rem;
+  height: 8rem;
 }
 
 .vishesh-purity__badge svg {
@@ -548,53 +545,55 @@
 }
 
 .vishesh-purity__heading {
-  margin: 0 0 0.8rem;
+  margin: 0 0 1rem;
   color: var(--color-dark);
-}
-
-.vishesh-purity__word {
-  display: inline-block;
-}
-
-.vishesh-purity__word:not(:last-child) {
-  margin-right: 0.28em;
 }
 
 .vishesh-purity__script {
   font-size: clamp(1.8rem, 2.6vw, 2.4rem);
-  margin: 0 0 4rem;
+  margin: 0 0 4.8rem;
   color: var(--color-primary);
 }
 
-.vishesh-purity__row {
+.vishesh-purity__grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2.8rem 2.4rem;
+  gap: 1.6rem;
   list-style: none;
   margin: 0;
-  padding: 3.2rem 0 0;
-  border-top: 0.1rem solid rgba(var(--color-foreground), 0.14);
+  padding: 0;
 }
 
-.vishesh-purity__item {
+.vishesh-purity__card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  width: 12rem;
+  gap: 1.2rem;
+  width: 15rem;
+  padding: 2.8rem 1.6rem 2.4rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+  border-radius: 1.6rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.vishesh-purity__card:hover {
+  transform: translateY(-0.3rem);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1.2rem 2.4rem rgba(74, 52, 24, 0.12);
 }
 
 .vishesh-purity__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5.6rem;
-  height: 5.6rem;
+  width: 5.2rem;
+  height: 5.2rem;
   border-radius: 50%;
-  border: 0.1rem solid rgba(var(--color-foreground), 0.16);
+  background: #ffffff;
   color: var(--color-primary);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 0.4rem 1rem rgba(74, 52, 24, 0.1);
 }
 
 .vishesh-purity__icon svg {
@@ -602,29 +601,29 @@
   height: 2.2rem;
 }
 
-.vishesh-purity__item:hover .vishesh-purity__icon {
-  border-color: var(--color-primary);
-  transform: translateY(-0.2rem);
-}
-
 .vishesh-purity__label {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: var(--color-dark);
   line-height: 1.35;
 }
 
 @media screen and (max-width: 749px) {
-  .vishesh-purity .purity-pin {
+  .vishesh-purity {
     padding: 5.2rem 0;
   }
 
-  .vishesh-purity__row {
-    gap: 2.4rem 1.8rem;
+  .vishesh-purity__script {
+    margin-bottom: 3.6rem;
   }
 
-  .vishesh-purity__item {
-    width: 10rem;
+  .vishesh-purity__grid {
+    gap: 1.2rem;
+  }
+
+  .vishesh-purity__card {
+    width: 13.6rem;
+    padding: 2.4rem 1.2rem 2rem;
   }
 }
 

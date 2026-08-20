@@ -1,56 +1,49 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'purity-promise.js' | asset_url }}" defer="defer"></script>
 
 {% comment %}
-  Editorial rework (Phase 3/6): the previous dashed-orbit-ring +
-  absolute-positioned sticker cluster was tuned for one viewport and
-  overflowed at others (the whole reason absolute-positioned decorative
-  elements are risky). This version uses normal document flow only -
-  a centered heading, then a wrapping row of icon items - so it cannot
-  overflow at any width by construction. The pinned-scroll reveal
-  mechanic is kept (assets/purity-promise.js), just driving opacity/
-  transform on in-flow elements instead of scattered absolute ones.
+  Phase 8 rebuild: this section pinned-and-scrubbed through three
+  rounds of overflow and permanent-scroll-lock bugs at short viewport
+  heights (the pin/Lenis/ScrollTrigger interaction was never made
+  reliably robust across viewport sizes). Rebuilt with no pin at all,
+  and no section-specific JS either - just the theme's existing
+  data-animate="fade-up" / data-animate-group reveal (assets/
+  vishesh-motion.js), which every other section already uses. Simple
+  and correct beats clever and broken. Visual treatment upgraded from
+  a bordered-circle icon row to a proper card grid for a more premium,
+  intentional feel.
 {% endcomment %}
 <div class="vishesh-purity color-{{ section.settings.color_scheme }} gradient">
-  <div class="purity-pin">
-    <div class="page-width vishesh-purity__inner">
-      <div class="vishesh-purity__badge-wrap">
-        {% render 'vishesh-badge', class: 'vishesh-purity__badge', id: 'purity' %}
-      </div>
-      <h2 class="vishesh-purity__heading h1">
-        {%- assign heading_words = section.settings.heading | split: ' ' -%}
-        {%- for word in heading_words -%}
-          <span class="vishesh-purity__word">{{ word }}</span>
-          {%- unless forloop.last %} {% endunless -%}
-        {%- endfor -%}
-      </h2>
-      {%- if section.settings.script_line != blank -%}
-        <p class="vishesh-purity__script vishesh-script">{{ section.settings.script_line }}</p>
-      {%- endif -%}
-      <ul class="vishesh-purity__row" role="list">
-        {%- for block in section.blocks -%}
-          <li class="vishesh-purity__item" {{ block.shopify_attributes }}>
-            <span class="vishesh-purity__icon">
-              {%- case block.settings.icon -%}
-                {%- when 'leaf' -%}
-                  {{ 'icon-leaf.svg' | inline_asset_content }}
-                {%- when 'plant' -%}
-                  {{ 'icon-plant.svg' | inline_asset_content }}
-                {%- when 'fire' -%}
-                  {{ 'icon-fire.svg' | inline_asset_content }}
-                {%- when 'box' -%}
-                  {{ 'icon-box.svg' | inline_asset_content }}
-                {%- when 'heart' -%}
-                  {{ 'icon-heart.svg' | inline_asset_content }}
-                {%- else -%}
-                  {{ 'icon-check-mark.svg' | inline_asset_content }}
-              {%- endcase -%}
-            </span>
-            <span class="vishesh-purity__label">{{ block.settings.label }}</span>
-          </li>
-        {%- endfor -%}
-      </ul>
+  <div class="page-width vishesh-purity__inner">
+    <div class="vishesh-purity__badge-wrap" data-animate="fade-up">
+      {% render 'vishesh-badge', class: 'vishesh-purity__badge', id: 'purity' %}
     </div>
+    <h2 class="vishesh-purity__heading h1" data-animate="fade-up">{{ section.settings.heading }}</h2>
+    {%- if section.settings.script_line != blank -%}
+      <p class="vishesh-purity__script vishesh-script" data-animate="fade-up">{{ section.settings.script_line }}</p>
+    {%- endif -%}
+    <ul class="vishesh-purity__grid" role="list" data-animate-group>
+      {%- for block in section.blocks -%}
+        <li class="vishesh-purity__card" {{ block.shopify_attributes }}>
+          <span class="vishesh-purity__icon">
+            {%- case block.settings.icon -%}
+              {%- when 'leaf' -%}
+                {{ 'icon-leaf.svg' | inline_asset_content }}
+              {%- when 'plant' -%}
+                {{ 'icon-plant.svg' | inline_asset_content }}
+              {%- when 'fire' -%}
+                {{ 'icon-fire.svg' | inline_asset_content }}
+              {%- when 'box' -%}
+                {{ 'icon-box.svg' | inline_asset_content }}
+              {%- when 'heart' -%}
+                {{ 'icon-heart.svg' | inline_asset_content }}
+              {%- else -%}
+                {{ 'icon-check-mark.svg' | inline_asset_content }}
+            {%- endcase -%}
+          </span>
+          <span class="vishesh-purity__label">{{ block.settings.label }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
   </div>
 </div>
 
