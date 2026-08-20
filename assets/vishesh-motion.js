@@ -63,6 +63,42 @@
           requestAnimationFrame(raf);
         })(0);
       }
+
+      // Modals/drawers (cart drawer, quick-add) lock background scroll by
+      // toggling "overflow-hidden" on <body>, but Lenis intercepts wheel/
+      // touch input itself and drives scroll via window.scrollTo() in its
+      // own rAF loop - a JS call that plain `overflow: hidden` can't stop,
+      // so the page behind the modal scrolled instead of the modal's own
+      // content. Two things tried before this one, in order:
+      // 1) lenis.stop() whenever body.overflow-hidden appears - undone,
+      //    because lenis.css applies `overflow: clip` to <html> while
+      //    stopped (.lenis.lenis-stopped), and clip on the root suppressed
+      //    scroll input for the modal's own internal scroll area too, not
+      //    just the background - net result was nothing scrolled at all.
+      // 2) data-lenis-prevent on the modal/drawer's own scrollable content
+      //    (kept on the markup - see card-product.liquid, cart-drawer.liquid -
+      //    it's still correct per Lenis's docs) - but live-tested with a
+      //    real scroll gesture over the open quick-add modal, the page
+      //    behind it still scrolled while the modal's own content didn't,
+      //    so whatever internal condition Lenis expects for that attribute
+      //    to take effect wasn't being met here.
+      // Fix: stop Lenis's own wheel/touch listener (attached on window)
+      // from ever seeing the event, with a bubble-phase listener on
+      // document that calls stopPropagation() once the event has already
+      // passed through a data-lenis-prevent element on its way up. Bubble
+      // phase (not capture) matters here - the browser resolves the
+      // target's own native default action (the modal's native scroll)
+      // at dispatch time regardless of what happens later in bubbling, so
+      // stopping propagation on the way up to window only blocks Lenis
+      // from receiving the event - it doesn't touch the target's own
+      // scroll behavior.
+      ['wheel', 'touchmove'].forEach(function (type) {
+        document.addEventListener(type, function (event) {
+          if (event.target.closest && event.target.closest('[data-lenis-prevent]')) {
+            event.stopPropagation();
+          }
+        });
+      });
     }
 
     // Spinning trust badges - slow continuous rotation

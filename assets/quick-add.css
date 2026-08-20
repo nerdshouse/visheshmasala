@@ -44,6 +44,12 @@
 }
 
 .quick-add-modal__content {
+  /* Mobile previously had no height cap paired with overflow: hidden,
+     so content taller than the viewport had nowhere to scroll (not
+     clipped, just unreachable) - background scroll was locked via
+     body.overflow-hidden but the modal itself had no scroll container
+     of its own. Capped height + its own overflow-y: auto here mirrors
+     the desktop rule below. */
   --modal-height-offset: 3.2rem;
   position: absolute;
   top: 0;
@@ -52,7 +58,8 @@
   margin: var(--modal-height-offset) auto 0;
   width: 100%;
   background-color: rgb(var(--color-background));
-  overflow: hidden;
+  max-height: calc(100% - var(--modal-height-offset) * 2);
+  overflow-y: auto;
   max-width: var(--page-width);
   width: calc(100% - 3rem);
 }
