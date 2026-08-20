@@ -2197,9 +2197,16 @@
   margin-bottom: 1.2rem;
 }
 
+@media screen and (max-width: 989px) {
+  .vishesh-footer-static .footer-block__heading {
+    margin-bottom: -2.8rem;
+  }
+}
+
 .vishesh-footer-logo {
-  display: inline-block;
-  margin-bottom: 1.6rem;
+  display: block;
+  width: fit-content;
+  margin: 0 auto 1.6rem;
   padding: 0.8rem;
   background: #ffffff;
   border-radius: 1.2rem;
@@ -2219,6 +2226,16 @@
   margin: 1.8rem 0 0;
   padding: 1.4rem 0 0;
   border-top: 0.1rem solid rgba(255, 255, 255, 0.18);
+}
+
+/* Top-of-footer placement: no leading border/margin since it's now the
+   first thing in the footer rather than trailing the brand text. */
+.vishesh-footer-trustmarks--top {
+  margin: 0 0 2.8rem;
+  padding: 0 0 2rem;
+  border-top: none;
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.18);
+  justify-content: center;
 }
 
 .vishesh-footer-trustmarks li {

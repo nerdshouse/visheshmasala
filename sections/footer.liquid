@@ -50,6 +50,16 @@
   -%}
     {%- unless only_empty_brand -%}
       <div class="footer__content-top page-width">
+        <ul class="vishesh-footer-trustmarks vishesh-footer-trustmarks--top" role="list">
+          <li>
+            {{- 'icon-check-mark.svg' | inline_asset_content -}}
+            <span>FSSAI Certified</span>
+          </li>
+          <li>
+            {{- 'icon-leaf.svg' | inline_asset_content -}}
+            <span>100% Vegetarian</span>
+          </li>
+        </ul>
         {%- if section.blocks.size > 0 -%}
           {%- liquid
             if section.blocks.size == 9
@@ -163,18 +173,6 @@
                     <div class="footer-block__details-content rte">
                       {{ block.settings.subtext }}
                     </div>
-                    {%- if block.id contains 'brand-seal' -%}
-                      <ul class="vishesh-footer-trustmarks" role="list">
-                        <li>
-                          {{- 'icon-check-mark.svg' | inline_asset_content -}}
-                          <span>FSSAI Certified</span>
-                        </li>
-                        <li>
-                          {{- 'icon-leaf.svg' | inline_asset_content -}}
-                          <span>100% Vegetarian</span>
-                        </li>
-                      </ul>
-                    {%- endif -%}
                   {%- when 'link_list' -%}
                     {%- if block.settings.menu != blank -%}
                       <ul class="footer-block__details-content list-unstyled">
