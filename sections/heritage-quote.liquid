@@ -5,7 +5,7 @@
     <span class="vishesh-quote__mark" aria-hidden="true">&ldquo;</span>
     <blockquote class="vishesh-quote__text">{{ section.settings.quote }}</blockquote>
     {%- if section.settings.attribution != blank -%}
-      <cite class="vishesh-quote__attribution">&mdash; {{ section.settings.attribution }}</cite>
+      <cite class="vishesh-quote__attribution">{{ section.settings.attribution }}</cite>
     {%- endif -%}
   </div>
 </div>
@@ -32,7 +32,7 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
-      "default": "scheme-4"
+      "default": "scheme-6"
     }
   ],
   "presets": [{ "name": "Heritage Quote" }]

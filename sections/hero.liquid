@@ -30,9 +30,8 @@
     {%- if section.settings.show_badge -%}
       {% render 'vishesh-badge', class: 'vishesh-hero__badge', id: 'hero' %}
     {%- endif -%}
-    <span class="vishesh-sparkle vishesh-sparkle--1" aria-hidden="true">&#10022;</span>
-    <span class="vishesh-sparkle vishesh-sparkle--2" aria-hidden="true">&#10022;</span>
-    <span class="vishesh-sparkle vishesh-sparkle--3" aria-hidden="true">&#10022;</span>
+    <span class="vishesh-sparkle vishesh-sparkle--1" aria-hidden="true">{{ 'icon-sparkle.svg' | inline_asset_content }}</span>
+    <span class="vishesh-sparkle vishesh-sparkle--2" aria-hidden="true">{{ 'icon-sparkle.svg' | inline_asset_content }}</span>
     <div class="vishesh-hero__media">
       {%- if section.settings.image != blank -%}
         {{

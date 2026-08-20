@@ -5,33 +5,40 @@
 /* ---------- Hero ---------- */
 .vishesh-hero {
   overflow: hidden;
+  /* The scheme this section carries (scheme-1) is flat white with no
+     background_gradient set - real depth comes from this radial wash
+     instead, independent of the shared scheme so product-card scheme-1
+     elsewhere stays untouched. Warm cream center fading to white,
+     brand tokens only. */
+  background: radial-gradient(120% 100% at 78% 8%, #fff6e6 0%, var(--color-bg) 46%, #ffffff 100%);
 }
 
 .vishesh-hero__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   align-items: center;
   gap: 4rem;
-  min-height: min(78vh, 72rem);
+  min-height: min(80vh, 74rem);
   padding-top: 6rem;
   padding-bottom: 6rem;
 }
 
 .vishesh-hero__eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.22em;
   font-size: 1.2rem;
-  font-weight: 600;
-  color: rgba(var(--color-foreground), 0.65);
-  margin: 0 0 1.6rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+  margin: 0 0 2rem;
 }
 
 .vishesh-hero__headline {
   /* Conservative clamp so short and long headlines both wrap on whole
      words instead of overflowing - checked at 320/375/768/1024/1440. */
-  font-size: clamp(2.6rem, 3.6vw, 4.8rem);
-  line-height: 1.1;
-  margin: 0 0 1.2rem;
+  font-size: clamp(3rem, 4.6vw, 6.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.6rem;
   color: var(--color-primary);
   font-weight: 800;
   text-transform: uppercase;
@@ -40,15 +47,16 @@
 
 @media screen and (max-width: 749px) {
   .vishesh-hero__headline {
-    font-size: clamp(2.4rem, 7.5vw, 3.6rem);
+    font-size: clamp(2.6rem, 9vw, 3.8rem);
   }
 }
 
 .vishesh-hero__script {
-  font-size: clamp(2.4rem, 3.6vw, 3.6rem);
+  font-size: clamp(2rem, 2.6vw, 2.6rem);
   color: var(--color-dark);
-  margin: 0 0 1.6rem;
+  margin: 0 0 2rem;
   transform: rotate(-2deg);
+  transform-origin: left center;
 }
 
 .vishesh-hero__char {
@@ -57,10 +65,11 @@
 }
 
 .vishesh-hero__sub {
-  font-size: 1.8rem;
-  max-width: 44rem;
-  margin: 0 0 3rem;
-  color: rgba(var(--color-foreground), 0.8);
+  font-size: 1.7rem;
+  line-height: 1.55;
+  max-width: 42rem;
+  margin: 0 0 3.4rem;
+  color: rgba(var(--color-foreground), 0.75);
 }
 
 .vishesh-hero__ctas {
@@ -71,7 +80,10 @@
 
 .vishesh-hero__media {
   position: relative;
-  min-height: 30rem;
+  min-height: 34rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .vishesh-hero__image {
@@ -80,6 +92,10 @@
   border-radius: 1.2rem;
 }
 
+/* Single composed glow, not a scatter of flat dots - one soft radial
+   bloom anchors the badge, two smaller echoes give it depth. Blurred
+   gradient fills read as an intentional abstract graphic rather than
+   leftover placeholder shapes. */
 .vishesh-hero__spices {
   position: absolute;
   inset: 0;
@@ -89,51 +105,54 @@
   position: absolute;
   border-radius: 50%;
   opacity: 0;
+  filter: blur(1px);
 }
 
 .vishesh-hero__spice--terracotta {
-  width: 11rem;
-  height: 11rem;
-  background: var(--color-terracotta);
-  top: 8%;
-  left: 12%;
+  width: 30rem;
+  height: 30rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 38% 32%, rgba(193, 89, 44, 0.32), rgba(193, 89, 44, 0) 70%);
+  filter: blur(2px);
 }
 
 .vishesh-hero__spice--saffron {
-  width: 7rem;
-  height: 7rem;
-  background: var(--color-saffron);
-  top: 46%;
-  right: 14%;
+  width: 15rem;
+  height: 15rem;
+  top: 30%;
+  right: 12%;
+  background: radial-gradient(circle at 35% 30%, rgba(244, 201, 93, 0.55), rgba(244, 201, 93, 0.05) 72%);
 }
 
 .vishesh-hero__spice--sage {
-  width: 5.5rem;
-  height: 5.5rem;
-  background: var(--color-sage);
-  bottom: 12%;
-  left: 28%;
+  width: 9rem;
+  height: 9rem;
+  bottom: 16%;
+  left: 22%;
+  background: radial-gradient(circle at 35% 30%, rgba(110, 139, 90, 0.4), rgba(110, 139, 90, 0.04) 72%);
 }
 
 .vishesh-hero__spice--maroon {
-  width: 8.5rem;
-  height: 8.5rem;
-  background: var(--color-primary-deep);
-  bottom: 26%;
-  right: 38%;
+  width: 12rem;
+  height: 12rem;
+  bottom: 30%;
+  right: 34%;
+  background: radial-gradient(circle at 35% 30%, rgba(107, 30, 30, 0.28), rgba(107, 30, 30, 0.03) 72%);
 }
 
 @media screen and (max-width: 749px) {
   .vishesh-hero__inner {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.4rem;
     min-height: auto;
-    padding-top: 4rem;
+    padding-top: 4.4rem;
     padding-bottom: 4rem;
   }
 
   .vishesh-hero__media {
-    min-height: 18rem;
+    min-height: 20rem;
   }
 }
 
@@ -150,6 +169,7 @@
   height: 10rem;
   z-index: 2;
   pointer-events: none;
+  filter: drop-shadow(0 0.8rem 1.6rem rgba(43, 26, 18, 0.14));
 }
 
 .vishesh-hero__badge svg {
@@ -166,44 +186,48 @@
   }
 }
 
+/* Two refined sparkles (an SVG glint, not a font-glyph star) placed
+   near the headline/badge as a deliberate accent, not scattered decor. */
 .vishesh-sparkle {
   position: absolute;
-  color: var(--color-primary);
-  font-size: 2.4rem;
-  line-height: 1;
+  color: var(--color-accent);
+  width: 2rem;
+  height: 2rem;
   pointer-events: none;
-  animation: vishesh-twinkle 2.6s ease-in-out infinite;
+  animation: vishesh-twinkle 2.8s ease-in-out infinite;
+}
+
+.vishesh-sparkle svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .vishesh-sparkle--1 {
-  top: 18%;
-  left: 46%;
+  top: 6%;
+  left: 44%;
+  width: 1.8rem;
+  height: 1.8rem;
   animation-delay: 0s;
 }
 
 .vishesh-sparkle--2 {
-  top: 62%;
-  left: 55%;
-  font-size: 1.6rem;
-  animation-delay: 0.9s;
-}
-
-.vishesh-sparkle--3 {
-  top: 30%;
-  right: 12%;
-  font-size: 1.8rem;
-  animation-delay: 1.7s;
+  bottom: 12%;
+  right: 30%;
+  width: 1.3rem;
+  height: 1.3rem;
+  animation-delay: 1.2s;
 }
 
 @keyframes vishesh-twinkle {
   0%,
   100% {
-    opacity: 0.15;
-    transform: scale(0.7) rotate(0deg);
+    opacity: 0.35;
+    transform: scale(0.8) rotate(0deg);
   }
   50% {
     opacity: 1;
-    transform: scale(1.15) rotate(18deg);
+    transform: scale(1.08) rotate(14deg);
   }
 }
 
@@ -607,37 +631,67 @@
 
 /* ---------- Heritage quote ---------- */
 .vishesh-quote {
-  padding: 8rem 0;
+  padding: 11rem 0;
 }
 
 .vishesh-quote__inner {
-  max-width: 82rem;
+  max-width: 62rem;
+  margin: 0 auto;
   text-align: center;
   position: relative;
 }
 
 .vishesh-quote__mark {
   font-family: var(--font-heading-family);
-  font-size: 12rem;
-  line-height: 0.5;
+  font-size: 5.6rem;
+  font-weight: 600;
+  line-height: 1;
   display: block;
-  color: var(--color-saffron);
-  margin-bottom: 1rem;
+  color: var(--color-accent);
+  opacity: 0.85;
+  margin-bottom: 0.8rem;
 }
 
 .vishesh-quote__text {
   font-family: var(--font-heading-family);
-  font-size: clamp(2.2rem, 3.4vw, 3.2rem);
-  line-height: 1.35;
-  margin: 0 0 2.4rem;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.4rem, 2.9vw, 3.6rem);
+  line-height: 1.28;
+  letter-spacing: -0.005em;
+  margin: 0 0 2.8rem;
 }
 
 .vishesh-quote__attribution {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
   font-style: normal;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-size: 1.3rem;
-  color: rgba(var(--color-foreground), 0.7);
+  font-size: 1.2rem;
+  font-weight: 600;
+  opacity: 0.72;
+}
+
+.vishesh-quote__attribution::before {
+  content: '';
+  display: block;
+  width: 2.8rem;
+  height: 0.1rem;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-quote {
+    padding: 7.2rem 0;
+  }
+
+  .vishesh-quote__mark {
+    font-size: 4rem;
+  }
 }
 
 /* ---------- Recipe grid (polaroid collage) ---------- */
