@@ -1,11 +1,14 @@
 {% comment %}
   Playful, illustrated product-page strip driven by the "custom.city_theme"
-  metafield (single line text). Two kinds of entries share this registry:
+  metafield (single line text). Three kinds of entries share this registry:
   city scenes ("mumbai", "delhi") - an associative styling device (this
-  dish is often eaten in X city), not a factual origin claim - and
-  product-specific effects ("chilli-flakes") for a product whose visual
-  treatment doesn't fit the city-scene idea at all. Renders nothing when
-  unset or unrecognised - no forced placeholder.
+  dish is often eaten in X city), not a factual origin claim - product-
+  specific effects ("chilli-flakes") for a product whose visual treatment
+  doesn't fit the city-scene idea at all, and a generic "spice-dust" wash
+  that's the fallback for every other product so nothing on the catalog
+  is left with no PDP animation at all, without inventing a city story
+  for a product that doesn't have one (per CLAUDE.md - don't fake brand
+  facts, flag them instead).
 
   Registry pattern: to add another entry, drop in one more {%- when -%}
   block below with its own inline SVG and a matching CSS block in
@@ -14,26 +17,34 @@
   monument renders - the Delhi arch below is a generic gateway silhouette,
   not a specific landmark.
 
-  The suggested product -> city mapping (Pavbhaji/Frankie -> Mumbai, a
-  Punjabi-style masala -> Delhi, etc.) is a starting guess flagged for the
-  brand to confirm before launch, same as other placeholder facts in this
-  project - see CLAUDE.md.
+  The suggested product -> city mapping (Pavbhaji/Frankie -> Mumbai) is a
+  starting guess flagged for the brand to confirm before launch, same as
+  other placeholder facts in this project - see CLAUDE.md. Phase 7 audit:
+  19 of 22 live products have no city_theme set at all and get the
+  spice-dust fallback below rather than a guessed city - several read
+  like plausible street-food candidates (Panipuri Masala, Dabeli Masala)
+  but assigning them a city is a brand call, not a theme-code call, so
+  they're left on the neutral default until the brand confirms.
 
   Accepts: product (required)
 {% endcomment %}
 
 {%- assign city = product.metafields.custom.city_theme.value | default: '' | downcase | strip -%}
+{%- unless city == 'mumbai' or city == 'delhi' or city == 'chilli-flakes' -%}
+  {%- assign city = 'spice-dust' -%}
+{%- endunless -%}
 
-{%- if city == 'mumbai' or city == 'delhi' or city == 'chilli-flakes' -%}
-  <div class="vishesh-city-scene vishesh-city-scene--{{ city }}" data-animate="fade-up">
+<div class="vishesh-city-scene vishesh-city-scene--{{ city }}" data-animate="fade-up">
     <div class="page-width vishesh-city-scene__header">
       <p class="vishesh-city-scene__caption">
         {%- if city == 'mumbai' -%}
           A taste that feels like Mumbai's streets
         {%- elsif city == 'delhi' -%}
           A taste that feels like Delhi's galis
-        {%- else -%}
+        {%- elsif city == 'chilli-flakes' -%}
           A pinch of heat in every batch
+        {%- else -%}
+          Stone-ground, the traditional way
         {%- endif -%}
       </p>
     </div>
@@ -299,7 +310,21 @@
               <path class="vishesh-chilli-flake vishesh-chilli-flake--8" d="M0 0 L7 -4 L11 3 L5 9 L-3 5 Z" fill="var(--color-primary)"/>
             </g>
           </svg>
+        {%- else -%}
+          {%- comment -%}
+            Generic "spice-dust" fallback for any product without a
+            recognised city_theme value - a soft drift of small ground-
+            spice motes over a plain gradient, no illustration, no
+            invented story. CSS-only ambient motion, no SVG needed.
+          {%- endcomment -%}
+          <div class="vishesh-city-scene__dust" aria-hidden="true">
+            <span class="vishesh-dust-mote vishesh-dust-mote--1"></span>
+            <span class="vishesh-dust-mote vishesh-dust-mote--2"></span>
+            <span class="vishesh-dust-mote vishesh-dust-mote--3"></span>
+            <span class="vishesh-dust-mote vishesh-dust-mote--4"></span>
+            <span class="vishesh-dust-mote vishesh-dust-mote--5"></span>
+            <span class="vishesh-dust-mote vishesh-dust-mote--6"></span>
+          </div>
       {%- endcase -%}
     </div>
   </div>
-{%- endif -%}

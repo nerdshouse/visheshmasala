@@ -2365,3 +2365,96 @@
     transform: translateY(150px) rotate(90deg);
   }
 }
+
+/* ---------- Generic "spice-dust" fallback (city-scene registry) ----------
+   For any product without a specific city_theme value - a plain warm
+   gradient with a handful of soft blurred motes drifting sideways, CSS
+   keyframes only. Deliberately neutral: no skyline, no story, just a
+   quiet ambient wash so the product page isn't left static. */
+.vishesh-city-scene--spice-dust .vishesh-city-scene__stage {
+  background: linear-gradient(135deg, var(--color-bg) 0%, #fff3de 100%);
+  position: relative;
+}
+
+.vishesh-city-scene__dust {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.vishesh-dust-mote {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: vishesh-dust-drift 14s ease-in-out infinite;
+}
+
+.vishesh-dust-mote--1 {
+  width: 3.4rem;
+  height: 3.4rem;
+  top: 20%;
+  left: 8%;
+  background: radial-gradient(circle at 35% 30%, rgba(193, 89, 44, 0.4), rgba(193, 89, 44, 0.02) 72%);
+  animation-duration: 16s;
+}
+.vishesh-dust-mote--2 {
+  width: 2.2rem;
+  height: 2.2rem;
+  top: 55%;
+  left: 22%;
+  background: radial-gradient(circle at 35% 30%, rgba(244, 201, 93, 0.5), rgba(244, 201, 93, 0.03) 72%);
+  animation-duration: 12s;
+  animation-delay: 1.5s;
+}
+.vishesh-dust-mote--3 {
+  width: 4.4rem;
+  height: 4.4rem;
+  top: 30%;
+  left: 46%;
+  background: radial-gradient(circle at 35% 30%, rgba(232, 166, 58, 0.35), rgba(232, 166, 58, 0.02) 72%);
+  animation-duration: 18s;
+  animation-delay: 0.6s;
+}
+.vishesh-dust-mote--4 {
+  width: 2.6rem;
+  height: 2.6rem;
+  top: 62%;
+  left: 64%;
+  background: radial-gradient(circle at 35% 30%, rgba(110, 139, 90, 0.32), rgba(110, 139, 90, 0.02) 72%);
+  animation-duration: 13s;
+  animation-delay: 2.2s;
+}
+.vishesh-dust-mote--5 {
+  width: 3.8rem;
+  height: 3.8rem;
+  top: 18%;
+  left: 78%;
+  background: radial-gradient(circle at 35% 30%, rgba(107, 30, 30, 0.22), rgba(107, 30, 30, 0.02) 72%);
+  animation-duration: 15s;
+  animation-delay: 0.9s;
+}
+.vishesh-dust-mote--6 {
+  width: 2rem;
+  height: 2rem;
+  top: 48%;
+  left: 90%;
+  background: radial-gradient(circle at 35% 30%, rgba(244, 201, 93, 0.45), rgba(244, 201, 93, 0.03) 72%);
+  animation-duration: 11s;
+  animation-delay: 1.8s;
+}
+
+@keyframes vishesh-dust-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(1.6rem, -1rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-dust-mote {
+    animation: none;
+  }
+}
