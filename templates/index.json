@@ -264,28 +264,6 @@
         "color_scheme": "scheme-1"
       }
     },
-    "upwas-spotlight": {
-      "type": "upwas-spotlight",
-      "settings": {
-        "eyebrow": "Upwas Special",
-        "heading": "Our Upwas Special",
-        "text": "Rock salt, shingoda atta, rajgira atta - upwas essentials the family way, clearly labelled.",
-        "cta_label": "Shop Upwas Range",
-        "cta_link": "/collections/upwas-products",
-        "color_scheme": "scheme-5"
-      }
-    },
-    "horeca-cta": {
-      "type": "horeca-cta",
-      "settings": {
-        "eyebrow": "Hotels · Restaurants · Caterers",
-        "heading": "Vishesh for your kitchen, at scale",
-        "text": "Bulk packs and consistent blends for professional kitchens across retail, wholesale and HORECA.",
-        "cta_label": "Request a Quote",
-        "cta_link": "/pages/contact",
-        "color_scheme": "scheme-3"
-      }
-    },
     "stockists": {
       "type": "stockist-logos",
       "blocks": {
@@ -332,15 +310,6 @@
         "color_scheme": "scheme-1"
       }
     },
-    "newsletter": {
-      "type": "newsletter-whatsapp",
-      "settings": {
-        "heading": "Recipes & new masalas, straight to your inbox",
-        "text": "Or say hello on WhatsApp - we reply like family.",
-        "whatsapp_label": "Chat on WhatsApp",
-        "color_scheme": "scheme-4"
-      }
-    },
     "marquee-1": {
       "type": "vishesh-marquee",
       "settings": {
@@ -368,9 +337,6 @@
     "quote",
     "recipes",
     "marquee-2",
-    "upwas-spotlight",
-    "horeca-cta",
-    "stockists",
-    "newsletter"
+    "stockists"
   ]
 }
