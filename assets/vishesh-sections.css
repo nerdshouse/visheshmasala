@@ -1572,21 +1572,23 @@
   background: #ffffff;
 }
 
-/* Collection banner: light + editorial */
+/* Collection banner: light + editorial. Was clamp(3rem,5vw,5.6rem) in a
+   5rem/3.6rem padded box - oversized relative to its content, out of
+   step with the type-scale reduction pass elsewhere in the theme. */
 .collection-hero {
-  padding: 5rem 0 3.6rem;
+  padding: 3rem 0 2.2rem;
 }
 
 .collection-hero__title {
   color: var(--color-primary);
   font-weight: 800;
   text-transform: uppercase;
-  font-size: clamp(3rem, 5vw, 5.6rem);
+  font-size: clamp(2.2rem, 3vw, 3.6rem);
 }
 
 .collection-hero__description {
   max-width: 64rem;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
 }
 
 /* ---------- PDP: info card + editorial price ---------- */
