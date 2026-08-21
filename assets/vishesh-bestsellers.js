@@ -27,7 +27,11 @@
           if (arch && color) arch.style.background = color;
           var title = slide.querySelector('.vishesh-bestsellers__title');
           var tag = slide.querySelector('.vishesh-bestsellers__tag');
-          if (title && color) title.style.color = color;
+          // The title sits on top of the arch, not on the page background -
+          // coloring it to match the arch (as this used to do) makes it
+          // invisible whenever the rotating accent lands on the arch too.
+          // It always needs a fixed, arch-contrasting color instead.
+          if (title) title.style.color = 'var(--color-cream)';
           if (tag && color) tag.style.background = color;
         }
       });
