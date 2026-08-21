@@ -30,6 +30,17 @@
 {%- endunless -%}
 {%- if card_product and card_product != empty -%}
   {%- liquid
+    # Phase 10: cards with our Pack of 1/2/3 variants get an inline pack
+    # selector (see snippets/vishesh-pack-selector.liquid) instead of the
+    # default Dawn "Choose options" quick-add modal, so a pack can be
+    # picked and added to cart right on the card - no PDP navigation, no
+    # modal. Any product with a real second option still falls back to
+    # the modal (e.g. a future non-pack variant product).
+    assign vishesh_pack_variants = false
+    if card_product.options_by_name['Pack Size']
+      assign vishesh_pack_variants = true
+    endif
+
     assign ratio = 1
     if card_product.featured_media and media_aspect_ratio == 'portrait'
       assign ratio = 0.8
@@ -207,7 +218,10 @@
                 </p>
               {%- endif -%}
 
-              {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+              {% render 'price', product: card_product, price_class: '', show_compare_at_price: true, use_variant: vishesh_pack_variants %}
+              {%- if vishesh_pack_variants -%}
+                {% render 'vishesh-pack-selector', card_product: card_product, section_id: section_id %}
+              {%- endif -%}
               {%- if card_product.quantity_price_breaks_configured? -%}
                 {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                   {% liquid
@@ -292,7 +306,7 @@
             </div>
           </div>
           {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}
-          {% if quick_add == 'standard' %}
+          {% if quick_add == 'standard' and vishesh_pack_variants == false %}
             <div class="quick-add no-js-hidden">
               {%- liquid
                 assign qty_rules = false

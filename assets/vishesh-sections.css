@@ -2485,3 +2485,113 @@
     animation: none;
   }
 }
+
+/* ---------- Phase 10: card type scale + inline pack selector ----------
+   Reference measurements (mycf.in/collections/women-1, structure/scale
+   only, not their copy or colors): title ~18px/500 with a 2-line clamp,
+   price ~16px/700, pack-select label/native-select small and muted,
+   button ~14px/600 uppercase, full width. Vishesh's own fonts/colors
+   throughout - only the scale and density match the reference. */
+.card__heading {
+  font-family: var(--font-heading-family);
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.collection .price,
+.related-products .price,
+.card-information .price {
+  font-size: 1.6rem;
+}
+
+.collection .price .price-item--sale,
+.related-products .price .price-item--sale,
+.card-information .price .price-item--sale {
+  font-weight: 700;
+}
+
+.collection .price .price-item--regular,
+.related-products .price .price-item--regular,
+.card-information .price .price-item--regular {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.collection .price s.price-item--regular,
+.related-products .price s.price-item--regular,
+.card-information .price s.price-item--regular {
+  font-size: 1.3rem;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.vishesh-pack-select {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.vishesh-pack-select__label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: rgba(var(--color-foreground), 0.65);
+}
+
+.vishesh-pack-select__select {
+  width: 100%;
+  font-size: 1.3rem;
+  font-family: var(--font-body-family);
+  padding: 0.7rem 1rem;
+  border-radius: 0.6rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.24);
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+}
+
+.vishesh-pack-select__submit {
+  margin-top: 0.2rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  min-height: 4rem;
+  min-width: 0;
+}
+
+/* Carousel cards (Bestsellers, Shop by Category) are narrower than a
+   grid card - keep the selector legible instead of letting the native
+   select's default sizing force the card wider than its slide. */
+.vishesh-bestsellers__card .vishesh-pack-select {
+  margin-top: 0.8rem;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.vishesh-bestsellers__card .vishesh-pack-select__select {
+  font-size: 1.2rem;
+  padding: 0.6rem 0.8rem;
+}
+
+.vishesh-bestsellers__card .vishesh-pack-select__submit {
+  font-size: 1.3rem;
+  min-height: 3.6rem;
+}
+
+.vishesh-bestsellers__card .vishesh-pack-select__label {
+  text-align: center;
+}
+
+.vishesh-bestsellers__content .price {
+  text-align: center;
+  justify-content: center;
+}
+
+.vishesh-bestsellers__content .price__container {
+  justify-content: center;
+}

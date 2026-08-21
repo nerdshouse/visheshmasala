@@ -1,0 +1,57 @@
+{% comment %}
+  Inline pack-size selector + Add to Cart, rendered directly on a
+  product card (grid, carousel, or cross-sell) - no PDP navigation, no
+  quick-add modal. Pattern (label + native select showing "Pack of N -
+  price" + full-width button below) follows the reference card at
+  mycf.in/collections/women-1 per the Phase 10 brief; styling is
+  Vishesh's own (see .vishesh-pack-select rules in vishesh-sections.css).
+
+  Reads the product's own variants directly - no app, no extra request.
+  assets/vishesh-pack-selector.js handles the price swap on change and
+  the add-to-cart call.
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (required)
+  - section_id: {String} the card's section id, for a unique element id
+
+  Usage:
+  {% render 'vishesh-pack-selector', card_product: card_product, section_id: section_id %}
+{% endcomment %}
+{%- assign vps_select_id = 'PackSelect-' | append: section_id | append: '-' | append: card_product.id -%}
+<div class="vishesh-pack-select" data-vishesh-pack-select-wrap data-product-id="{{ card_product.id }}">
+  <label class="vishesh-pack-select__label" for="{{ vps_select_id }}">Select a Pack</label>
+  <select
+    class="vishesh-pack-select__select"
+    id="{{ vps_select_id }}"
+    data-vishesh-pack-select
+    {% unless card_product.available %}disabled{% endunless %}
+  >
+    {%- for variant in card_product.variants -%}
+      <option
+        value="{{ variant.id }}"
+        data-price-html="{{ variant.price | money | escape }}"
+        {% if variant == card_product.selected_or_first_available_variant %}selected{% endif %}
+        {% unless variant.available %}disabled{% endunless %}
+      >
+        {{ variant.title }} - {{ variant.price | money }}
+        {%- unless variant.available %} ({{ 'products.product.sold_out' | t }}){% endunless -%}
+      </option>
+    {%- endfor -%}
+  </select>
+  <button
+    type="button"
+    class="vishesh-pack-select__submit button button--full-width{% if card_product.available == false %} button--secondary{% endif %}"
+    data-vishesh-pack-add
+    data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"
+    {% unless card_product.available %}disabled{% endunless %}
+  >
+    <span data-vishesh-pack-add-label>
+      {%- if card_product.available -%}
+        {{ 'products.product.add_to_cart' | t }}
+      {%- else -%}
+        {{ 'products.product.sold_out' | t }}
+      {%- endif -%}
+    </span>
+    {%- render 'loading-spinner' -%}
+  </button>
+</div>

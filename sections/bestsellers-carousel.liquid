@@ -1,4 +1,5 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'vishesh-bestsellers.js' | asset_url }}" defer="defer"></script>
@@ -39,9 +40,18 @@
                 </a>
                 <div class="vishesh-bestsellers__content">
                   <a href="{{ product.url }}" class="vishesh-bestsellers__title h2">{{ product.title }}</a>
-                  <a href="{{ product.url }}" class="vishesh-bestsellers__cta">
-                    <span>{{ 'products.product.add_to_cart' | t }} | {{ product.price | money }}</span>
-                  </a>
+                  {%- assign vishesh_pack_variants = false -%}
+                  {%- if product.options_by_name['Pack Size'] -%}
+                    {%- assign vishesh_pack_variants = true -%}
+                  {%- endif -%}
+                  {%- render 'price', product: product, price_class: '', use_variant: vishesh_pack_variants -%}
+                  {%- if vishesh_pack_variants -%}
+                    {%- render 'vishesh-pack-selector', card_product: product, section_id: section.id -%}
+                  {%- else -%}
+                    <a href="{{ product.url }}" class="vishesh-bestsellers__cta">
+                      <span>{{ 'products.product.add_to_cart' | t }} | {{ product.price | money }}</span>
+                    </a>
+                  {%- endif -%}
                 </div>
               </div>
             </div>
