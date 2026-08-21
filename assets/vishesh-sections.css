@@ -2735,6 +2735,13 @@
 }
 
 .vishesh-pack-select__select {
+  /* Dawn doesn't reset box-sizing to border-box anywhere, so without
+     this, width: 100% only sizes the content box and the select's own
+     padding + border get added on top - it rendered wider than
+     .vishesh-pack-select and drifted off-center from the product
+     above it, worst on the Bestsellers carousel where the arch gives
+     an obvious center line to compare against. */
+  box-sizing: border-box;
   width: 100%;
   font-size: 1.3rem;
   font-family: var(--font-body-family);
@@ -2746,6 +2753,11 @@
 }
 
 .vishesh-pack-select__submit {
+  /* Same content-box issue as the select above - Dawn's .button base
+     sets padding: 0 3rem, which .button--full-width's width: 100%
+     doesn't account for without border-box, so the button rendered up
+     to 6rem wider than its wrapper. */
+  box-sizing: border-box;
   margin-top: 0.2rem;
   font-size: 1.4rem;
   font-weight: 600;
