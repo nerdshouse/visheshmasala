@@ -33,7 +33,7 @@
       });
     }
 
-    new Swiper(el, {
+    var swiper = new Swiper(el, {
       loop: true,
       centeredSlides: true,
       speed: reduced ? 0 : 500,
@@ -60,6 +60,26 @@
         },
       },
     });
+
+    // pauseOnMouseEnter only covers hover, which never fires on touch -
+    // without this, autoplay keeps advancing while a shopper has the
+    // native pack-select open or is aiming a tap at the Add to Cart
+    // button, and the slide can shift a different product's card under
+    // their next tap mid-interaction. Pause for as long as focus stays
+    // inside any card's pack selector, on both touch and mouse.
+    if (swiper.autoplay) {
+      el.addEventListener('focusin', function (e) {
+        if (e.target.closest('[data-vishesh-pack-select-wrap]')) swiper.autoplay.stop();
+      });
+      el.addEventListener('focusout', function () {
+        setTimeout(function () {
+          var active = document.activeElement;
+          if (!active || !active.closest('[data-vishesh-pack-select-wrap]')) {
+            swiper.autoplay.start();
+          }
+        });
+      });
+    }
   }
 
   if (document.readyState === 'loading') {
