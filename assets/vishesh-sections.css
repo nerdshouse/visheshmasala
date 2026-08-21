@@ -1890,6 +1890,174 @@
   }
 }
 
+/* ---------- Phase 11: regional PDP scene additions ----------
+   Shared mechanics reused across the 8 new/rebuilt city-scene entries
+   (gujarat, bihar, kolkata, kolkata-tangra, lucknow, kerala, kashmir,
+   kolhapur) instead of one bespoke animation per scene. */
+.vishesh-twinkle-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: vishesh-twinkle 2.8s ease-in-out infinite;
+}
+.vishesh-twinkle-dot--1 {
+  animation-delay: 0s;
+}
+.vishesh-twinkle-dot--2 {
+  animation-delay: 0.9s;
+  animation-duration: 3.2s;
+}
+.vishesh-twinkle-dot--3 {
+  animation-delay: 1.7s;
+  animation-duration: 2.5s;
+}
+
+.vishesh-city-scene__boat {
+  animation: vishesh-boat-drift 18s linear infinite;
+}
+.vishesh-city-scene__boat--house {
+  animation-duration: 22s;
+}
+.vishesh-city-scene__boat--shikara {
+  animation-duration: 16s;
+}
+
+@keyframes vishesh-boat-drift {
+  0% {
+    transform: translate(-140px, 150px);
+  }
+  100% {
+    transform: translate(860px, 150px);
+  }
+}
+
+.vishesh-city-scene__tram {
+  animation: vishesh-tram-drive 15s linear infinite;
+}
+
+@keyframes vishesh-tram-drive {
+  0% {
+    transform: translate(-200px, 132px);
+  }
+  100% {
+    transform: translate(860px, 132px);
+  }
+}
+
+.vishesh-city-scene__lantern {
+  transform-box: fill-box;
+  transform-origin: top center;
+  animation: vishesh-lantern-sway 3.6s ease-in-out infinite;
+}
+
+@keyframes vishesh-lantern-sway {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+.vishesh-city-scene__steam {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: vishesh-steam-rise 3.4s ease-in-out infinite;
+}
+.vishesh-city-scene__steam--2 {
+  animation-delay: 1.1s;
+  animation-duration: 3.9s;
+}
+
+@keyframes vishesh-steam-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scaleY(0.85);
+  }
+  35% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px) scaleY(1.15);
+  }
+}
+
+.vishesh-city-scene__paisley {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: vishesh-kite-drift 5s ease-in-out infinite;
+}
+.vishesh-city-scene__paisley--2 {
+  animation-delay: 1.2s;
+  animation-duration: 5.6s;
+}
+.vishesh-city-scene__paisley--3 {
+  animation-delay: 2s;
+  animation-duration: 4.6s;
+}
+
+.vishesh-city-scene__palm-fronds {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: vishesh-palm-sway 4.5s ease-in-out infinite;
+}
+
+@keyframes vishesh-palm-sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+.vishesh-city-scene__ripple {
+  animation: vishesh-ripple-shimmer 6s ease-in-out infinite;
+}
+
+@keyframes vishesh-ripple-shimmer {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateX(1.2rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-twinkle-dot,
+  .vishesh-city-scene__boat,
+  .vishesh-city-scene__tram,
+  .vishesh-city-scene__lantern,
+  .vishesh-city-scene__steam,
+  .vishesh-city-scene__paisley,
+  .vishesh-city-scene__palm-fronds,
+  .vishesh-city-scene__ripple {
+    animation: none;
+  }
+
+  .vishesh-city-scene__boat {
+    transform: translate(360px, 150px);
+  }
+
+  .vishesh-city-scene__tram {
+    transform: translate(340px, 132px);
+  }
+
+  .vishesh-city-scene__steam {
+    opacity: 0.4;
+  }
+
+  .vishesh-city-scene__ripple {
+    opacity: 0.2;
+  }
+}
+
 /* ---------- Accordion open/close polish (PDP) ----------
    vishesh-accordion.js animates the <details> height via the Web
    Animations API (details.animate) and only flips [open] once the
