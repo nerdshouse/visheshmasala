@@ -1,14 +1,23 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'vishesh-timeline.js' | asset_url }}" defer="defer"></script>
 
+{% comment %}
+  Phase 13: rebuilt as a responsive card grid with the sitewide
+  data-animate-group stagger reveal (see assets/vishesh-motion.js) -
+  no pin, no horizontal-scrub-through-vertical-scroll mechanic. That
+  approach (assets/vishesh-timeline.js, now removed) depended on a
+  GSAP ScrollTrigger pin that never actually ran in live testing,
+  leaving 5 of the 9 milestones permanently stuck at
+  autoAlpha:0/visibility:hidden - the same failure pattern the
+  purity-promise section went through before Phase 8 dropped its pin
+  in favor of a plain stagger reveal. Same fix here, no third attempt
+  at repairing a pin mechanic that has now failed twice in this theme.
+{% endcomment %}
 <div class="vishesh-timeline color-{{ section.settings.color_scheme }} gradient" data-timeline>
-  <div class="vishesh-timeline__pin-area">
-    <div class="page-width">
-      {%- if section.settings.heading != blank -%}
-        <h2 class="h1 vishesh-timeline__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
-      {%- endif -%}
-    </div>
-    <ol class="vishesh-timeline__list page-width" data-timeline-track role="list">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="h1 vishesh-timeline__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    <ol class="vishesh-timeline__list" data-animate-group role="list">
       {%- for block in section.blocks -%}
         <li class="vishesh-timeline__item" {{ block.shopify_attributes }}>
           <span class="vishesh-timeline__pin" aria-hidden="true">
