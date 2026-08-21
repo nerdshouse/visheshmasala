@@ -25,13 +25,12 @@
         if (isActive) {
           var color = slide.dataset.color;
           if (arch && color) arch.style.background = color;
-          var title = slide.querySelector('.vishesh-bestsellers__title');
           var tag = slide.querySelector('.vishesh-bestsellers__tag');
-          // The title sits on top of the arch, not on the page background -
-          // coloring it to match the arch (as this used to do) makes it
-          // invisible whenever the rotating accent lands on the arch too.
-          // It always needs a fixed, arch-contrasting color instead.
-          if (title) title.style.color = 'var(--color-cream)';
+          // The title's own background chip is a fixed color set in CSS
+          // (.vishesh-bestsellers__title) - it doesn't need to track the
+          // rotating accent the way the arch and tag do, and coloring it
+          // to match the arch (as this used to do) made it unreadable
+          // whenever the rotating accent landed on a lighter swatch.
           if (tag && color) tag.style.background = color;
         }
       });
