@@ -1337,7 +1337,7 @@
 .vishesh-timeline--live .vishesh-timeline__scroll {
   /* Scroll runway: roughly half a viewport per milestone. The stage
      stays stuck for all of it. */
-  min-height: calc(var(--milestone-count, 9) * 42vh);
+  min-height: calc(var(--milestone-count, 9) * 36vh);
   position: relative;
 }
 
@@ -1348,7 +1348,7 @@
   position: sticky;
   top: 0;
   min-height: 0;
-  padding: 7rem 0 5rem;
+  padding: 4.5rem 0 3rem;
 }
 
 .vishesh-timeline--live .vishesh-timeline__rail {
@@ -1424,6 +1424,11 @@
 .vishesh-timeline--live .vishesh-timeline__cards {
   display: grid;
   gap: 0;
+  /* Cards share one grid cell so they can cross-fade in place. Without
+     this they all stretch to the tallest milestone's height, so short
+     milestones rendered as a mostly-empty white box. Each card now
+     takes only the height its own copy needs. */
+  align-items: start;
 }
 
 .vishesh-timeline--live .vishesh-timeline__card {
@@ -1480,18 +1485,53 @@
   }
 
   .vishesh-timeline--live .vishesh-timeline__scroll {
-    min-height: calc(var(--milestone-count, 9) * 40vh);
+    min-height: calc(var(--milestone-count, 9) * 34vh);
   }
 
+  /* Mobile rail is a horizontal dot strip, not the desktop year list.
+     Nine year labels cannot sit side by side at this width - they
+     collided with the dots, which were still absolutely positioned
+     from the desktop rule (left: -2.2rem) and so landed on top of the
+     text. Dots go back into normal flow here and the years are
+     dropped: the active year is already shown large on the card's pin
+     and in its n/9 counter, so nothing is lost. */
   .vishesh-timeline--live .vishesh-timeline__rail {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
-    gap: 0.8rem 1.4rem;
+    align-items: center;
+    gap: 0.9rem;
+    padding-left: 0;
+  }
+
+  .vishesh-timeline--live .vishesh-timeline__step {
+    gap: 0;
+  }
+
+  .vishesh-timeline--live .vishesh-timeline__step .vishesh-timeline__dot {
+    position: static;
+    left: auto;
   }
 
   .vishesh-timeline--live .vishesh-timeline__step-year {
-    font-size: 1.2rem;
+    display: none;
+  }
+
+  /* Track runs horizontally here, so the fill grows along X. */
+  .vishesh-timeline--live .vishesh-timeline__rail::before,
+  .vishesh-timeline--live .vishesh-timeline__rail::after {
+    left: 0.3rem;
+    right: 0.3rem;
+    top: 50%;
+    bottom: auto;
+    width: auto;
+    height: 0.2rem;
+    transform: translateY(-50%);
+  }
+
+  .vishesh-timeline--live .vishesh-timeline__rail::after {
+    transform-origin: left center;
+    transform: translateY(-50%) scaleX(var(--progress, 0));
   }
 }
 
