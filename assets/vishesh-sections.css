@@ -1391,6 +1391,14 @@
   min-height: 0;
 }
 
+/* The portrait is a tall 832x1173 seated shot dropped into a short
+   fixed-height box, so the default centre crop (object-position
+   50% 50%) landed on his chest and cut the top of his head off.
+   Biasing the crop upward keeps the face in frame at every height. */
+[id$='__founder'] .image-with-text__media img {
+  object-position: 50% 18%;
+}
+
 /* "Late Shri Jagdishchandra Ishwarlal Wankawala" is four long words;
    at the h1 size it broke to four lines on a 375px screen and swamped
    the section. Scaled down and tightened just on mobile so it settles
