@@ -57,6 +57,23 @@
         window.addEventListener('load', function () {
           ScrollTrigger.refresh();
         });
+        // The 'load' refresh above isn't the end of the story on a slow
+        // connection: theme.liquid's Google Fonts link uses
+        // `display=swap`, so text first renders in a fallback font and
+        // swaps to the real one whenever it finishes downloading - which
+        // can land after 'load', not before it. If the real font's
+        // metrics differ from the fallback's, that swap reflows the page
+        // (taller/shorter), and Lenis's cached scroll limit - resized at
+        // the 'load' refresh - goes stale again. Same class of bug the
+        // refresh listener above exists to fix, just a second trigger
+        // for it: caught live testing on a throttled connection where
+        // "Slow network detected... fallback font" logged right before a
+        // scroll gesture stopped advancing normally.
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(function () {
+            ScrollTrigger.refresh();
+          });
+        }
       } else {
         (function raf(time) {
           lenis.raf(time);
