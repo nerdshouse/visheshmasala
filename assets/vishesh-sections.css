@@ -1535,6 +1535,51 @@
   }
 }
 
+/* Desktop: the name is 43 characters, so at the inherited h1 size it
+   always broke across two lines. Scaled down and allowed to run full
+   width of its column so it sets on a single line, with the column
+   itself widened (image_width small in the template) to give it the
+   room - which also closes the empty space that sat beside the short
+   portrait. nowrap is safe here only because the size below was
+   checked against the rendered column width, not guessed. */
+/* Tablet: too narrow for 43 characters on one line at any readable
+   size, so it just gets scaled down and allowed to wrap. */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  [id$='__founder'] .image-with-text__heading {
+    width: 100%;
+    max-width: none;
+    font-size: 2.2rem;
+    line-height: 1.25;
+  }
+}
+
+/* Desktop: single line. nowrap is only applied from 990px up, where
+   the content column is wide enough to actually hold the name at this
+   size - applying it from 750px overflowed the column by ~160px on a
+   769px viewport. */
+@media screen and (min-width: 990px) {
+  /* Dawn caps the text column with its own max-width, which both
+     squeezed the name and left a band of empty space beside the short
+     portrait. Letting the column use the width it has closes that gap
+     and gives the name room to set on one line. */
+  [id$='__founder'] .image-with-text__content {
+    max-width: none;
+    width: 100%;
+  }
+
+  [id$='__founder'] .image-with-text__heading {
+    width: 100%;
+    max-width: none;
+    /* Sized against the measured column: at 28px the name rendered
+       676px wide inside a 599px box. 2.3rem keeps it inside with a
+       margin to spare at 1440, and the clamp scales it down rather
+       than overflowing on narrower desktops. */
+    font-size: clamp(1.9rem, 1.75vw, 2.3rem);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+}
+
 /* ---------- Contact form: enquiry purpose ----------
    Own wrapper rather than Dawn's .field, whose floating label would
    sit on top of the select's always-visible selected option. Borders
@@ -3199,4 +3244,109 @@
 
 .vishesh-bestsellers__content .price__container {
   justify-content: center;
+}
+
+/* ---------- Our Story: Vision / Brand Promise ----------
+   Replaces a flat Dawn multicolumn. Each statement is a card with a
+   numbered marker and an eyebrow so the two read as deliberate brand
+   statements rather than two loose paragraphs. */
+.vishesh-vision {
+  padding: 7.2rem 0;
+}
+
+.vishesh-vision__heading {
+  text-align: center;
+  margin: 0 0 4.8rem;
+  color: var(--color-dark);
+}
+
+.vishesh-vision__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.8rem;
+  align-items: stretch;
+}
+
+.vishesh-vision__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #ffffff;
+  border-radius: 1.8rem;
+  padding: 3.6rem 3.2rem 3.2rem;
+  box-shadow: 0 1.2rem 3.2rem rgba(74, 52, 24, 0.1);
+  overflow: hidden;
+}
+
+/* Accent edge, and a large ghosted number that keeps the card from
+   reading as a plain text box. */
+.vishesh-vision__card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.5rem;
+  background: var(--color-primary);
+}
+
+.vishesh-vision__index {
+  position: absolute;
+  top: 1.2rem;
+  right: 2rem;
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 6.4rem;
+  line-height: 1;
+  color: var(--color-primary);
+  opacity: 0.09;
+  pointer-events: none;
+}
+
+.vishesh-vision__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.vishesh-vision__title {
+  margin: 0;
+  font-size: clamp(2rem, 2.2vw, 2.6rem);
+  line-height: 1.2;
+  color: var(--color-dark);
+}
+
+.vishesh-vision__text {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.65;
+  color: #4a3418;
+}
+
+.vishesh-vision__text p {
+  margin: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-vision {
+    padding: 5.2rem 0;
+  }
+
+  .vishesh-vision__heading {
+    margin: 0 0 3.2rem;
+  }
+
+  .vishesh-vision__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .vishesh-vision__card {
+    padding: 2.8rem 2.2rem 2.4rem;
+  }
+
+  .vishesh-vision__index {
+    font-size: 5rem;
+  }
 }
