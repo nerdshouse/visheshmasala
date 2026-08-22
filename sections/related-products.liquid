@@ -27,7 +27,25 @@
     data-section-id="{{ section.id }}"
     data-product-id="{{ product.id }}"
   >
-    {% if recommendations.performed and recommendations.products_count > 0 %}
+    {%- comment -%}
+      Shopify's recommendations endpoint returns nothing until the shop
+      has enough order/behaviour data to build recommendations from, so
+      on this store the whole section rendered empty - no heading, no
+      cards. Fall back to other products from the same collection so
+      the block is always populated. `recommendations` is still
+      preferred when it has results; the fallback only fills the gap.
+    {%- endcomment -%}
+    {%- liquid
+      assign related_items = null
+      assign use_recommendations = false
+      if recommendations.performed and recommendations.products_count > 0
+        assign related_items = recommendations.products
+        assign use_recommendations = true
+      elsif product.collections.size > 0
+        assign related_items = product.collections.first.products
+      endif
+    -%}
+    {% if related_items != null and related_items.size > 0 %}
       <h2 class="related-products__heading inline-richtext {{ section.settings.heading_size }}" data-animate="fade-up">
         {{ section.settings.heading }}
       </h2>
@@ -37,7 +55,18 @@
         role="list"
       >
         {% assign skip_card_product_styles = false %}
-        {% for recommendation in recommendations.products %}
+        {% assign shown = 0 %}
+        {% for recommendation in related_items %}
+          {%- comment -%}
+            The collection fallback includes the product being viewed,
+            which the recommendations API would already have excluded.
+          {%- endcomment -%}
+          {%- if use_recommendations == false and recommendation.id == product.id -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- if shown >= section.settings.products_to_show -%}
+            {%- break -%}
+          {%- endif -%}
           <li class="grid__item">
             {% render 'card-product',
               card_product: recommendation,
@@ -51,6 +80,7 @@
             %}
           </li>
           {%- assign skip_card_product_styles = true -%}
+          {%- assign shown = shown | plus: 1 -%}
         {% endfor %}
       </ul>
     {% endif %}

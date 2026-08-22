@@ -2912,8 +2912,11 @@
 }
 
 /* ---------- Footer rebuild: Shop / About / Help + trust marks ---------- */
+/* 1.2rem left the column heading sitting almost on top of its first
+   link. Given the links themselves are generously spaced, the heading
+   needs comparable separation to read as a heading. */
 .vishesh-footer-static .footer-block__heading {
-  margin-bottom: 1.2rem;
+  margin-bottom: 2.6rem;
 }
 
 @media screen and (max-width: 989px) {
