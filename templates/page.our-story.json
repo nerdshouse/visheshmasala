@@ -71,7 +71,8 @@
         "founder-text"
       ],
       "settings": {
-        "height": "adapt",
+        "image": "shopify://shop_images/Jagdishchandra_Ishwarlal_Wankawala.png",
+        "height": "small",
         "desktop_image_width": "medium",
         "layout": "image_first",
         "image_behavior": "none",

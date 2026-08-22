@@ -1104,6 +1104,7 @@
 }
 
 .vishesh-timeline__item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1113,6 +1114,51 @@
   border-radius: 1.2rem;
   padding: 2.8rem 2.4rem;
   box-shadow: 0 0.8rem 2rem rgba(74, 52, 24, 0.12);
+}
+
+/* Journey connector: a gently pulsing chevron below every card except
+   the last, guiding the eye to the next milestone. Lives entirely
+   inside the card's own box (extra bottom padding makes room for it)
+   rather than being absolutely positioned into the grid gap, so it
+   needs no per-breakpoint row-end math and can't break if the grid's
+   column count changes - unlike the old pin mechanic, nothing here
+   depends on scroll-scrub state, so there's no failure mode where a
+   card is left waiting on an animation that never fires. */
+.vishesh-timeline__item:not(:last-child) {
+  padding-bottom: 4.6rem;
+}
+
+.vishesh-timeline__item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 1.6rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-right: 0.2rem solid var(--color-primary);
+  border-bottom: 0.2rem solid var(--color-primary);
+  opacity: 0.4;
+  animation: vishesh-journey-nudge 1.6s ease-in-out infinite;
+}
+
+@keyframes vishesh-journey-nudge {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(45deg) translate(0, 0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateX(-50%) rotate(45deg) translate(0.3rem, 0.3rem);
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-timeline__item:not(:last-child)::after {
+    animation: none;
+    transform: translateX(-50%) rotate(45deg);
+    opacity: 0.5;
+  }
 }
 
 .vishesh-timeline__pin {
@@ -1169,6 +1215,24 @@
   .vishesh-timeline__item {
     padding: 2.4rem 2rem;
   }
+
+  .vishesh-timeline__item:not(:last-child) {
+    padding-bottom: 4.2rem;
+  }
+}
+
+/* ---------- Our Story: founder photo ----------
+   Dawn's image-with-text sets .image-with-text__media to min-height:
+   100%, which stretches it to match its flex row's cross-axis size -
+   driven here by the (long, 3-paragraph) text column, not by the
+   section's own height setting. That's why picking "small" in
+   templates/page.our-story.json alone didn't shrink the image: the
+   fixed height class was still in the CSS, just overridden by the
+   taller min-height. Scoped to the founder section specifically via
+   its stable id suffix, so no other image-with-text instance on the
+   site is affected if one gets added later. */
+[id$='__founder'] .image-with-text__media {
+  min-height: 0;
 }
 
 /* ---------- Policy pages ---------- */
