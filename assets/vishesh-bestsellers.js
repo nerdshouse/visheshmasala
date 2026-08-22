@@ -51,6 +51,11 @@
         prevEl: section.querySelector('[data-bestsellers-prev]'),
       },
       breakpoints: {
+        // Tablet was falling through to the 1-slide default, which left a
+        // ~260px card stranded in a ~736px slide with no peek at all.
+        // Two-up with a peek keeps the card sized like the rest of the
+        // site and makes it obvious the carousel scrolls.
+        750: { slidesPerView: 2, spaceBetween: 32 },
         990: { slidesPerView: 3, spaceBetween: 90 },
         1336: { slidesPerView: 3, spaceBetween: 130 },
       },

@@ -2901,7 +2901,11 @@
 .vishesh-bestsellers__card .vishesh-pack-select {
   margin-top: 0.8rem;
   width: 100%;
-  max-width: 22rem;
+  /* Was 22rem against a 26-37rem card, which read as a narrow control
+     floating under a much wider image. Matching the card's own mobile
+     width keeps selector and button visually tied to the card edge at
+     every breakpoint. */
+  max-width: 26rem;
 }
 
 .vishesh-bestsellers__card .vishesh-pack-select__select {

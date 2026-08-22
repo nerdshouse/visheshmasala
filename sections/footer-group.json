@@ -9,7 +9,8 @@
           "type": "text",
           "settings": {
             "heading": "Dhanhar Masala Bhandar Private Limited",
-            "subtext": "<p>Asli Masala. Ghar Jaisa Swaad.</p><p>Spices of Bharat - blended by the Wankawala family since 1970.</p>"
+            "subtext": "<p>Asli Masale, Vishesh ke Masale.</p><p>Spices of Bharat - blended by the Wankawala family since 1970.</p>",
+            "logo": "shopify://shop_images/VISHESH_MASALA_LOGO_ENGLISH.jpg"
           }
         }
       },
