@@ -1304,8 +1304,8 @@
 
 .vishesh-timeline__pin {
   flex-shrink: 0;
-  width: 9.6rem;
-  height: 9.6rem;
+  width: 6.4rem;
+  height: 6.4rem;
   border-radius: 50% 50% 50% 0.6rem;
   transform: rotate(-45deg);
   background: var(--color-primary);
@@ -1320,8 +1320,8 @@
   background: #ffffff;
   color: var(--color-primary);
   font-weight: 700;
-  font-size: 1.6rem;
-  padding: 0.7rem 1rem;
+  font-size: 1.2rem;
+  padding: 0.5rem 0.6rem;
   border-radius: 50%;
 }
 
@@ -1337,17 +1337,18 @@
 .vishesh-timeline--live .vishesh-timeline__scroll {
   /* Scroll runway: roughly half a viewport per milestone. The stage
      stays stuck for all of it. */
-  min-height: calc(var(--milestone-count, 9) * 55vh);
+  min-height: calc(var(--milestone-count, 9) * 42vh);
   position: relative;
 }
 
+/* No flex centring and no forced 100vh here: the stage now hugs its
+   content, which removes the large empty band above and below each
+   milestone. Sticky still holds it while the runway scrolls past. */
 .vishesh-timeline--live .vishesh-timeline__stage {
   position: sticky;
   top: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding: 0;
+  min-height: 0;
+  padding: 7rem 0 5rem;
 }
 
 .vishesh-timeline--live .vishesh-timeline__rail {
@@ -1479,7 +1480,7 @@
   }
 
   .vishesh-timeline--live .vishesh-timeline__scroll {
-    min-height: calc(var(--milestone-count, 9) * 48vh);
+    min-height: calc(var(--milestone-count, 9) * 40vh);
   }
 
   .vishesh-timeline--live .vishesh-timeline__rail {
@@ -1570,13 +1571,21 @@
   [id$='__founder'] .image-with-text__heading {
     width: 100%;
     max-width: none;
-    /* Sized against the measured column: at 28px the name rendered
-       676px wide inside a 599px box. 2.3rem keeps it inside with a
-       margin to spare at 1440, and the clamp scales it down rather
-       than overflowing on narrower desktops. */
+    /* Scaled down so the name fits one line where the column allows,
+       but deliberately NOT nowrap: forcing one line clipped the last
+       word ("Wankawala" -> "Wankawalc") once the column got narrower
+       than the text. Wrapping to a second line is the correct
+       fallback. */
     font-size: clamp(1.9rem, 1.75vw, 2.3rem);
-    line-height: 1.2;
-    white-space: nowrap;
+    line-height: 1.25;
+  }
+}
+
+/* Portrait centred against the (much taller) text column rather than
+   pinned to its top. */
+@media screen and (min-width: 750px) {
+  [id$='__founder'] .image-with-text__media-item {
+    align-self: center;
   }
 }
 
@@ -3348,5 +3357,50 @@
 
   .vishesh-vision__index {
     font-size: 5rem;
+  }
+}
+
+/* ---------- Our Journey: motion ----------
+   The pin gently bobs so the marker has some life, and each milestone
+   card arrives with a small lift and scale as it becomes active
+   (rather than a plain opacity swap). Both are cheap transforms, and
+   both are dropped entirely under reduced motion. */
+@keyframes vishesh-pin-bob {
+  0%,
+  100% {
+    transform: rotate(-45deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-45deg) translateY(-0.5rem);
+  }
+}
+
+.vishesh-timeline__pin {
+  animation: vishesh-pin-bob 2.8s ease-in-out infinite;
+}
+
+.vishesh-timeline--live .vishesh-timeline__card {
+  transform: translateY(2.4rem) scale(0.97);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s;
+}
+
+.vishesh-timeline--live .vishesh-timeline__card.is-active {
+  transform: none;
+}
+
+/* Active step's dot gets a soft halo so the current milestone reads at
+   a glance on the rail. */
+.vishesh-timeline--live .vishesh-timeline__step.is-active .vishesh-timeline__dot {
+  box-shadow: 0 0 0 0.4rem rgba(242, 28, 38, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-timeline__pin {
+    animation: none;
+  }
+
+  .vishesh-timeline--live .vishesh-timeline__card {
+    transform: none;
+    transition: opacity 0.2s linear;
   }
 }
