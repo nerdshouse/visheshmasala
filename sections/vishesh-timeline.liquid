@@ -11,13 +11,23 @@
   purity-promise section went through before Phase 8 dropped its pin
   in favor of a plain stagger reveal. Same fix here, no third attempt
   at repairing a pin mechanic that has now failed twice in this theme.
+
+  Phase 14 adds a connecting path that draws in as the section scrolls
+  past (assets/vishesh-timeline-path.js). It uses ScrollTrigger scrub
+  only - still no pin, nothing hijacks scroll. The path geometry is
+  measured from the real pin positions at runtime, so it follows
+  whatever the grid resolves to (3 / 2 / 1 column) with no
+  per-breakpoint path maths.
 {% endcomment %}
+<script src="{{ 'vishesh-timeline-path.js' | asset_url }}" defer="defer"></script>
 <div class="vishesh-timeline color-{{ section.settings.color_scheme }} gradient" data-timeline>
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
       <h2 class="h1 vishesh-timeline__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
     {%- endif -%}
-    <ol class="vishesh-timeline__list" data-animate-group role="list">
+    <div class="vishesh-timeline__stage" data-timeline-stage>
+      <svg class="vishesh-timeline__path" data-timeline-path aria-hidden="true" focusable="false"></svg>
+      <ol class="vishesh-timeline__list" data-timeline-cards role="list">
       {%- for block in section.blocks -%}
         <li class="vishesh-timeline__item" {{ block.shopify_attributes }}>
           <span class="vishesh-timeline__pin" aria-hidden="true">
@@ -26,7 +36,8 @@
           <p class="vishesh-timeline__text">{{ block.settings.text }}</p>
         </li>
       {%- endfor -%}
-    </ol>
+      </ol>
+    </div>
   </div>
 </div>
 

@@ -1094,6 +1094,30 @@
   margin: 0 0 4rem;
 }
 
+/* Positioning context for the connecting path, which is measured from
+   the real pin positions and drawn behind the cards - the cards are
+   opaque, so the trail shows in the gaps between them, which is
+   exactly the "route between milestones" read we want. */
+.vishesh-timeline__stage {
+  position: relative;
+}
+
+.vishesh-timeline__path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+  color: var(--color-primary);
+}
+
+.vishesh-timeline__path path {
+  stroke: currentColor;
+  opacity: 0.55;
+}
+
 .vishesh-timeline__list {
   list-style: none;
   margin: 0;
@@ -1101,6 +1125,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 3.2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .vishesh-timeline__item {
