@@ -168,7 +168,16 @@
                         >
                       </a>
                     {%- endif -%}
-                    <div class="footer-block__details-content rte">
+                    {%- comment -%}
+                      Steam curling off the brand seal line. This block
+                      is where the seal copy actually renders on this
+                      store - the theme's own brand_description setting
+                      is blank, so attaching it there showed nothing.
+                    {%- endcomment -%}
+                    <div class="footer-block__details-content rte vishesh-seal">
+                      <span class="vishesh-seal__steam" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                      </span>
                       {{ block.settings.subtext }}
                     </div>
                   {%- when 'link_list' -%}

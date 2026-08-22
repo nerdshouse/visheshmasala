@@ -22,15 +22,23 @@
       <div class="swiper-wrapper">
         {%- for block in section.blocks -%}
           <div class="swiper-slide vishesh-category-card-slide" {{ block.shopify_attributes }}>
+            {%- comment -%}
+              The visible title is a playful name, so the accessible
+              name is set explicitly from the functional label
+              (tag_label - the real category name) rather than being
+              inferred from the link text. Screen readers and anything
+              reading the accessibility tree get the plain name.
+            {%- endcomment -%}
             <a
               href="{{ block.settings.link | default: routes.all_products_collection_url }}"
               class="vishesh-category-card vishesh-category-card--{{ block.settings.tag_color }}"
+              aria-label="{{ block.settings.tag_label | default: block.settings.title | escape }}"
             >
               {%- if block.settings.image != blank -%}
                 {{
                   block.settings.image
                   | image_url: width: 600
-                  | image_tag: loading: 'lazy', class: 'vishesh-category-card__image', widths: '300, 450, 600'
+                  | image_tag: loading: 'lazy', class: 'vishesh-category-card__image', widths: '300, 450, 600', alt: block.settings.tag_label
                 }}
               {%- else -%}
                 <div class="vishesh-category-card__swatch" aria-hidden="true"></div>

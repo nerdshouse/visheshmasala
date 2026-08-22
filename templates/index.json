@@ -69,8 +69,8 @@
         "hing": {
           "type": "category",
           "settings": {
-            "title": "Asafoetida (Hing)",
-            "tag_label": "Signature",
+            "title": "Hing Ka Tadka",
+            "tag_label": "Asafoetida (Hing)",
             "tag_color": "saffron",
             "link": "/collections/asafoetida-hing"
           }
@@ -78,8 +78,8 @@
         "blends": {
           "type": "category",
           "settings": {
-            "title": "Authentic Blended Spice",
-            "tag_label": "Blends",
+            "title": "Vishesh Blends",
+            "tag_label": "Blended Masalas",
             "tag_color": "terracotta",
             "link": "/collections/authentic-blended-spice",
             "image": "shopify://shop_images/Dhanhar_Vishesh_Sahi_Paneer_Rs_10_Front_3D.png"
@@ -88,8 +88,8 @@
         "easy": {
           "type": "category",
           "settings": {
-            "title": "Easy to Cook",
-            "tag_label": "Quick",
+            "title": "Jhatpati Jugaad",
+            "tag_label": "Easy to Cook",
             "tag_color": "accent",
             "link": "/collections/easy-to-cook",
             "image": "shopify://shop_images/Dhanhar_Vishesh_Pavbhaji_Rs_10_Front_3D.png"
@@ -98,7 +98,7 @@
         "herbs": {
           "type": "category",
           "settings": {
-            "title": "Herbs",
+            "title": "Jadi Booti Junction",
             "tag_label": "Herbs",
             "tag_color": "sage",
             "link": "/collections/herbs",
@@ -108,8 +108,8 @@
         "essentials": {
           "type": "category",
           "settings": {
-            "title": "Essential Products",
-            "tag_label": "Everyday",
+            "title": "Rozmarra Rasoi",
+            "tag_label": "Essentials",
             "tag_color": "maroon",
             "link": "/collections/essential-products",
             "image": "shopify://shop_images/Dhanhar_Vishesh_Cumin_Powder_Rs_10_Front_3D.png"
@@ -118,8 +118,8 @@
         "horeca": {
           "type": "category",
           "settings": {
-            "title": "H.O.R.E.C.A. Products",
-            "tag_label": "Bulk",
+            "title": "Bade Order Ka Adda",
+            "tag_label": "HORECA / Bulk",
             "tag_color": "terracotta",
             "link": "/collections/horeca-products",
             "image": "shopify://shop_images/Dhanhar_Vishesh_Mutton_Rs_10_Front_3D.png"
@@ -128,8 +128,8 @@
         "upwas": {
           "type": "category",
           "settings": {
-            "title": "Upwas Products",
-            "tag_label": "Fasting-friendly",
+            "title": "Vrat Ki Thali",
+            "tag_label": "Upwas",
             "tag_color": "saffron",
             "link": "/collections/upwas-products",
             "image": "shopify://shop_images/Dhanhar_Vishesh_Khichdi_Rs_10_Front_3D.png"
@@ -326,6 +326,18 @@
         "speed": 70,
         "color_scheme": "scheme-5"
       }
+    },
+    "divider-1": {
+      "type": "vishesh-divider",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    },
+    "divider-2": {
+      "type": "vishesh-divider",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
@@ -333,8 +345,10 @@
     "trust",
     "marquee-1",
     "categories",
+    "divider-1",
     "purity",
     "bestsellers",
+    "divider-2",
     "quote",
     "recipes",
     "marquee-2",

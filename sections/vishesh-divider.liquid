@@ -1,0 +1,35 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+  Spice-granule divider. A thin scattered line of granules between two
+  sections instead of a hard cut. Purely decorative, so the whole thing
+  is aria-hidden and carries no text.
+
+  Granule count and offsets are fixed rather than random per load, so
+  the divider looks the same on every visit and between two instances
+  on the same page.
+{% endcomment %}
+<div class="vishesh-divider color-{{ section.settings.color_scheme }} gradient" aria-hidden="true">
+  <div class="vishesh-divider__line">
+    {%- for i in (1..14) -%}
+      <span class="vishesh-divider__granule vishesh-divider__granule--{{ i | modulo: 5 }}"></span>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Spice Divider",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [{ "name": "Spice Divider" }]
+}
+{% endschema %}

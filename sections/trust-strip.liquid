@@ -1,6 +1,18 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 
 <div class="vishesh-trust color-{{ section.settings.color_scheme }} gradient">
+  {%- comment -%}
+    Spice dust drifting behind the numbers, so the stats read as
+    something from a working kitchen rather than a generic stat block.
+    Reuses the .vishesh-dust-mote drift already built for the Chilli
+    Flakes scene rather than a second particle mechanic.
+  {%- endcomment -%}
+  <div class="vishesh-trust__dust" aria-hidden="true">
+    <span class="vishesh-dust-mote vishesh-dust-mote--1"></span>
+    <span class="vishesh-dust-mote vishesh-dust-mote--3"></span>
+    <span class="vishesh-dust-mote vishesh-dust-mote--5"></span>
+    <span class="vishesh-dust-mote vishesh-dust-mote--6"></span>
+  </div>
   <div class="page-width">
     <ul class="vishesh-trust__grid" data-animate-group role="list">
       {%- for block in section.blocks -%}

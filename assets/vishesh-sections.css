@@ -3732,3 +3732,178 @@
     transition: none;
   }
 }
+
+/* ================= Masala flourishes (Phase 16) =================
+   Small brand-vocabulary moments - spice dust, tadka shimmer, steam -
+   added around existing sections. All CSS/SVG, all additive, and all
+   switched off under prefers-reduced-motion at the end of this block. */
+
+/* ---- Trust strip: dust drifting behind the counters ---- */
+.vishesh-trust {
+  position: relative;
+  overflow: hidden;
+}
+
+.vishesh-trust__dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.vishesh-trust .page-width {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Spice-granule divider ---- */
+.vishesh-divider {
+  padding: 2.4rem 0;
+}
+
+.vishesh-divider__line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+.vishesh-divider__granule {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  opacity: 0.35;
+  animation: vishesh-granule-bob 4.5s ease-in-out infinite;
+}
+
+/* Five size/tone variants so the line reads as scattered granules
+   rather than a row of identical dots. */
+.vishesh-divider__granule--0 { width: 0.7rem; height: 0.7rem; opacity: 0.5; animation-delay: 0s; }
+.vishesh-divider__granule--1 { width: 0.4rem; height: 0.4rem; opacity: 0.3; animation-delay: 0.5s; }
+.vishesh-divider__granule--2 { width: 0.55rem; height: 0.55rem; background: var(--color-accent); opacity: 0.65; animation-delay: 1s; }
+.vishesh-divider__granule--3 { width: 0.35rem; height: 0.35rem; opacity: 0.28; animation-delay: 1.6s; }
+.vishesh-divider__granule--4 { width: 0.6rem; height: 0.6rem; background: var(--color-terracotta); opacity: 0.45; animation-delay: 2.2s; }
+
+@keyframes vishesh-granule-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.45rem); }
+}
+
+/* ---- Category card: tadka shimmer + dust puff on hover ---- */
+.vishesh-category-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Warm sweep across the card, like oil catching the light. */
+.vishesh-category-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 197, 10, 0.28) 50%,
+    rgba(255, 255, 255, 0) 65%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .vishesh-category-card:hover::after,
+  .vishesh-category-card:focus-visible::after {
+    transform: translateX(120%);
+  }
+}
+
+.vishesh-category-card:focus-visible::after {
+  transform: translateX(120%);
+}
+
+/* ---- Footer: steam off the brand seal ---- */
+.vishesh-seal {
+  position: relative;
+}
+
+.vishesh-seal__steam {
+  position: absolute;
+  top: -1.4rem;
+  left: 0.4rem;
+  width: 3rem;
+  height: 2rem;
+  pointer-events: none;
+}
+
+.vishesh-seal__steam span {
+  position: absolute;
+  bottom: 0;
+  width: 0.25rem;
+  height: 1.4rem;
+  border-radius: 99rem;
+  background: linear-gradient(to top, currentColor, transparent);
+  opacity: 0;
+  animation: vishesh-steam-curl 3.6s ease-in-out infinite;
+}
+
+.vishesh-seal__steam span:nth-child(1) { left: 0.2rem; animation-delay: 0s; }
+.vishesh-seal__steam span:nth-child(2) { left: 1.1rem; height: 1.8rem; animation-delay: 0.9s; }
+.vishesh-seal__steam span:nth-child(3) { left: 2rem; animation-delay: 1.8s; }
+
+@keyframes vishesh-steam-curl {
+  0% { opacity: 0; transform: translateY(0.4rem) scaleY(0.6); }
+  35% { opacity: 0.45; }
+  100% { opacity: 0; transform: translateY(-1.4rem) scaleY(1.1); }
+}
+
+/* ---- Cart icon: golden dust puff on add (assets/vishesh-cart-puff.js) ---- */
+#cart-icon-bubble {
+  position: relative;
+}
+
+.vishesh-puff {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.vishesh-puff__dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin: -0.225rem 0 0 -0.225rem;
+  border-radius: 50%;
+  background: var(--color-accent, #ffc50a);
+  opacity: 0;
+  /* Each dot flies out along its own angle, set inline by the script. */
+  animation: vishesh-puff-out 0.85s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms) both;
+}
+
+@keyframes vishesh-puff-out {
+  0% { opacity: 0; transform: rotate(var(--angle, 0deg)) translateY(0) scale(0.4); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--angle, 0deg)) translateY(-1.9rem) scale(1); }
+}
+
+/* ---- Reduced motion: everything above goes static ---- */
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-trust__dust,
+  .vishesh-seal__steam,
+  .vishesh-puff {
+    display: none;
+  }
+
+  .vishesh-divider__granule {
+    animation: none;
+  }
+
+  .vishesh-category-card::after {
+    display: none;
+  }
+}
