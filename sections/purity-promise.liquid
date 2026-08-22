@@ -15,7 +15,9 @@
   Reveal is the sitewide data-animate-group stagger, same as every
   other section - no bespoke scroll-linked JS.
 {% endcomment %}
-<div class="vishesh-purity color-{{ section.settings.color_scheme }} gradient">
+<script src="{{ 'vishesh-purity.js' | asset_url }}" defer="defer"></script>
+
+<div class="vishesh-purity color-{{ section.settings.color_scheme }} gradient" data-purity>
   <div class="page-width vishesh-purity__inner">
     <h2 class="vishesh-purity__heading h1" data-animate="fade-up">{{ section.settings.heading }}</h2>
     {%- if section.settings.script_line != blank -%}
@@ -35,11 +37,14 @@
         separate because the reveal tweens `y`/`scale`, which GSAP
         writes as an inline `transform` - on the <li> that would
         overwrite the placement transform and snap every pill to the
-        centre of the circle. data-animate-group-item points the
-        sitewide group reveal at the inner spans instead, so the two
-        transforms never touch each other.
+        centre of the circle.
+
+        No [data-animate-group] here: assets/vishesh-purity.js owns
+        this reveal so it can swap between the pinned scrubbed version
+        and a plain staggered one. Two handlers animating the same
+        inner spans would fight over the same inline styles.
       {%- endcomment -%}
-      <ul class="vishesh-purity__orbit" role="list" data-animate-group>
+      <ul class="vishesh-purity__orbit" role="list">
         {%- assign promise_count = section.blocks.size -%}
         {%- for block in section.blocks -%}
           {%- assign angle = 360.0 | times: forloop.index0 | divided_by: promise_count -%}
@@ -48,7 +53,7 @@
             style="--angle: {{ angle }}deg;"
             {{ block.shopify_attributes }}
           >
-            <span class="vishesh-purity__sticker-inner" data-animate-group-item>
+            <span class="vishesh-purity__sticker-inner">
               <span class="vishesh-purity__sticker-icon">
                 {%- case block.settings.icon -%}
                   {%- when 'leaf' -%}

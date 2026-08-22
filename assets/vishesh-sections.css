@@ -522,8 +522,14 @@
    stickers with absolute top/left/right percentages tuned for one
    viewport and never re-checked at others. A wrapping flex row cannot
    overflow its container by construction, at any width. */
+/* Vertical size is tied to viewport height, not just a fixed rem
+   value, so the whole section fits on screen at common desktop
+   heights. assets/vishesh-purity.js only holds the section (pins it)
+   when it fits the viewport - at a fixed 7.2rem padding plus a 58rem
+   cluster the section measured 915px against a 900px viewport and the
+   pin was correctly, but silently, skipped. */
 .vishesh-purity {
-  padding: 7.2rem 0;
+  padding: clamp(3.2rem, 5vh, 7.2rem) 0;
 }
 
 .vishesh-purity__inner {
@@ -564,7 +570,9 @@
    upright. */
 .vishesh-purity__cluster {
   position: relative;
-  width: min(58rem, 100%);
+  /* The 58vh term keeps the circle (and so the section) inside the
+     viewport on shorter screens - see the padding note above. */
+  width: min(58rem, 100%, 58vh);
   aspect-ratio: 1;
   margin: 0 auto;
 }
@@ -612,7 +620,13 @@
    entrance tween can write its own transform without fighting this
    one. See the comment in sections/purity-promise.liquid. */
 .vishesh-purity__sticker {
-  --radius: 26rem;
+  /* Derived from the same expression that sizes the cluster (x0.448)
+     so the orbit keeps its proportions as the circle scales with
+     viewport height, instead of the pills drifting relative to the
+     ring. The 100% term is dropped here because it would resolve
+     against the pill, not the cluster - it only matters below 750px,
+     which has its own override further down. */
+  --radius: calc(min(58rem, 58vh) * 0.448);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -671,7 +685,7 @@
 
 @media screen and (max-width: 1200px) {
   .vishesh-purity__sticker {
-    --radius: 21rem;
+    --radius: calc(min(46rem, 52vh) * 0.448);
     max-width: 16rem;
   }
 }
