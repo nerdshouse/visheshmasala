@@ -692,54 +692,44 @@
     margin-bottom: 3.6rem;
   }
 
+  /* Mobile keeps the same circular composition as desktop rather than
+     collapsing to a stacked list. The orbit geometry is identical -
+     only the radius and pill sizing shrink, tuned so the widest pill
+     still clears the viewport edge: at --radius 10.5rem the outermost
+     pill centre sits ~100px from the cluster centre horizontally, and
+     a 9.5rem pill adds ~47px, keeping it inside the ~343px column. */
   .vishesh-purity__cluster {
     width: 100%;
-    aspect-ratio: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  /* The two sparkles are positioned by percentage within the cluster,
-     which is fine against the circular composition's fixed
-     aspect-ratio box but lands them at arbitrary points once the
-     cluster becomes a tall stacked column here - simplest to drop
-     them at this breakpoint rather than reposition for a stack. */
-  .vishesh-purity .vishesh-sparkle {
-    display: none;
-  }
-
-  /* Must match/exceed the .vishesh-purity .vishesh-purity__ring
-     specificity above (the div:empty override) - otherwise that rule
-     wins regardless of media query, and the ring keeps showing here. */
-  .vishesh-purity .vishesh-purity__ring {
-    display: none;
   }
 
   .vishesh-purity__badge-wrap {
-    position: static;
-    transform: none;
-    width: 9rem;
-  }
-
-  .vishesh-purity__orbit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-    width: 100%;
+    width: 27%;
   }
 
   .vishesh-purity__sticker {
-    position: static;
-    transform: none;
-    width: 100%;
-    max-width: 30rem;
+    --radius: 10.5rem;
+    max-width: 9.5rem;
   }
 
   .vishesh-purity__sticker-inner {
-    width: 100%;
+    gap: 0.6rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.5rem;
+    border-radius: 1.4rem;
+  }
+
+  .vishesh-purity__sticker-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  .vishesh-purity__sticker-icon svg {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .vishesh-purity__sticker-label {
+    font-size: 1rem;
+    line-height: 1.25;
   }
 }
 
