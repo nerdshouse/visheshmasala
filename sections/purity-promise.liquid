@@ -1,49 +1,72 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 
 {% comment %}
-  Phase 8 rebuild: this section pinned-and-scrubbed through three
-  rounds of overflow and permanent-scroll-lock bugs at short viewport
-  heights (the pin/Lenis/ScrollTrigger interaction was never made
-  reliably robust across viewport sizes). Rebuilt with no pin at all,
-  and no section-specific JS either - just the theme's existing
-  data-animate="fade-up" / data-animate-group reveal (assets/
-  vishesh-motion.js), which every other section already uses. Simple
-  and correct beats clever and broken. Visual treatment upgraded from
-  a bordered-circle icon row to a proper card grid for a more premium,
-  intentional feel.
+  Phase 8 rebuilt this section to drop a pin that broke three rounds of
+  testing (see git history) - that call stands, this is not a return
+  to pinning. What changed here (Phase 15) is the visual: the row-of-
+  circles layout Phase 8 shipped replaced a badge-in-the-centre,
+  promises-orbiting-around-it composition that was live before it, and
+  that orbit look is what was actually wanted back. Rebuilt as pure
+  CSS - each promise gets an evenly-spaced angle around the centre via
+  the standard rotate / translate-outward / counter-rotate technique
+  (values below), no JS positioning, so it isn't tied to exactly 4
+  items the way the original corner-placed version was - it holds for
+  however many blocks are configured (schema allows up to 7).
+  Reveal is the sitewide data-animate-group stagger, same as every
+  other section - no bespoke scroll-linked JS.
 {% endcomment %}
 <div class="vishesh-purity color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width vishesh-purity__inner">
-    <div class="vishesh-purity__badge-wrap" data-animate="fade-up">
-      {% render 'vishesh-badge', class: 'vishesh-purity__badge', id: 'purity' %}
-    </div>
     <h2 class="vishesh-purity__heading h1" data-animate="fade-up">{{ section.settings.heading }}</h2>
     {%- if section.settings.script_line != blank -%}
       <p class="vishesh-purity__script vishesh-script" data-animate="fade-up">{{ section.settings.script_line }}</p>
     {%- endif -%}
-    <ul class="vishesh-purity__grid" role="list" data-animate-group>
-      {%- for block in section.blocks -%}
-        <li class="vishesh-purity__card" {{ block.shopify_attributes }}>
-          <span class="vishesh-purity__icon">
-            {%- case block.settings.icon -%}
-              {%- when 'leaf' -%}
-                {{ 'icon-leaf.svg' | inline_asset_content }}
-              {%- when 'plant' -%}
-                {{ 'icon-plant.svg' | inline_asset_content }}
-              {%- when 'fire' -%}
-                {{ 'icon-fire.svg' | inline_asset_content }}
-              {%- when 'box' -%}
-                {{ 'icon-box.svg' | inline_asset_content }}
-              {%- when 'heart' -%}
-                {{ 'icon-heart.svg' | inline_asset_content }}
-              {%- else -%}
-                {{ 'icon-check-mark.svg' | inline_asset_content }}
-            {%- endcase -%}
-          </span>
-          <span class="vishesh-purity__label">{{ block.settings.label }}</span>
-        </li>
-      {%- endfor -%}
-    </ul>
+    <div class="vishesh-purity__cluster" data-animate="fade-up">
+      <span class="vishesh-sparkle vishesh-sparkle--1" aria-hidden="true">&#10022;</span>
+      <span class="vishesh-sparkle vishesh-sparkle--2" aria-hidden="true">&#10022;</span>
+      <div class="vishesh-purity__ring" aria-hidden="true"></div>
+      <div class="vishesh-purity__badge-wrap">
+        {% render 'vishesh-badge', class: 'vishesh-purity__badge', id: 'purity' %}
+      </div>
+      {%- comment -%}
+        No data-animate-group here deliberately: each sticker's own
+        `transform` places it on the orbit (see --angle above), and
+        the sitewide group-reveal animates opacity together with its
+        own `y` transform - which would overwrite that positioning
+        transform via GSAP's inline style once the reveal ran. The
+        cluster wrapper above already gets a single fade-up with no
+        such conflict, which is enough entrance motion here.
+      {%- endcomment -%}
+      <ul class="vishesh-purity__orbit" role="list">
+        {%- assign promise_count = section.blocks.size -%}
+        {%- for block in section.blocks -%}
+          {%- assign angle = 360.0 | times: forloop.index0 | divided_by: promise_count -%}
+          <li
+            class="vishesh-purity__sticker"
+            style="--angle: {{ angle }}deg;"
+            {{ block.shopify_attributes }}
+          >
+            <span class="vishesh-purity__sticker-icon">
+              {%- case block.settings.icon -%}
+                {%- when 'leaf' -%}
+                  {{ 'icon-leaf.svg' | inline_asset_content }}
+                {%- when 'plant' -%}
+                  {{ 'icon-plant.svg' | inline_asset_content }}
+                {%- when 'fire' -%}
+                  {{ 'icon-fire.svg' | inline_asset_content }}
+                {%- when 'box' -%}
+                  {{ 'icon-box.svg' | inline_asset_content }}
+                {%- when 'heart' -%}
+                  {{ 'icon-heart.svg' | inline_asset_content }}
+                {%- else -%}
+                  {{ 'icon-check-mark.svg' | inline_asset_content }}
+              {%- endcase -%}
+            </span>
+            <span class="vishesh-purity__sticker-label">{{ block.settings.label }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
   </div>
 </div>
 

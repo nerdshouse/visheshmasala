@@ -533,26 +533,16 @@
   text-align: center;
 }
 
-.vishesh-purity__badge-wrap {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2.4rem;
-}
-
-.vishesh-purity__badge {
-  width: 8rem;
-  height: 8rem;
-}
-
-.vishesh-purity__badge svg {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 0.4rem 1rem rgba(74, 52, 24, 0.2));
-}
-
+/* White pill behind the heading, matching the brand's earlier
+   treatment for this section. */
 .vishesh-purity__heading {
-  margin: 0 0 1rem;
-  color: var(--color-dark);
+  display: inline-block;
+  margin: 0 0 1.6rem;
+  padding: 1.6rem 3.2rem;
+  background: #ffffff;
+  border-radius: 1.6rem;
+  color: var(--color-primary);
+  box-shadow: 0 0.8rem 2rem rgba(74, 52, 24, 0.1);
 }
 
 .vishesh-purity__script {
@@ -561,105 +551,185 @@
   color: var(--color-primary);
 }
 
-.vishesh-purity__grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.6rem;
+/* ---------- Orbit cluster ----------
+   Square positioning context: a centred trust badge with a dashed
+   ring behind it, and the promise pills spaced evenly around it. Each
+   pill's angle comes from Liquid (--angle, set inline per item - see
+   sections/purity-promise.liquid) so this holds for however many
+   blocks are configured, not just a fixed corner-count. Placement
+   uses the standard rotate / translate-outward / counter-rotate
+   technique: centre the pill, rotate the coordinate system by its
+   angle, push it out along that rotated axis by --radius, then
+   rotate back by the same amount so the pill's own content stays
+   upright. */
+.vishesh-purity__cluster {
+  position: relative;
+  width: min(58rem, 100%);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+/* Beat Dawn's div:empty { display: none } rule - this div is empty by
+   design (the ring is drawn entirely with its own border). */
+.vishesh-purity .vishesh-purity__ring {
+  display: block;
+}
+
+.vishesh-purity__ring {
+  position: absolute;
+  inset: 15%;
+  border: 0.2rem dashed rgba(var(--color-foreground), 0.3);
+  border-radius: 50%;
+}
+
+.vishesh-purity__badge-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+}
+
+.vishesh-purity__badge {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.vishesh-purity__badge svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0.4rem 1rem rgba(74, 52, 24, 0.2));
+}
+
+.vishesh-purity__orbit {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* Circular icon medallions (restored). Phase 8 had swapped these for
-   rounded rectangular cards; the circles are the brand's intended
-   treatment, so the card chrome is dropped and the icon itself carries
-   the shape - a white disc inside a brand-colour ring. */
-.vishesh-purity__card {
+.vishesh-purity__sticker {
+  --radius: 26rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max-content;
+  max-width: 20rem;
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(-1 * var(--radius)))
+    rotate(calc(-1 * var(--angle)));
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1.4rem;
-  /* Sized so all five promises sit on one row inside the section's
-     ~740px inner width (5 x 13rem + 4 x 1.6rem gap = 724px) - at 15rem
-     the fifth wrapped onto its own line and read as an orphan. */
-  width: 13rem;
-  padding: 0.8rem 0.4rem;
-  background: none;
-  border: 0;
-  border-radius: 0;
+  gap: 1rem;
+  background: #ffffff;
+  border-radius: 99rem;
+  padding: 0.8rem 1.6rem 0.8rem 0.8rem;
+  box-shadow: 0 0.8rem 1.6rem rgba(74, 52, 24, 0.14);
 }
 
-.vishesh-purity__icon {
+.vishesh-purity__sticker-icon {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10.4rem;
-  height: 10.4rem;
+  width: 3.6rem;
+  height: 3.6rem;
   border-radius: 50%;
-  background: #ffffff;
-  border: 0.2rem solid var(--color-primary);
+  background: rgba(var(--color-foreground), 0.06);
   color: var(--color-primary);
-  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.12);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
-.vishesh-purity__card:hover .vishesh-purity__icon {
-  transform: translateY(-0.4rem) scale(1.05);
-  background: var(--color-primary);
-  color: #ffffff;
-  box-shadow: 0 1.2rem 2.4rem rgba(74, 52, 24, 0.2);
+.vishesh-purity__sticker:nth-child(4n + 2) .vishesh-purity__sticker-icon {
+  color: var(--color-sage);
 }
 
-.vishesh-purity__icon svg {
-  width: 4rem;
-  height: 4rem;
+.vishesh-purity__sticker:nth-child(4n + 3) .vishesh-purity__sticker-icon {
+  color: var(--color-accent);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .vishesh-purity__icon {
-    transition: none;
-  }
-
-  .vishesh-purity__card:hover .vishesh-purity__icon {
-    transform: none;
-  }
+.vishesh-purity__sticker:nth-child(4n + 4) .vishesh-purity__sticker-icon {
+  color: var(--color-terracotta);
 }
 
-.vishesh-purity__label {
-  font-size: 1.35rem;
-  font-weight: 600;
+.vishesh-purity__sticker-icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.vishesh-purity__sticker-label {
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 1.3;
   color: var(--color-dark);
-  line-height: 1.35;
+  text-align: left;
 }
 
+@media screen and (max-width: 1200px) {
+  .vishesh-purity__sticker {
+    --radius: 21rem;
+    max-width: 16rem;
+  }
+}
+
+/* The orbit only reads cleanly with real room to spread pills out -
+   below that it collapses to a simple centred stack: badge, then each
+   promise as its own pill, one per row. */
 @media screen and (max-width: 749px) {
   .vishesh-purity {
     padding: 5.2rem 0;
+  }
+
+  .vishesh-purity__heading {
+    padding: 1.2rem 2rem;
   }
 
   .vishesh-purity__script {
     margin-bottom: 3.6rem;
   }
 
-  .vishesh-purity__grid {
+  .vishesh-purity__cluster {
+    width: 100%;
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  /* The two sparkles are positioned by percentage within the cluster,
+     which is fine against the circular composition's fixed
+     aspect-ratio box but lands them at arbitrary points once the
+     cluster becomes a tall stacked column here - simplest to drop
+     them at this breakpoint rather than reposition for a stack. */
+  .vishesh-purity .vishesh-sparkle {
+    display: none;
+  }
+
+  /* Must match/exceed the .vishesh-purity .vishesh-purity__ring
+     specificity above (the div:empty override) - otherwise that rule
+     wins regardless of media query, and the ring keeps showing here. */
+  .vishesh-purity .vishesh-purity__ring {
+    display: none;
+  }
+
+  .vishesh-purity__badge-wrap {
+    position: static;
+    transform: none;
+    width: 9rem;
+  }
+
+  .vishesh-purity__orbit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 1.2rem;
+    width: 100%;
   }
 
-  .vishesh-purity__card {
-    width: 10.4rem;
-    padding: 0.4rem;
-    gap: 1rem;
-  }
-
-  .vishesh-purity__icon {
-    width: 8rem;
-    height: 8rem;
-  }
-
-  .vishesh-purity__icon svg {
-    width: 3.2rem;
-    height: 3.2rem;
+  .vishesh-purity__sticker {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 30rem;
   }
 }
 
