@@ -570,9 +570,18 @@
    upright. */
 .vishesh-purity__cluster {
   position: relative;
-  /* The 58vh term keeps the circle (and so the section) inside the
-     viewport on shorter screens - see the padding note above. */
-  width: min(58rem, 100%, 58vh);
+  /* One source of truth for the composition's size. Everything placed
+     on the orbit derives its radius and width from this, so the pills
+     cannot drift out of the circle as the viewport changes.
+
+     84vw rather than 100% deliberately: it leaves an 8vw margin either
+     side, which absorbs the small amount the widest pills legitimately
+     sit outside the ring, so nothing can reach the edge of the screen.
+     vw is used instead of a percentage because this value is read by
+     the pills too, where a percentage would resolve against the pill
+     rather than the cluster. */
+  --cluster-size: min(58rem, 84vw, 58vh);
+  width: var(--cluster-size);
   aspect-ratio: 1;
   margin: 0 auto;
 }
@@ -620,18 +629,20 @@
    entrance tween can write its own transform without fighting this
    one. See the comment in sections/purity-promise.liquid. */
 .vishesh-purity__sticker {
-  /* Derived from the same expression that sizes the cluster (x0.448)
-     so the orbit keeps its proportions as the circle scales with
-     viewport height, instead of the pills drifting relative to the
-     ring. The 100% term is dropped here because it would resolve
-     against the pill, not the cluster - it only matters below 750px,
-     which has its own override further down. */
-  --radius: calc(min(58rem, 58vh) * 0.448);
+  /* Both derived from --cluster-size on the parent, so the orbit keeps
+     its proportions at every width. Worst case is a pill at the widest
+     horizontal angle: radius x sin(72deg) + half its own width, which
+     with these factors comes to ~0.55 of the cluster - about 0.05
+     outside it. That is well inside the 8vw margin the cluster leaves
+     itself, so the pills never reach the screen edge. Previously the
+     radius and max-width were fixed values unrelated to the cluster,
+     and at ~820px wide the pills sat ~32px outside it on each side. */
+  --radius: calc(var(--cluster-size) * 0.42);
   position: absolute;
   top: 50%;
   left: 50%;
   width: max-content;
-  max-width: 20rem;
+  max-width: calc(var(--cluster-size) * 0.3);
   transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(-1 * var(--radius)))
     rotate(calc(-1 * var(--angle)));
 }
@@ -683,10 +694,12 @@
   text-align: left;
 }
 
+/* No separate 1200px sizing any more - the radius and pill width now
+   scale from --cluster-size on their own, which is what this
+   breakpoint was hand-tuning. Only the type comes down a little. */
 @media screen and (max-width: 1200px) {
-  .vishesh-purity__sticker {
-    --radius: calc(min(46rem, 52vh) * 0.448);
-    max-width: 16rem;
+  .vishesh-purity__sticker-label {
+    font-size: 1.2rem;
   }
 }
 
@@ -699,7 +712,12 @@
   }
 
   .vishesh-purity__heading {
-    padding: 1.2rem 2rem;
+    padding: 1.2rem 1.8rem;
+    /* Sized so "Why Choose Vishesh?" sets on one line at 375px instead
+       of breaking across two. */
+    font-size: 2.4rem;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 
   .vishesh-purity__script {
