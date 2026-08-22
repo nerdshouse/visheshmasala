@@ -1210,13 +1210,14 @@
 }
 
 /* ---------- Timeline (red map-pins, brochure style) ---------- */
-/* ---------- Our Journey timeline (Phase 13 rebuild) ----------
-   Responsive card grid, sitewide data-animate-group stagger reveal
-   (assets/vishesh-motion.js) - no pin, no horizontal scrub. See the
-   comment in sections/vishesh-timeline.liquid for why the previous
-   pinned-scrub mechanic was dropped rather than repaired. */
+/* ---------- Our Journey: stacked sticky panels ----------
+   Each milestone holds full-height while the next slides over it.
+   The hold is native CSS position:sticky - no scripted pin, no
+   pin-spacer, no scroll hijack (see the note in
+   sections/vishesh-timeline.liquid for why that distinction matters
+   on this theme). */
 .vishesh-timeline {
-  padding: 5.6rem 0;
+  padding: 5.6rem 0 0;
 }
 
 .vishesh-timeline__heading {
@@ -1224,110 +1225,84 @@
   margin: 0 0 4rem;
 }
 
-/* Positioning context for the connecting path, which is measured from
-   the real pin positions and drawn behind the cards - the cards are
-   opaque, so the trail shows in the gaps between them, which is
-   exactly the "route between milestones" read we want. */
-.vishesh-timeline__stage {
-  position: relative;
-}
-
-.vishesh-timeline__path {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: visible;
-  color: var(--color-primary);
-}
-
-.vishesh-timeline__path path {
-  stroke: currentColor;
-  opacity: 0.55;
-}
-
-.vishesh-timeline__list {
+.vishesh-timeline__track {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3.2rem;
-  position: relative;
-  z-index: 1;
 }
 
-.vishesh-timeline__item {
-  position: relative;
+.vishesh-timeline__panel {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* Opaque, and matching the section's own colour scheme, so each
+     panel actually covers the one it slides over. Without a solid
+     background the stacked panels would read through each other. */
+  background: rgb(var(--color-background));
+  padding: 6rem 0;
+}
+
+.vishesh-timeline__panel-inner {
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 1.6rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.6rem;
+  gap: 3.2rem;
+}
+
+.vishesh-timeline__marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  flex-shrink: 0;
+}
+
+.vishesh-timeline__count {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+}
+
+.vishesh-timeline__count-total {
+  opacity: 0.45;
+}
+
+.vishesh-timeline__body {
   background: #ffffff;
-  border-radius: 1.2rem;
-  padding: 2.8rem 2.4rem;
-  box-shadow: 0 0.8rem 2rem rgba(74, 52, 24, 0.12);
+  border-radius: 1.6rem;
+  padding: 3.2rem 2.8rem;
+  box-shadow: 0 1.2rem 3.2rem rgba(74, 52, 24, 0.12);
 }
 
-/* Journey connector: a gently pulsing chevron below every card except
-   the last, guiding the eye to the next milestone. Lives entirely
-   inside the card's own box (extra bottom padding makes room for it)
-   rather than being absolutely positioned into the grid gap, so it
-   needs no per-breakpoint row-end math and can't break if the grid's
-   column count changes - unlike the old pin mechanic, nothing here
-   depends on scroll-scrub state, so there's no failure mode where a
-   card is left waiting on an animation that never fires. */
-.vishesh-timeline__item:not(:last-child) {
-  padding-bottom: 4.6rem;
-}
-
-.vishesh-timeline__item:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 1.6rem;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-right: 0.2rem solid var(--color-primary);
-  border-bottom: 0.2rem solid var(--color-primary);
-  opacity: 0.4;
-  animation: vishesh-journey-nudge 1.6s ease-in-out infinite;
-}
-
-@keyframes vishesh-journey-nudge {
-  0%,
-  100% {
-    transform: translateX(-50%) rotate(45deg) translate(0, 0);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateX(-50%) rotate(45deg) translate(0.3rem, 0.3rem);
-    opacity: 0.7;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .vishesh-timeline__item:not(:last-child)::after {
-    animation: none;
-    transform: translateX(-50%) rotate(45deg);
-    opacity: 0.5;
-  }
+.vishesh-timeline__body-year {
+  display: block;
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 2.8rem;
+  line-height: 1;
+  color: var(--color-primary);
+  margin-bottom: 1.2rem;
 }
 
 .vishesh-timeline__pin {
   flex-shrink: 0;
-  width: 8rem;
-  height: 8rem;
+  width: 9.6rem;
+  height: 9.6rem;
   border-radius: 50% 50% 50% 0.6rem;
   transform: rotate(-45deg);
   background: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0.4rem 1rem rgba(74, 52, 24, 0.25);
+  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.3);
 }
 
 .vishesh-timeline__year {
@@ -1335,45 +1310,76 @@
   background: #ffffff;
   color: var(--color-primary);
   font-weight: 700;
-  font-size: 1.5rem;
-  padding: 0.6rem 0.9rem;
+  font-size: 1.6rem;
+  padding: 0.7rem 1rem;
   border-radius: 50%;
 }
 
 .vishesh-timeline__text {
   margin: 0;
-  font-size: 1.6rem;
+  font-size: 1.7rem;
+  line-height: 1.6;
   font-weight: 500;
   color: #4a3418;
 }
 
-@media screen and (max-width: 989px) {
-  .vishesh-timeline__list {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.4rem;
+/* Two columns once there is room: marker beside the copy, matching
+   the reference's split. Below this the panel stacks to one column. */
+@media screen and (min-width: 750px) {
+  .vishesh-timeline__panel-inner {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: 4.8rem;
+  }
+
+  .vishesh-timeline__marker {
+    width: 33%;
+  }
+
+  .vishesh-timeline__body {
+    width: 67%;
   }
 }
 
 @media screen and (max-width: 749px) {
   .vishesh-timeline {
-    padding: 4rem 0;
+    padding: 4rem 0 0;
   }
 
   .vishesh-timeline__heading {
     margin: 0 0 2.8rem;
   }
 
-  .vishesh-timeline__list {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  .vishesh-timeline__panel {
+    /* Shorter than a full viewport on phones: at 100vh with the
+       browser chrome visible the card was getting squeezed, and nine
+       full screens of scroll is a lot on a small device. */
+    min-height: 88vh;
+    padding: 4rem 0;
   }
 
-  .vishesh-timeline__item {
+  .vishesh-timeline__panel-inner {
+    gap: 2.4rem;
+  }
+
+  .vishesh-timeline__body {
     padding: 2.4rem 2rem;
   }
 
-  .vishesh-timeline__item:not(:last-child) {
-    padding-bottom: 4.2rem;
+  .vishesh-timeline__pin {
+    width: 8rem;
+    height: 8rem;
+  }
+}
+
+/* Sticky stacking depends on panels scrolling over one another. Users
+   who ask for reduced motion get a plain stacked list instead. */
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-timeline__panel {
+    position: static;
+    min-height: 0;
+    padding: 2.4rem 0;
   }
 }
 

@@ -17,6 +17,21 @@ body {
   overflow-x: hidden;
 }
 
+/* ...but `overflow-x: hidden` also makes these elements scroll
+   containers, and a scroll container between a sticky element and the
+   viewport is what sticky positions against - so the stacked panels in
+   the Our Journey timeline never stuck. `overflow: clip` clips exactly
+   the same way WITHOUT establishing a scroll container, which is the
+   supported fix for this specific conflict. Declared separately so
+   engines that don't know `clip` keep the `hidden` rule above and just
+   lose the sticky effect, rather than losing the overflow guard. */
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
+
 /* Vishesh Masala design tokens — brand palette: red, yellow, white
    (sampled from the official catalogue/brochure PDFs) */
 :root {
