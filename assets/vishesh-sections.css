@@ -1779,19 +1779,18 @@
 }
 
 .vishesh-bestsellers__title {
-  /* A flat text color can't hold contrast on its own here - the title
-     sits on the arch (whose color rotates per card and isn't always
-     dark enough for light text) on some breakpoints, and on the plain
-     page background on others where the arch doesn't reach as far
-     down. A solid, fixed background chip behind the text guarantees
-     contrast either way, independent of whatever's actually behind
-     the card. */
+  /* Background chip removed as requested. The colour has to change with
+     it: the chip was carrying cream text, which sat on the section's own
+     cream background once the chip was gone - invisible, which is the
+     bug the chip was added to fix in the first place. Dark espresso
+     reads against that background instead.
+
+     assets/vishesh-bestsellers.js no longer sets this colour either; it
+     tints only the arch and the "Bestseller" tag with the rotating
+     accent, so nothing overrides this at runtime. */
   display: inline-block;
   text-decoration: none;
-  color: var(--color-cream);
-  background: var(--color-dark);
-  padding: 0.5rem 1.6rem;
-  border-radius: 99rem;
+  color: var(--color-dark);
   margin: 0;
 }
 
