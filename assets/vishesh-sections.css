@@ -811,8 +811,8 @@
   font-family: var(--font-heading-family);
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(2.4rem, 2.9vw, 3.6rem);
-  line-height: 1.28;
+  font-size: clamp(1.8rem, 2vw, 2.4rem);
+  line-height: 1.45;
   letter-spacing: -0.005em;
   margin: 0 0 2.8rem;
 }
