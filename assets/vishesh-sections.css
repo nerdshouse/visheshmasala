@@ -3446,3 +3446,152 @@
     transition: opacity 0.2s linear;
   }
 }
+
+/* ---------- PDP: sold-out / Buy it now buttons ----------
+   Dawn's disabled state is a flat opacity: 0.5 on the normal button,
+   which on the outlined Add to Cart left faint red-on-white text that
+   read as broken rather than deliberately unavailable. Give the
+   sold-out state its own muted-but-solid treatment, and match its
+   height and radius to Buy it now so the pair lines up. */
+.product-form__submit[disabled],
+.product-form__submit[aria-disabled='true'] {
+  opacity: 1;
+  background: rgba(var(--color-foreground), 0.06);
+  border-color: rgba(var(--color-foreground), 0.18);
+  color: rgba(var(--color-foreground), 0.55);
+  cursor: not-allowed;
+}
+
+.product-form__submit,
+.shopify-payment-button__button--unbranded {
+  min-height: 4.8rem;
+  border-radius: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Buy it now sits directly under Add to Cart - keep a consistent gap
+   rather than Dawn's default, which varied with the disabled state. */
+.product-form__buttons .shopify-payment-button {
+  margin-top: 1rem;
+}
+
+.shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  filter: brightness(0.94);
+}
+
+/* ---------- Our Story: infrastructure ----------
+   Intro on one side, hard numbers as tiles on the other. Replaces a
+   single long paragraph that buried the same facts in prose. */
+.vishesh-infra {
+  padding: 7.2rem 0;
+}
+
+.vishesh-infra__inner {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 5.6rem;
+  align-items: center;
+}
+
+.vishesh-infra__eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1.2rem;
+}
+
+.vishesh-infra__heading {
+  margin: 0 0 1.6rem;
+  color: var(--color-dark);
+}
+
+.vishesh-infra__text {
+  font-size: 1.6rem;
+  line-height: 1.7;
+  color: var(--color-dark);
+}
+
+.vishesh-infra__text p {
+  margin: 0 0 1.2rem;
+}
+
+.vishesh-infra__button {
+  margin-top: 0.8rem;
+}
+
+.vishesh-infra__stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.6rem;
+}
+
+.vishesh-infra__stat {
+  background: #ffffff;
+  border-radius: 1.4rem;
+  padding: 2.4rem 2.6rem;
+  box-shadow: 0 1rem 2.4rem rgba(74, 52, 24, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-left: 0.5rem solid var(--color-primary);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.vishesh-infra__stat:hover {
+  transform: translateY(-0.3rem);
+  box-shadow: 0 1.6rem 3.2rem rgba(74, 52, 24, 0.16);
+}
+
+.vishesh-infra__stat-value {
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 3vw, 3.6rem);
+  line-height: 1;
+  color: var(--color-primary);
+}
+
+.vishesh-infra__stat-unit {
+  font-size: 0.45em;
+  margin-left: 0.4rem;
+  letter-spacing: 0.04em;
+}
+
+.vishesh-infra__stat-label {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  opacity: 0.75;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-infra__stat {
+    transition: none;
+  }
+
+  .vishesh-infra__stat:hover {
+    transform: none;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .vishesh-infra__inner {
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-infra {
+    padding: 5.2rem 0;
+  }
+
+  .vishesh-infra__stat {
+    padding: 2rem 2rem;
+  }
+}

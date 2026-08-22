@@ -116,42 +116,45 @@
       }
     },
     "infrastructure": {
-      "type": "rich-text",
+      "type": "vishesh-infrastructure",
       "blocks": {
-        "infra-caption": {
-          "type": "caption",
+        "s1": {
+          "type": "stat",
           "settings": {
-            "caption": "Navsari, Gujarat",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
+            "value": "1,15,155",
+            "unit": "sq.ft.",
+            "label": "Manufacturing facility at Navsari"
           }
         },
-        "infra-heading": {
-          "type": "heading",
+        "s2": {
+          "type": "stat",
           "settings": {
-            "heading": "From a home-grown venture to state-of-the-art infrastructure",
-            "heading_size": "h1"
+            "value": "24x7",
+            "unit": "",
+            "label": "Power and water supply"
           }
         },
-        "infra-text": {
-          "type": "text",
+        "s3": {
+          "type": "stat",
           "settings": {
-            "text": "<p>From a modest home-grown venture to a brand with state-of-the-art infrastructure, cutting-edge machinery and a path-breaking R&amp;D department for unmatched quality - spread over 1,15,155 sq.ft. at Navsari, Gujarat, with 24x7 availability of electricity and water.</p><p><a href=\"https://www.google.com/maps/search/?api=1&amp;query=Vishesh+Masala+Navsari+Gujarat\">Get Directions &#8594;</a></p>"
+            "value": "In-house",
+            "unit": "",
+            "label": "R&D department"
           }
         }
       },
       "block_order": [
-        "infra-caption",
-        "infra-heading",
-        "infra-text"
+        "s1",
+        "s2",
+        "s3"
       ],
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-5",
-        "full_width": true,
-        "padding_top": 64,
-        "padding_bottom": 64
+        "eyebrow": "Navsari, Gujarat",
+        "heading": "From a home-grown venture to state-of-the-art infrastructure",
+        "text": "<p>From a modest home-grown venture to a brand with state-of-the-art infrastructure, cutting-edge machinery and a path-breaking R&amp;D department for unmatched quality.</p>",
+        "button_label": "Get Directions",
+        "button_link": "https://www.google.com/maps/search/?api=1&query=Vishesh+Masala+Navsari+Gujarat",
+        "color_scheme": "scheme-5"
       }
     },
     "timeline": {
