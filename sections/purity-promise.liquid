@@ -29,15 +29,17 @@
         {% render 'vishesh-badge', class: 'vishesh-purity__badge', id: 'purity' %}
       </div>
       {%- comment -%}
-        No data-animate-group here deliberately: each sticker's own
-        `transform` places it on the orbit (see --angle above), and
-        the sitewide group-reveal animates opacity together with its
-        own `y` transform - which would overwrite that positioning
-        transform via GSAP's inline style once the reveal ran. The
-        cluster wrapper above already gets a single fade-up with no
-        such conflict, which is enough entrance motion here.
+        Each promise is two nested elements on purpose. The <li> owns
+        the orbit placement (a CSS `transform` built from --angle), and
+        the inner <span> owns the entrance animation. They have to stay
+        separate because the reveal tweens `y`/`scale`, which GSAP
+        writes as an inline `transform` - on the <li> that would
+        overwrite the placement transform and snap every pill to the
+        centre of the circle. data-animate-group-item points the
+        sitewide group reveal at the inner spans instead, so the two
+        transforms never touch each other.
       {%- endcomment -%}
-      <ul class="vishesh-purity__orbit" role="list">
+      <ul class="vishesh-purity__orbit" role="list" data-animate-group>
         {%- assign promise_count = section.blocks.size -%}
         {%- for block in section.blocks -%}
           {%- assign angle = 360.0 | times: forloop.index0 | divided_by: promise_count -%}
@@ -46,23 +48,25 @@
             style="--angle: {{ angle }}deg;"
             {{ block.shopify_attributes }}
           >
-            <span class="vishesh-purity__sticker-icon">
-              {%- case block.settings.icon -%}
-                {%- when 'leaf' -%}
-                  {{ 'icon-leaf.svg' | inline_asset_content }}
-                {%- when 'plant' -%}
-                  {{ 'icon-plant.svg' | inline_asset_content }}
-                {%- when 'fire' -%}
-                  {{ 'icon-fire.svg' | inline_asset_content }}
-                {%- when 'box' -%}
-                  {{ 'icon-box.svg' | inline_asset_content }}
-                {%- when 'heart' -%}
-                  {{ 'icon-heart.svg' | inline_asset_content }}
-                {%- else -%}
-                  {{ 'icon-check-mark.svg' | inline_asset_content }}
-              {%- endcase -%}
+            <span class="vishesh-purity__sticker-inner" data-animate-group-item>
+              <span class="vishesh-purity__sticker-icon">
+                {%- case block.settings.icon -%}
+                  {%- when 'leaf' -%}
+                    {{ 'icon-leaf.svg' | inline_asset_content }}
+                  {%- when 'plant' -%}
+                    {{ 'icon-plant.svg' | inline_asset_content }}
+                  {%- when 'fire' -%}
+                    {{ 'icon-fire.svg' | inline_asset_content }}
+                  {%- when 'box' -%}
+                    {{ 'icon-box.svg' | inline_asset_content }}
+                  {%- when 'heart' -%}
+                    {{ 'icon-heart.svg' | inline_asset_content }}
+                  {%- else -%}
+                    {{ 'icon-check-mark.svg' | inline_asset_content }}
+                {%- endcase -%}
+              </span>
+              <span class="vishesh-purity__sticker-label">{{ block.settings.label }}</span>
             </span>
-            <span class="vishesh-purity__sticker-label">{{ block.settings.label }}</span>
           </li>
         {%- endfor -%}
       </ul>

@@ -171,8 +171,13 @@
     });
 
     // Staggered group reveal: children of [data-animate-group] rise in sequence.
+    // A group can instead mark specific descendants with
+    // [data-animate-group-item] - needed when the direct children carry a
+    // CSS transform of their own (e.g. radial placement), since the tween
+    // writes its own inline transform and would otherwise clobber it.
     document.querySelectorAll('[data-animate-group]').forEach(function (group) {
-      var items = group.children;
+      var tagged = group.querySelectorAll('[data-animate-group-item]');
+      var items = tagged.length ? tagged : group.children;
       if (!items.length) return;
       if (window.VM.reducedMotion || !window.ScrollTrigger) {
         gsap.fromTo(items, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'none' });

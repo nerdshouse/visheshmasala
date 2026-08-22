@@ -1,4 +1,5 @@
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -112,6 +113,60 @@
         >
         <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
       </div>
+      {%- comment -%}
+        Enquiry routing fields. Most traffic here is trade rather than
+        retail (B2B, bulk, contract manufacturing, distribution,
+        white label), and a bare name/email/message form gave the team
+        no way to triage those without a reply-and-ask round trip.
+        Both fields post as contact[...] params, so they appear in the
+        notification email Shopify sends - no app or integration
+        needed. Options are a section setting rather than hardcoded so
+        the merchant can adjust the list without a theme edit.
+      {%- endcomment -%}
+      {%- assign purpose_options = section.settings.enquiry_options | split: ',' -%}
+      {%- if purpose_options.size > 0 -%}
+        {%- comment -%}
+          Not Dawn's .field wrapper here: that uses a floating label
+          positioned over the input, which only works for inputs with a
+          placeholder. A select always shows its selected option, so the
+          floating label overlapped the value. Own wrapper, label above.
+        {%- endcomment -%}
+        <div class="vishesh-contact__field">
+          <label class="vishesh-contact__label" for="ContactForm-purpose">
+            {{ section.settings.enquiry_label }}
+          </label>
+          <select
+            id="ContactForm-purpose"
+            class="vishesh-contact__select"
+            name="contact[{{ section.settings.enquiry_label | escape }}]"
+          >
+            <option value="">{{ section.settings.enquiry_placeholder }}</option>
+            {%- for option in purpose_options -%}
+              {%- assign option_label = option | strip -%}
+              {%- if option_label != blank -%}
+                <option value="{{ option_label | escape }}">{{ option_label }}</option>
+              {%- endif -%}
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_company -%}
+        <div class="field">
+          <input
+            type="text"
+            id="ContactForm-company"
+            class="field__input"
+            autocomplete="organization"
+            name="contact[Company]"
+            placeholder="{{ section.settings.company_label }}"
+          >
+          <label class="field__label" for="ContactForm-company">
+            {{ section.settings.company_label }}
+          </label>
+        </div>
+      {%- endif -%}
+
       <div class="field">
         <textarea
           rows="10"
@@ -144,6 +199,41 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Enquiry routing"
+    },
+    {
+      "type": "text",
+      "id": "enquiry_label",
+      "label": "Purpose field label",
+      "default": "What is this regarding?"
+    },
+    {
+      "type": "text",
+      "id": "enquiry_placeholder",
+      "label": "Purpose placeholder option",
+      "default": "Select a purpose"
+    },
+    {
+      "type": "textarea",
+      "id": "enquiry_options",
+      "label": "Purpose options",
+      "info": "Comma separated. Leave empty to hide the field.",
+      "default": "General enquiry, B2B / Wholesale, Bulk supply, Contract manufacturing, Distribution / Dealership, Loose supply, White label / Private label, HORECA / Restaurant supply, Export enquiry, Other"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_company",
+      "label": "Show company / firm name field",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "company_label",
+      "label": "Company field label",
+      "default": "Company / Firm name"
+    },
     {
       "type": "inline_richtext",
       "id": "heading",

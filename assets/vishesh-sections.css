@@ -608,6 +608,9 @@
   padding: 0;
 }
 
+/* Placement only - the pill's own look lives on __sticker-inner so the
+   entrance tween can write its own transform without fighting this
+   one. See the comment in sections/purity-promise.liquid. */
 .vishesh-purity__sticker {
   --radius: 26rem;
   position: absolute;
@@ -617,6 +620,9 @@
   max-width: 20rem;
   transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(-1 * var(--radius)))
     rotate(calc(-1 * var(--angle)));
+}
+
+.vishesh-purity__sticker-inner {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -730,6 +736,10 @@
     transform: none;
     width: 100%;
     max-width: 30rem;
+  }
+
+  .vishesh-purity__sticker-inner {
+    width: 100%;
   }
 }
 
@@ -1375,6 +1385,66 @@
    site is affected if one gets added later. */
 [id$='__founder'] .image-with-text__media {
   min-height: 0;
+}
+
+/* "Late Shri Jagdishchandra Ishwarlal Wankawala" is four long words;
+   at the h1 size it broke to four lines on a 375px screen and swamped
+   the section. Scaled down and tightened just on mobile so it settles
+   into two. */
+@media screen and (max-width: 749px) {
+  [id$='__founder'] .image-with-text__heading {
+    /* Two constraints had to give to land this on two lines at 375px:
+       the heading box was rendering ~265px inside a 345px column, and
+       at 2.4rem the first half ("Late Shri Jagdishchandra") measured
+       316px on its own - wider than the box, forcing a third line.
+       Full width plus 2rem puts that half at ~263px. */
+    width: 100%;
+    max-width: none;
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+}
+
+/* ---------- Contact form: enquiry purpose ----------
+   Own wrapper rather than Dawn's .field, whose floating label would
+   sit on top of the select's always-visible selected option. Borders
+   and radius are matched to .field__input so it still reads as one
+   set of form controls. */
+.vishesh-contact__field {
+  margin-bottom: 1.6rem;
+}
+
+.vishesh-contact__label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.vishesh-contact__select {
+  width: 100%;
+  min-height: 4.5rem;
+  padding: 0 1.5rem;
+  font-size: 1.6rem;
+  font-family: inherit;
+  color: rgb(var(--color-foreground));
+  background-color: rgb(var(--color-background));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.55);
+  border-radius: var(--inputs-radius, 0);
+  appearance: none;
+  /* Chevron drawn inline so the control still reads as a dropdown
+     once the native arrow is removed by appearance: none. */
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 2rem) 50%, calc(100% - 1.5rem) 50%;
+  background-size: 0.5rem 0.5rem, 0.5rem 0.5rem;
+  background-repeat: no-repeat;
+  padding-right: 4rem;
+}
+
+.vishesh-contact__select:focus-visible {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.1rem;
 }
 
 /* ---------- Policy pages ---------- */
