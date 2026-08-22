@@ -1341,14 +1341,22 @@
   position: relative;
 }
 
-/* No flex centring and no forced 100vh here: the stage now hugs its
-   content, which removes the large empty band above and below each
-   milestone. Sticky still holds it while the runway scrolls past. */
+/* The stage fills the viewport and centres its milestone.
+   Note this partly walks back the earlier "remove display:flex"
+   change: with the stage hugging its content at the top of a sticky
+   full-height area, the leftover viewport height all pooled into one
+   dead band underneath (measured 451px of empty cream below a 449px
+   stage in a 900px viewport). Centring spreads that space evenly
+   above and below instead, which is what removes the empty look.
+   Uses grid rather than flex purely because align-content does the
+   job in one property here. */
 .vishesh-timeline--live .vishesh-timeline__stage {
   position: sticky;
   top: 0;
-  min-height: 0;
-  padding: 4.5rem 0 3rem;
+  min-height: 100vh;
+  display: grid;
+  align-content: center;
+  padding: 3rem 0;
 }
 
 .vishesh-timeline--live .vishesh-timeline__rail {
@@ -3685,5 +3693,42 @@
   .product-card-wrapper:hover .card,
   .product-card-wrapper:hover .card__media img {
     transform: none;
+  }
+}
+
+/* ---------- Scroll reveal (assets/vishesh-reveal.js) ----------
+   Short, soft reveals in the spirit of the reference: content rises a
+   little and fades, media wipes up behind a clip. The hidden state is
+   only ever applied by the script, which checks it can observe before
+   applying it - so without JS nothing is hidden. */
+.vm-reveal {
+  opacity: 0;
+  transform: translateY(1.8rem);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    clip-path 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.vm-reveal--media {
+  transform: translateY(2.4rem) scale(1.02);
+  clip-path: inset(12% 0 0 0 round 1.2rem);
+}
+
+.vm-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.vm-reveal--media.is-in {
+  clip-path: inset(0 0 0 0 round 1.2rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vm-reveal,
+  .vm-reveal--media {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
   }
 }
