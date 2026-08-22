@@ -31,8 +31,15 @@
  */
 (function () {
   var PIN_DISTANCE = 620;
-  var MIN_VIEWPORT_HEIGHT = 700;
-  var MIN_VIEWPORT_WIDTH = 750;
+  // Phones get a shorter hold: the same 620px of scroll feels much
+  // longer on a small screen, and a shorter pin also means less time
+  // for a mid-scroll viewport change to interfere.
+  var PIN_DISTANCE_NARROW = 420;
+  var NARROW_WIDTH = 750;
+  // Floor only - the real gate is "does the section fit the viewport"
+  // below. Kept low enough that ordinary phones qualify while genuinely
+  // tiny viewports (which is where the old scroll-lock appeared) do not.
+  var MIN_VIEWPORT_HEIGHT = 600;
 
   function init() {
     var section = document.querySelector('[data-purity]');
@@ -82,11 +89,12 @@
     }
 
     function pinnedReveal() {
+      var distance = window.innerWidth < NARROW_WIDTH ? PIN_DISTANCE_NARROW : PIN_DISTANCE;
       var tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=' + PIN_DISTANCE,
+          end: '+=' + distance,
           pin: true,
           scrub: 0.6,
           anticipatePin: 1,
@@ -107,11 +115,14 @@
 
     function shouldPin() {
       return (
-        window.innerWidth >= MIN_VIEWPORT_WIDTH &&
         window.innerHeight >= MIN_VIEWPORT_HEIGHT &&
-        // A pin only makes sense if the section actually fits the
-        // viewport; pinning something taller than the screen hides its
-        // own content behind the fold while scroll is held.
+        // The real gate, and the one that matters most on phones: a pin
+        // only makes sense if the section actually fits the viewport.
+        // Pinning something taller than the screen hides its own content
+        // behind the fold while scroll is held, which is how the earlier
+        // attempts became unrecoverable. Phones whose usable height is
+        // squeezed by browser chrome simply fall back to the plain
+        // reveal rather than pinning badly.
         section.offsetHeight <= window.innerHeight
       );
     }

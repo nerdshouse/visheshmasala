@@ -18,7 +18,18 @@
   function init() {
     if (!window.gsap) return;
 
-    if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    if (window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      // Mobile browsers fire resize every time the address bar slides in
+      // or out, which happens constantly while scrolling. Without this,
+      // any pinned section gets torn down and rebuilt mid-gesture -
+      // exactly the kind of churn that made earlier pins on this theme
+      // jump and stick. Tells ScrollTrigger to ignore those particular
+      // resizes; real orientation changes still refresh.
+      if (typeof ScrollTrigger.config === 'function') {
+        ScrollTrigger.config({ ignoreMobileResize: true });
+      }
+    }
     if (window.SplitText) gsap.registerPlugin(SplitText);
 
     // Fade <main> in on load (150ms) to soften between-page navigation flash.
