@@ -268,6 +268,17 @@
     // lights up (mustard sweep + bold) once as the reader scrolls to it -
     // used on Our Story to call out key phrases (50+ years of experience,
     // founder's name, facility size, ...).
+    // Highlights that cross the trigger line at nearly the same moment
+    // (a paragraph with two or three highlighted phrases) used to all
+    // light up together, reading as one simultaneous flash rather than
+    // someone highlighting phrase by phrase. Queue them instead: each
+    // activation claims the next slot in a shared timeline, so
+    // near-simultaneous entries sweep in sequence, while a highlight
+    // reached much later (after the queue has drained) still fires
+    // immediately with no artificial wait.
+    var HIGHLIGHT_STAGGER_MS = 200;
+    var highlightQueueFreeAt = 0;
+
     document.querySelectorAll('[data-highlight]').forEach(function (el) {
       if (window.VM.reducedMotion || !window.ScrollTrigger) {
         el.classList.add('is-active');
@@ -278,7 +289,17 @@
         start: 'top 78%',
         once: true,
         onEnter: function () {
-          el.classList.add('is-active');
+          var now = Date.now();
+          var startAt = Math.max(now, highlightQueueFreeAt);
+          highlightQueueFreeAt = startAt + HIGHLIGHT_STAGGER_MS;
+          var wait = startAt - now;
+          if (wait <= 0) {
+            el.classList.add('is-active');
+          } else {
+            setTimeout(function () {
+              el.classList.add('is-active');
+            }, wait);
+          }
         },
       });
     });

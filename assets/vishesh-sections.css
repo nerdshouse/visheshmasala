@@ -2428,7 +2428,13 @@
   border-radius: 0.4rem;
   font-weight: 700;
   color: inherit;
-  transition: background-size 0.6s cubic-bezier(0.25, 1, 0.5, 1), color 0.6s ease;
+  /* cubic-bezier(0.25, 1, 0.5, 1) front-loads nearly all the visible
+     change into the first fraction of the duration, so the sweep read
+     as an instant snap followed by an invisible coast no matter what
+     duration was set. A gentler ease spreads the movement across the
+     whole 3s, which is what actually makes it read as a deliberate
+     highlighter-pen stroke. */
+  transition: background-size 3s cubic-bezier(0.4, 0, 0.2, 1), color 1.2s ease;
 }
 
 .vishesh-highlight.is-active {
