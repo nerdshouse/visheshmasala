@@ -1,22 +1,33 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 
-<div class="vishesh-quote color-{{ section.settings.color_scheme }} gradient{% if section.settings.background_image != blank %} vishesh-quote--has-image{% endif %}">
-  {%- if section.settings.background_image != blank -%}
-    <div class="vishesh-quote__media" aria-hidden="true">
-      {{
-        section.settings.background_image
-        | image_url: width: 1600
-        | image_tag: loading: 'lazy', class: 'vishesh-quote__image', widths: '750, 1100, 1600', sizes: '100vw'
-      }}
-      <div class="vishesh-quote__scrim"></div>
-    </div>
-  {%- endif -%}
-  <div class="page-width vishesh-quote__inner" data-animate="fade-up">
-    <span class="vishesh-quote__mark" aria-hidden="true">&ldquo;</span>
-    <blockquote class="vishesh-quote__text">{{ section.settings.quote }}</blockquote>
-    {%- if section.settings.attribution != blank -%}
-      <cite class="vishesh-quote__attribution">{{ section.settings.attribution }}</cite>
+{%- assign vq_has_image = false -%}
+{%- if section.settings.background_image != blank -%}
+  {%- assign vq_has_image = true -%}
+{%- endif -%}
+<div class="vishesh-quote color-{{ section.settings.color_scheme }} gradient{% if vq_has_image %} vishesh-quote--split{% endif %}">
+  <div class="page-width vishesh-quote__layout">
+    {%- if vq_has_image -%}
+      {% comment %}
+        Photo sits as its own column on the left (content right) rather
+        than as a full-bleed background behind the text - requested so
+        the founder portrait reads as a portrait, not wallpaper. Stacks
+        photo-above-quote on mobile.
+      {% endcomment %}
+      <div class="vishesh-quote__media" data-animate="fade-up">
+        {{
+          section.settings.background_image
+          | image_url: width: 1200
+          | image_tag: loading: 'lazy', class: 'vishesh-quote__image', widths: '450, 750, 1200', sizes: '(min-width: 750px) 40vw, 90vw'
+        }}
+      </div>
     {%- endif -%}
+    <div class="vishesh-quote__inner" data-animate="fade-up">
+      <span class="vishesh-quote__mark" aria-hidden="true">&ldquo;</span>
+      <blockquote class="vishesh-quote__text">{{ section.settings.quote }}</blockquote>
+      {%- if section.settings.attribution != blank -%}
+        <cite class="vishesh-quote__attribution">{{ section.settings.attribution }}</cite>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 

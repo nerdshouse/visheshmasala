@@ -20,7 +20,9 @@
   gap: 4rem;
   min-height: min(80vh, 74rem);
   padding-top: 6rem;
-  padding-bottom: 6rem;
+  /* Tightened: the hero's bottom padding plus the trust strip's own top
+     padding were compounding into an oversized gap between the two. */
+  padding-bottom: 2.4rem;
 }
 
 .vishesh-hero__eyebrow {
@@ -296,7 +298,7 @@
 
 /* ---------- Trust strip ---------- */
 .vishesh-trust {
-  padding: 3.6rem 0;
+  padding: 1.6rem 0 3.6rem;
 }
 
 .vishesh-trust__grid {
@@ -569,40 +571,59 @@
   padding: 0;
 }
 
+/* Circular icon medallions (restored). Phase 8 had swapped these for
+   rounded rectangular cards; the circles are the brand's intended
+   treatment, so the card chrome is dropped and the icon itself carries
+   the shape - a white disc inside a brand-colour ring. */
 .vishesh-purity__card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
-  width: 15rem;
-  padding: 2.8rem 1.6rem 2.4rem;
-  background: rgba(255, 255, 255, 0.55);
-  border: 0.1rem solid rgba(var(--color-foreground), 0.1);
-  border-radius: 1.6rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.vishesh-purity__card:hover {
-  transform: translateY(-0.3rem);
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 1.2rem 2.4rem rgba(74, 52, 24, 0.12);
+  gap: 1.4rem;
+  /* Sized so all five promises sit on one row inside the section's
+     ~740px inner width (5 x 13rem + 4 x 1.6rem gap = 724px) - at 15rem
+     the fifth wrapped onto its own line and read as an orphan. */
+  width: 13rem;
+  padding: 0.8rem 0.4rem;
+  background: none;
+  border: 0;
+  border-radius: 0;
 }
 
 .vishesh-purity__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5.2rem;
-  height: 5.2rem;
+  width: 10.4rem;
+  height: 10.4rem;
   border-radius: 50%;
   background: #ffffff;
+  border: 0.2rem solid var(--color-primary);
   color: var(--color-primary);
-  box-shadow: 0 0.4rem 1rem rgba(74, 52, 24, 0.1);
+  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.vishesh-purity__card:hover .vishesh-purity__icon {
+  transform: translateY(-0.4rem) scale(1.05);
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 1.2rem 2.4rem rgba(74, 52, 24, 0.2);
 }
 
 .vishesh-purity__icon svg {
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 4rem;
+  height: 4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-purity__icon {
+    transition: none;
+  }
+
+  .vishesh-purity__card:hover .vishesh-purity__icon {
+    transform: none;
+  }
 }
 
 .vishesh-purity__label {
@@ -626,8 +647,19 @@
   }
 
   .vishesh-purity__card {
-    width: 13.6rem;
-    padding: 2.4rem 1.2rem 2rem;
+    width: 10.4rem;
+    padding: 0.4rem;
+    gap: 1rem;
+  }
+
+  .vishesh-purity__icon {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .vishesh-purity__icon svg {
+    width: 3.2rem;
+    height: 3.2rem;
   }
 }
 
@@ -641,37 +673,31 @@
   overflow: hidden;
 }
 
+/* Split layout: portrait left, quote right. Replaces the previous
+   full-bleed background-photo treatment (which needed a heavy scrim
+   and cropped the near-square 500x561 source badly) - as its own
+   column the portrait keeps its aspect ratio and reads as a portrait. */
+.vishesh-quote__layout {
+  display: block;
+}
+
+.vishesh-quote--split .vishesh-quote__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 4.8rem;
+}
+
 .vishesh-quote__media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+  border-radius: 1.6rem;
+  overflow: hidden;
+  box-shadow: 0 1.6rem 3.2rem rgba(20, 11, 7, 0.28);
 }
 
 .vishesh-quote__image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 12%;
+  height: auto;
   display: block;
-  /* Source portrait is 500x561 (nearly square) stretched across a wide,
-     short section - object-fit: cover on its own zooms in heavily and
-     reads as a random crop rather than a portrait. Desaturating and
-     darkening it here (on top of the scrim below) shifts it from "a
-     photo the text sits on" to a quiet, moody texture the text sits
-     in - the intent per the brief (legible, restrained), not a full
-     clear portrait treatment this crop can't support gracefully. */
-  filter: grayscale(0.25) brightness(0.75) contrast(1.05);
-}
-
-.vishesh-quote__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(20, 11, 7, 0.93) 0%, rgba(20, 11, 7, 0.9) 55%, rgba(20, 11, 7, 0.95) 100%);
-}
-
-.vishesh-quote--has-image .vishesh-quote__inner {
-  position: relative;
-  z-index: 1;
 }
 
 .vishesh-quote__inner {
@@ -679,6 +705,11 @@
   margin: 0 auto;
   text-align: center;
   position: relative;
+}
+
+.vishesh-quote--split .vishesh-quote__inner {
+  margin: 0;
+  text-align: left;
 }
 
 .vishesh-quote__mark {
@@ -727,6 +758,21 @@
 @media screen and (max-width: 749px) {
   .vishesh-quote {
     padding: 5.6rem 0;
+  }
+
+  /* Stack photo above quote rather than squeezing two columns. */
+  .vishesh-quote--split .vishesh-quote__layout {
+    grid-template-columns: 1fr;
+    gap: 2.8rem;
+  }
+
+  .vishesh-quote--split .vishesh-quote__inner {
+    text-align: center;
+  }
+
+  .vishesh-quote__media {
+    max-width: 28rem;
+    margin: 0 auto;
   }
 
   .vishesh-quote__mark {
