@@ -3185,6 +3185,24 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  /* Always reserve two lines, even for one-line names. The clamp
+     already caps the maximum, but without a matching minimum a
+     one-line title made its card shorter than a two-line neighbour,
+     which pushed price / selector / button up and left the grid
+     visibly uneven (measured at 375px: two different button offsets,
+     302px and 325px, and card heights spreading 365-388px). Reserving
+     the space keeps every card's content on the same baseline. */
+  min-height: calc(2 * 1.3em);
+}
+
+/* The grid gets tight at two columns, where several names would
+   otherwise wrap; a slightly smaller face keeps more of them on one
+   line and keeps the reserved two-line block from dominating the
+   card. */
+@media screen and (max-width: 749px) {
+  .card__heading {
+    font-size: 1.5rem;
+  }
 }
 
 .collection .price,
