@@ -3595,3 +3595,95 @@
     padding: 2rem 2rem;
   }
 }
+
+/* ---------- Site-wide interaction polish ----------
+   Implements the hover treatment from the original build spec that was
+   never built ("primary buttons: hover = background fill wipes in from
+   centre"), plus matching lift on product cards and an underline draw
+   on menu links.
+
+   Done with background-size on a gradient rather than an overlay
+   pseudo-element on purpose: Dawn already uses ::after on .button for
+   its focus ring, and an overlay would also need z-index juggling to
+   stay behind the label. A gradient paints behind the text for free
+   and cannot cover it. */
+.button:not(.button--tertiary),
+.shopify-payment-button__button--unbranded {
+  background-image: radial-gradient(circle at center, var(--color-primary-deep, #c4130f) 0%, var(--color-primary-deep, #c4130f) 100%);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 0% 0%;
+  transition: background-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s ease, color 0.25s ease;
+}
+
+.button:not(.button--tertiary):hover:not([disabled]):not([aria-disabled='true']),
+.shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  background-size: 250% 250%;
+  color: #ffffff;
+}
+
+.button:not(.button--tertiary):active:not([disabled]) {
+  transform: translateY(0.1rem);
+}
+
+/* Product cards: lift the whole card and let the image ease in
+   slightly, so the grid feels responsive to the cursor. */
+@media (hover: hover) {
+  .product-card-wrapper .card {
+    transition: transform 0.3s ease;
+  }
+
+  .product-card-wrapper:hover .card {
+    transform: translateY(-0.4rem);
+  }
+
+  .product-card-wrapper .card__media img {
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .product-card-wrapper:hover .card__media img {
+    transform: scale(1.04);
+  }
+
+  /* Menu links draw an underline from the left instead of snapping on. */
+  .header__menu-item,
+  .footer-block__details-content .list-menu__item--link {
+    position: relative;
+  }
+
+  .header__menu-item::after,
+  .footer-block__details-content .list-menu__item--link::after {
+    content: '';
+    position: absolute;
+    left: 1.2rem;
+    right: 1.2rem;
+    bottom: 0.4rem;
+    height: 0.15rem;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0.7;
+  }
+
+  .header__menu-item:hover::after,
+  .footer-block__details-content .list-menu__item--link:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:not(.button--tertiary),
+  .shopify-payment-button__button--unbranded,
+  .product-card-wrapper .card,
+  .product-card-wrapper .card__media img,
+  .header__menu-item::after,
+  .footer-block__details-content .list-menu__item--link::after {
+    transition: none;
+  }
+
+  .product-card-wrapper:hover .card,
+  .product-card-wrapper:hover .card__media img {
+    transform: none;
+  }
+}
