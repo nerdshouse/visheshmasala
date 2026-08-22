@@ -1,27 +1,30 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 
 {% comment %}
-  Stacked-panel journey. Each milestone is a full-height panel that
-  holds in place while the next one slides up over it, so the years
-  advance one screen at a time as you scroll.
+  Journey stage. One sticky stage holds while a tall wrapper scrolls
+  past it, and the milestones advance one at a time inside that stage -
+  the same mechanic as the reference, which uses a single
+  `sticky top-0 h-screen` stage inside a 400vh parent rather than one
+  sticky panel per milestone.
 
-  The hold is plain CSS `position: sticky`, NOT a scripted pin. That
-  distinction matters on this theme: GSAP ScrollTrigger pins have
-  broken here repeatedly (this very section shipped with 5 of 9
-  milestones permanently invisible, and purity-promise carried a
-  5121px pin-spacer). Sticky is handled natively by the browser, adds
-  no spacer element, never takes scroll away from the user, and needs
-  no JS at all - so it cannot reproduce that failure mode.
+  An earlier version here gave every milestone its own sticky panel, so
+  they stacked and slid over one another. That is a different effect,
+  and not the one asked for - the stage is now singular and the
+  milestones change within it.
 
-  Layout per panel follows the two-column split from the reference:
-  a marker column with the year, and a wider column with the copy,
-  stacking to a single column on narrow screens. Visual treatment is
-  the brand's own (map-pin marker, cream card), not the reference's.
+  The hold is native CSS position:sticky, not a scripted pin: no
+  spacer element, scroll is never taken from the user, and if the JS
+  below never runs the section degrades to a plain readable list of all
+  nine milestones (see .vishesh-timeline--live in the CSS - the
+  swap-one-at-a-time behaviour is gated behind a class that only JS
+  adds). That matters on this theme, where scripted pins have twice
+  left this section's content stranded invisible.
 
-  The previous grid + measured SVG connector
-  (assets/vishesh-timeline-path.js) is gone: its geometry was computed
-  from card positions in a 3/2/1 column grid, which no longer exists.
+  assets/vishesh-timeline.js only computes which milestone is current
+  from scroll progress and toggles a class - it does not move, size, or
+  position anything.
 {% endcomment %}
+<script src="{{ 'vishesh-timeline.js' | asset_url }}" defer="defer"></script>
 <div class="vishesh-timeline color-{{ section.settings.color_scheme }} gradient" data-timeline>
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
@@ -29,26 +32,42 @@
     {%- endif -%}
   </div>
 
-  <ol class="vishesh-timeline__track" role="list">
-    {%- for block in section.blocks -%}
-      <li class="vishesh-timeline__panel" {{ block.shopify_attributes }}>
-        <div class="vishesh-timeline__panel-inner">
-          <div class="vishesh-timeline__marker">
-            <span class="vishesh-timeline__pin" aria-hidden="true">
-              <span class="vishesh-timeline__year">{{ block.settings.year }}</span>
-            </span>
-            <span class="vishesh-timeline__count">
-              {{ forloop.index }}<span class="vishesh-timeline__count-total">/{{ forloop.length }}</span>
-            </span>
-          </div>
-          <div class="vishesh-timeline__body">
-            <span class="vishesh-timeline__body-year" aria-hidden="true">{{ block.settings.year }}</span>
-            <p class="vishesh-timeline__text">{{ block.settings.text }}</p>
-          </div>
-        </div>
-      </li>
-    {%- endfor -%}
-  </ol>
+  <div
+    class="vishesh-timeline__scroll"
+    data-timeline-scroll
+    style="--milestone-count: {{ section.blocks.size }};"
+  >
+    <div class="vishesh-timeline__stage">
+      <div class="vishesh-timeline__inner">
+        <ol class="vishesh-timeline__rail" role="list">
+          {%- for block in section.blocks -%}
+            <li class="vishesh-timeline__step" data-timeline-step="{{ forloop.index0 }}">
+              <span class="vishesh-timeline__dot" aria-hidden="true"></span>
+              <span class="vishesh-timeline__step-year">{{ block.settings.year }}</span>
+            </li>
+          {%- endfor -%}
+        </ol>
+
+        <ol class="vishesh-timeline__cards" role="list">
+          {%- for block in section.blocks -%}
+            <li
+              class="vishesh-timeline__card"
+              data-timeline-card="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              <span class="vishesh-timeline__count" aria-hidden="true">
+                {{ forloop.index }}<span class="vishesh-timeline__count-total">/{{ forloop.length }}</span>
+              </span>
+              <span class="vishesh-timeline__pin" aria-hidden="true">
+                <span class="vishesh-timeline__year">{{ block.settings.year }}</span>
+              </span>
+              <p class="vishesh-timeline__text">{{ block.settings.text }}</p>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% schema %}

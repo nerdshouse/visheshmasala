@@ -1210,12 +1210,12 @@
 }
 
 /* ---------- Timeline (red map-pins, brochure style) ---------- */
-/* ---------- Our Journey: stacked sticky panels ----------
-   Each milestone holds full-height while the next slides over it.
-   The hold is native CSS position:sticky - no scripted pin, no
-   pin-spacer, no scroll hijack (see the note in
-   sections/vishesh-timeline.liquid for why that distinction matters
-   on this theme). */
+/* ---------- Our Journey: single sticky stage ----------
+   A tall wrapper scrolls past one stuck stage; the milestones advance
+   inside it. Native position:sticky, no scripted pin. The
+   one-at-a-time behaviour is gated behind .vishesh-timeline--live,
+   which only assets/vishesh-timeline.js adds - without it every
+   milestone stays in flow and the section reads as a plain list. */
 .vishesh-timeline {
   padding: 5.6rem 0 0;
 }
@@ -1225,43 +1225,70 @@
   margin: 0 0 4rem;
 }
 
-.vishesh-timeline__track {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.vishesh-timeline__stage {
+  padding: 4rem 0 6rem;
 }
 
-.vishesh-timeline__panel {
-  position: sticky;
-  top: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  /* Opaque, and matching the section's own colour scheme, so each
-     panel actually covers the one it slides over. Without a solid
-     background the stacked panels would read through each other. */
-  background: rgb(var(--color-background));
-  padding: 6rem 0;
-}
-
-.vishesh-timeline__panel-inner {
+.vishesh-timeline__inner {
   width: 100%;
   max-width: 64rem;
   margin: 0 auto;
   padding: 0 1.6rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   gap: 3.2rem;
 }
 
-.vishesh-timeline__marker {
+/* ---- Rail (the year steps) ---- */
+.vishesh-timeline__rail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem 2rem;
+}
+
+.vishesh-timeline__step {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--color-dark);
+  opacity: 0.4;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.vishesh-timeline__dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: currentColor;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+/* ---- Cards ---- */
+.vishesh-timeline__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.vishesh-timeline__card {
+  background: #ffffff;
+  border-radius: 1.6rem;
+  padding: 3.2rem 2.8rem;
+  box-shadow: 0 1.2rem 3.2rem rgba(74, 52, 24, 0.12);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
-  flex-shrink: 0;
+  text-align: center;
+  gap: 1.6rem;
 }
 
 .vishesh-timeline__count {
@@ -1273,23 +1300,6 @@
 
 .vishesh-timeline__count-total {
   opacity: 0.45;
-}
-
-.vishesh-timeline__body {
-  background: #ffffff;
-  border-radius: 1.6rem;
-  padding: 3.2rem 2.8rem;
-  box-shadow: 0 1.2rem 3.2rem rgba(74, 52, 24, 0.12);
-}
-
-.vishesh-timeline__body-year {
-  display: block;
-  font-family: var(--font-heading-family);
-  font-weight: 700;
-  font-size: 2.8rem;
-  line-height: 1;
-  color: var(--color-primary);
-  margin-bottom: 1.2rem;
 }
 
 .vishesh-timeline__pin {
@@ -1323,22 +1333,130 @@
   color: #4a3418;
 }
 
-/* Two columns once there is room: marker beside the copy, matching
-   the reference's split. Below this the panel stacks to one column. */
+/* ---- Enhanced: one stuck stage, milestones swap inside it ---- */
+.vishesh-timeline--live .vishesh-timeline__scroll {
+  /* Scroll runway: roughly half a viewport per milestone. The stage
+     stays stuck for all of it. */
+  min-height: calc(var(--milestone-count, 9) * 55vh);
+  position: relative;
+}
+
+.vishesh-timeline--live .vishesh-timeline__stage {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.vishesh-timeline--live .vishesh-timeline__rail {
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 1.6rem;
+  position: relative;
+  padding-left: 2.2rem;
+}
+
+/* Track the milestones sit on, plus a fill that grows with --progress
+   so the journey visibly builds as you scroll. */
+.vishesh-timeline--live .vishesh-timeline__rail::before,
+.vishesh-timeline--live .vishesh-timeline__rail::after {
+  content: '';
+  position: absolute;
+  left: 0.45rem;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  width: 0.2rem;
+  border-radius: 99rem;
+}
+
+.vishesh-timeline--live .vishesh-timeline__rail::before {
+  background: rgba(var(--color-foreground), 0.16);
+}
+
+.vishesh-timeline--live .vishesh-timeline__rail::after {
+  background: var(--color-primary);
+  transform-origin: top;
+  transform: scaleY(var(--progress, 0));
+  transition: transform 0.45s ease;
+}
+
+.vishesh-timeline--live .vishesh-timeline__step {
+  position: relative;
+  /* Milestones arrive one at a time - anything not yet reached stays
+     out of view rather than sitting greyed out, so the list builds as
+     the reader scrolls instead of being present from the start. */
+  opacity: 0;
+  transform: translateY(0.6rem);
+  transition: opacity 0.45s ease, transform 0.45s ease, color 0.3s ease;
+}
+
+.vishesh-timeline--live .vishesh-timeline__step .vishesh-timeline__dot {
+  position: absolute;
+  left: -2.2rem;
+}
+
+.vishesh-timeline--live .vishesh-timeline__step.is-past,
+.vishesh-timeline--live .vishesh-timeline__step.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+.vishesh-timeline--live .vishesh-timeline__step.is-past {
+  opacity: 0.6;
+}
+
+.vishesh-timeline--live .vishesh-timeline__step.is-active {
+  color: var(--color-primary);
+}
+
+.vishesh-timeline--live .vishesh-timeline__step.is-active .vishesh-timeline__dot {
+  transform: scale(1.9);
+  background: var(--color-primary);
+}
+
+/* Cards become a single stack with only the current one shown. Height
+   comes from the tallest card so the stage does not jump between
+   milestones of different copy lengths. */
+.vishesh-timeline--live .vishesh-timeline__cards {
+  display: grid;
+  gap: 0;
+}
+
+.vishesh-timeline--live .vishesh-timeline__card {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1.6rem);
+  transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
+}
+
+.vishesh-timeline--live .vishesh-timeline__card.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
 @media screen and (min-width: 750px) {
-  .vishesh-timeline__panel-inner {
+  .vishesh-timeline__inner {
     flex-direction: row;
     align-items: center;
-    text-align: left;
     gap: 4.8rem;
   }
 
-  .vishesh-timeline__marker {
-    width: 33%;
+  .vishesh-timeline__rail {
+    width: 30%;
   }
 
-  .vishesh-timeline__body {
-    width: 67%;
+  .vishesh-timeline__cards {
+    width: 70%;
+  }
+
+  .vishesh-timeline__card {
+    align-items: flex-start;
+    text-align: left;
   }
 }
 
@@ -1351,19 +1469,7 @@
     margin: 0 0 2.8rem;
   }
 
-  .vishesh-timeline__panel {
-    /* Shorter than a full viewport on phones: at 100vh with the
-       browser chrome visible the card was getting squeezed, and nine
-       full screens of scroll is a lot on a small device. */
-    min-height: 88vh;
-    padding: 4rem 0;
-  }
-
-  .vishesh-timeline__panel-inner {
-    gap: 2.4rem;
-  }
-
-  .vishesh-timeline__body {
+  .vishesh-timeline__card {
     padding: 2.4rem 2rem;
   }
 
@@ -1371,17 +1477,23 @@
     width: 8rem;
     height: 8rem;
   }
-}
 
-/* Sticky stacking depends on panels scrolling over one another. Users
-   who ask for reduced motion get a plain stacked list instead. */
-@media (prefers-reduced-motion: reduce) {
-  .vishesh-timeline__panel {
-    position: static;
-    min-height: 0;
-    padding: 2.4rem 0;
+  .vishesh-timeline--live .vishesh-timeline__scroll {
+    min-height: calc(var(--milestone-count, 9) * 48vh);
+  }
+
+  .vishesh-timeline--live .vishesh-timeline__rail {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem 1.4rem;
+  }
+
+  .vishesh-timeline--live .vishesh-timeline__step-year {
+    font-size: 1.2rem;
   }
 }
+
 
 /* ---------- Our Story: founder photo ----------
    Dawn's image-with-text sets .image-with-text__media to min-height:
