@@ -209,7 +209,13 @@
         "show_quick_add": true,
         "show_view_all": true,
         "color_scheme": "scheme-1",
-        "collection": "bestsellers"
+        "collection": "bestsellers",
+        "top_seller": "pavbhaji-masala",
+        "top_tag_label": "#1 Bestseller",
+        "tag_label": "Bestseller",
+        "show_trust": true,
+        "trust_one": "FSSAI Certified",
+        "trust_two": "100% Vegetarian · Jain-friendly"
       }
     },
     "quote": {

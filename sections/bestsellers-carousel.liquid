@@ -5,7 +5,8 @@
 <script src="{{ 'vishesh-bestsellers.js' | asset_url }}" defer="defer"></script>
 
 {%- assign collection = section.settings.collection -%}
-{%- assign slide_colors = 'var(--color-primary)|var(--color-sage)|var(--color-primary-deep)' | split: '|' -%}
+{%- assign slide_colors = 'var(--color-primary)|var(--color-sage)|var(--color-orange)' | split: '|' -%}
+{%- assign top_seller_id = section.settings.top_seller.id -%}
 
 <div class="vishesh-bestsellers color-{{ section.settings.color_scheme }} gradient" data-vishesh-bestsellers>
   <div class="page-width vishesh-bestsellers__header" data-animate="fade-up">
@@ -19,25 +20,57 @@
   </div>
 
   <div class="vishesh-bestsellers__stage">
-    <div class="vishesh-bestsellers__arch" data-bestsellers-arch></div>
+    {% comment %}
+      Soft tinted halo behind the centred card. The arch shape itself now
+      lives on each card (see .vishesh-bestsellers__media) so that a card
+      reads as one object top to bottom; this is only depth behind it.
+    {% endcomment %}
+    <div class="vishesh-bestsellers__glow" data-bestsellers-arch aria-hidden="true"></div>
     <div class="swiper vishesh-bestsellers__swiper" data-bestsellers-swiper>
       <div class="swiper-wrapper">
         {%- if collection != blank and collection.products.size > 0 -%}
           {%- for product in collection.products limit: section.settings.products_to_show -%}
             {%- assign color_i = forloop.index0 | modulo: 3 -%}
             {%- assign color = slide_colors[color_i] -%}
-            <div class="swiper-slide vishesh-bestsellers__slide" data-color="{{ color }}">
-              <div class="vishesh-bestsellers__card">
-                <span class="vishesh-bestsellers__tag">{{ section.settings.tag_label }}</span>
-                <a href="{{ product.url }}" class="vishesh-bestsellers__image-wrap">
-                  {%- if product.featured_image -%}
-                    {{
-                      product.featured_image
-                      | image_url: width: 900
-                      | image_tag: loading: 'lazy', class: 'vishesh-bestsellers__image', widths: '450, 700, 900', alt: product.title
-                    }}
+            {%- assign is_top_seller = false -%}
+            {%- if top_seller_id != blank and product.id == top_seller_id -%}
+              {%- assign is_top_seller = true -%}
+            {%- endif -%}
+            <div
+              class="swiper-slide vishesh-bestsellers__slide{% if is_top_seller %} vishesh-bestsellers__slide--top{% endif %}"
+              data-color="{{ color }}"
+              style="--slide-accent: {{ color }};"
+            >
+              <article class="vishesh-bestsellers__card">
+                <div class="vishesh-bestsellers__media">
+                  {%- if is_top_seller and section.settings.top_tag_label != blank -%}
+                    {% comment %}
+                      Reserved for the single product the merchant has
+                      confirmed as the genuine top seller. Everything else
+                      in the set gets the lighter chip below, so the badge
+                      carries rank rather than repeating as decoration.
+                    {% endcomment %}
+                    <span class="vishesh-bestsellers__tag vishesh-bestsellers__tag--top">
+                      <svg class="vishesh-bestsellers__tag-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                        <path d="M12 2.6l2.6 5.8 6.3.7-4.7 4.3 1.3 6.2L12 16.5 6.5 19.6l1.3-6.2L3.1 9.1l6.3-.7z"/>
+                      </svg>
+                      {{ section.settings.top_tag_label }}
+                    </span>
+                  {%- elsif section.settings.tag_label != blank -%}
+                    <span class="vishesh-bestsellers__tag vishesh-bestsellers__tag--std">
+                      {{- section.settings.tag_label -}}
+                    </span>
                   {%- endif -%}
-                </a>
+                  <a href="{{ product.url }}" class="vishesh-bestsellers__image-wrap">
+                    {%- if product.featured_image -%}
+                      {{
+                        product.featured_image
+                        | image_url: width: 900
+                        | image_tag: loading: 'lazy', class: 'vishesh-bestsellers__image', widths: '450, 700, 900', alt: product.title
+                      }}
+                    {%- endif -%}
+                  </a>
+                </div>
                 <div class="vishesh-bestsellers__content">
                   <a href="{{ product.url }}" class="vishesh-bestsellers__title h2">{{ product.title }}</a>
                   {%- assign vishesh_pack_variants = false -%}
@@ -53,7 +86,7 @@
                     </a>
                   {%- endif -%}
                 </div>
-              </div>
+              </article>
             </div>
           {%- endfor -%}
         {%- endif -%}
@@ -66,6 +99,38 @@
       {{ 'icon-caret.svg' | inline_asset_content }}
     </button>
   </div>
+
+  {% comment %}
+    Trust marks sit here, immediately under the cards and next to the
+    purchase decision, rather than only in the footer. Both are facts the
+    theme already states elsewhere (trust-strip section, PDP accordion) -
+    no counts, ratings or sales numbers, which would need real merchant
+    data before they could be claimed.
+  {% endcomment %}
+  {%- if section.settings.show_trust -%}
+    {%- if section.settings.trust_one != blank or section.settings.trust_two != blank -%}
+      <ul class="vishesh-bestsellers__trust page-width" data-animate="fade-up" role="list">
+        {%- if section.settings.trust_one != blank -%}
+          <li class="vishesh-bestsellers__trust-item">
+            <svg class="vishesh-bestsellers__trust-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <path d="M12 2.8l7.2 2.6v6c0 4.4-3 8.2-7.2 9.8-4.2-1.6-7.2-5.4-7.2-9.8v-6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M8.7 11.9l2.3 2.3 4.3-4.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {{ section.settings.trust_one }}
+          </li>
+        {%- endif -%}
+        {%- if section.settings.trust_two != blank -%}
+          <li class="vishesh-bestsellers__trust-item">
+            <svg class="vishesh-bestsellers__trust-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <rect x="3.6" y="3.6" width="16.8" height="16.8" rx="2.4" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+            </svg>
+            {{ section.settings.trust_two }}
+          </li>
+        {%- endif -%}
+      </ul>
+    {%- endif -%}
+  {%- endif -%}
 
   {%- if section.settings.show_view_all and collection != blank -%}
     <div class="page-width vishesh-carousel__viewall" data-animate="fade-up">
@@ -95,12 +160,6 @@
       "default": "Har ghar ka favourite"
     },
     {
-      "type": "text",
-      "id": "tag_label",
-      "label": "Sticker label on active card",
-      "default": "Bestseller"
-    },
-    {
       "type": "collection",
       "id": "collection",
       "label": "Collection"
@@ -113,6 +172,55 @@
       "step": 1,
       "label": "Products to show",
       "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Badges"
+    },
+    {
+      "type": "product",
+      "id": "top_seller",
+      "label": "#1 bestseller",
+      "info": "Gets the gold rank badge. Every other product in the set gets the lighter chip below. Leave empty to give all products the lighter chip. Must also be in the collection above."
+    },
+    {
+      "type": "text",
+      "id": "top_tag_label",
+      "label": "Rank badge label",
+      "default": "#1 Bestseller"
+    },
+    {
+      "type": "text",
+      "id": "tag_label",
+      "label": "Standard badge label",
+      "default": "Bestseller",
+      "info": "Shown on every product except the #1 above. Clear this to show no badge on the rest of the set."
+    },
+    {
+      "type": "header",
+      "content": "Trust marks"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust",
+      "label": "Show trust marks under the carousel",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_one",
+      "label": "Trust mark 1",
+      "default": "FSSAI Certified"
+    },
+    {
+      "type": "text",
+      "id": "trust_two",
+      "label": "Trust mark 2",
+      "default": "100% Vegetarian · Jain-friendly"
+    },
+    {
+      "type": "header",
+      "content": "Footer"
     },
     {
       "type": "checkbox",

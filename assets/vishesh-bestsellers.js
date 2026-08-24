@@ -1,8 +1,17 @@
 /**
  * Bestsellers centered carousel (thehealthfactory-style technique, brand skin).
- * Active slide sits full-size on a rounded arch whose color follows the
- * slide's data-color; neighbours scale down and drop back. Autoplays.
- * Reduced motion: no autoplay, no scale choreography.
+ * The active slide sits full-size and its neighbours recede; each card
+ * carries its own arch-shaped media well tinted by the slide's data-color,
+ * and a soft halo behind the stage picks up whichever colour is centred.
+ * Autoplays. Reduced motion: no autoplay, no transition.
+ *
+ * Phase 19: the scale/opacity choreography moved out of GSAP and into CSS
+ * transitions on .vishesh-bestsellers__card. Two reasons - it no longer
+ * writes transforms onto the slide element that Swiper also owns, and the
+ * card and the wrapper travel now share one easing curve, which is what
+ * made the old slide change feel mechanical. This file is left with the
+ * two things CSS cannot do: tint the halo, and hold autoplay while a
+ * shopper is inside a pack selector.
  */
 (function () {
   function init() {
@@ -14,38 +23,36 @@
     section.dataset.ready = 'true';
 
     var reduced = window.VM && window.VM.reducedMotion;
-    var arch = section.querySelector('[data-bestsellers-arch]');
+    var glow = section.querySelector('[data-bestsellers-arch]');
 
-    function updateScale(swiper) {
-      swiper.slides.forEach(function (slide) {
-        var isActive = slide.classList.contains('swiper-slide-active');
-        if (window.gsap && !reduced) {
-          gsap.to(slide, { scale: isActive ? 1 : 0.82, y: isActive ? 0 : 36, duration: 0.35, ease: 'power2.out' });
-        }
-        if (isActive) {
-          var color = slide.dataset.color;
-          if (arch && color) arch.style.background = color;
-          var tag = slide.querySelector('.vishesh-bestsellers__tag');
-          // The title's own background chip is a fixed color set in CSS
-          // (.vishesh-bestsellers__title) - it doesn't need to track the
-          // rotating accent the way the arch and tag do, and coloring it
-          // to match the arch (as this used to do) made it unreadable
-          // whenever the rotating accent landed on a lighter swatch.
-          if (tag && color) tag.style.background = color;
-        }
-      });
+    function syncGlow(swiper) {
+      if (!glow) return;
+      var active = swiper.slides[swiper.activeIndex];
+      if (!active) return;
+      var color = active.dataset.color;
+      // Set the custom property rather than `background` outright: the
+      // element's own radial-gradient stays in CSS and only its stop
+      // colour tracks the centred slide.
+      if (color) glow.style.setProperty('--glow-color', color);
     }
 
     var swiper = new Swiper(el, {
       loop: true,
       centeredSlides: true,
-      speed: reduced ? 0 : 500,
-      slidesPerView: 1,
-      spaceBetween: 8,
+      // Slightly longer than the old 500ms so the travel reads as settling
+      // rather than snapping; matches the card's 0.55s scale transition.
+      speed: reduced ? 0 : 620,
+      // Phase 19: was a flat 1 slide, which parked the neighbours fully
+      // off-screen on phones - the card treatment on them was invisible
+      // and nothing signalled the carousel could be swiped. A fractional
+      // view brings the next card back to the edge as a peek.
+      slidesPerView: 1.25,
+      spaceBetween: 14,
       grabCursor: true,
+      watchSlidesProgress: true,
       autoplay: reduced
         ? false
-        : { delay: 3200, disableOnInteraction: false, pauseOnMouseEnter: true },
+        : { delay: 3600, disableOnInteraction: false, pauseOnMouseEnter: true },
       navigation: {
         nextEl: section.querySelector('[data-bestsellers-next]'),
         prevEl: section.querySelector('[data-bestsellers-prev]'),
@@ -61,10 +68,10 @@
       },
       on: {
         init: function () {
-          updateScale(this);
+          syncGlow(this);
         },
         slideChangeTransitionStart: function () {
-          updateScale(this);
+          syncGlow(this);
         },
       },
     });
