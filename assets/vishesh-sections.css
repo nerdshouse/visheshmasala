@@ -4019,3 +4019,264 @@
     opacity: 0.35;
   }
 }
+
+/* ---------- Collection banner: ambient strap ----------
+   Sits behind the collection title on every collection page. Kept low
+   contrast and small on purpose: this is texture, not a hero
+   animation, and the title has to stay the thing you read first.
+   CSS/SVG only, nothing here needs JS or canvas. */
+.collection-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-hero__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.vishesh-strap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--color-primary);
+}
+
+/* ---- Chai cup with steam ---- */
+.vishesh-strap__chai {
+  position: absolute;
+  left: 6%;
+  bottom: 18%;
+  width: 2.6rem;
+  height: 3.2rem;
+  opacity: 0.4;
+}
+
+.vishesh-strap__cup {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.3rem;
+  width: 2rem;
+  height: 1.4rem;
+  border-radius: 0 0 0.9rem 0.9rem;
+  background: currentColor;
+}
+
+.vishesh-strap__saucer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 2.6rem;
+  height: 0.35rem;
+  border-radius: 99rem;
+  background: currentColor;
+  opacity: 0.75;
+}
+
+/* Reuses the steam treatment from the footer seal. */
+.vishesh-strap__steam {
+  position: absolute;
+  bottom: 2rem;
+  left: 0.5rem;
+  width: 1.8rem;
+  height: 1.4rem;
+}
+
+.vishesh-strap__steam span {
+  position: absolute;
+  bottom: 0;
+  width: 0.2rem;
+  height: 1rem;
+  border-radius: 99rem;
+  background: linear-gradient(to top, currentColor, transparent);
+  opacity: 0;
+  animation: vishesh-strap-steam 3.4s ease-in-out infinite;
+}
+
+.vishesh-strap__steam span:nth-child(1) { left: 0.1rem; animation-delay: 0s; }
+.vishesh-strap__steam span:nth-child(2) { left: 0.75rem; height: 1.3rem; animation-delay: 0.9s; }
+.vishesh-strap__steam span:nth-child(3) { left: 1.4rem; animation-delay: 1.8s; }
+
+@keyframes vishesh-strap-steam {
+  0% { opacity: 0; transform: translateY(0.3rem) scaleY(0.6); }
+  35% { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(-1rem) scaleY(1.1); }
+}
+
+/* ---- Auto-rickshaw crossing the strap ---- */
+.vishesh-strap__rickshaw {
+  position: absolute;
+  bottom: 12%;
+  left: 0;
+  width: 4.4rem;
+  height: 2.8rem;
+  opacity: 0.22;
+  animation: vishesh-strap-drive 26s linear infinite;
+}
+
+.vishesh-strap__rickshaw svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes vishesh-strap-drive {
+  0% { transform: translateX(-6rem); }
+  100% { transform: translateX(calc(100vw + 6rem)); }
+}
+
+/* ---- Drifting spice granules ---- */
+.vishesh-strap__drift {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(0.5px);
+  animation: vishesh-strap-drift 13s ease-in-out infinite;
+}
+
+.vishesh-strap__drift--1 {
+  width: 1.1rem; height: 1.1rem; top: 26%; left: 32%;
+  background: radial-gradient(circle at 35% 30%, rgba(244, 201, 93, 0.55), rgba(244, 201, 93, 0.03) 72%);
+}
+
+.vishesh-strap__drift--2 {
+  width: 0.8rem; height: 0.8rem; top: 62%; left: 58%;
+  background: radial-gradient(circle at 35% 30%, rgba(193, 89, 44, 0.5), rgba(193, 89, 44, 0.03) 72%);
+  animation-duration: 16s; animation-delay: 1.4s;
+}
+
+.vishesh-strap__drift--3 {
+  width: 1rem; height: 1rem; top: 34%; left: 82%;
+  background: radial-gradient(circle at 35% 30%, rgba(110, 139, 90, 0.45), rgba(110, 139, 90, 0.03) 72%);
+  animation-duration: 11s; animation-delay: 2.6s;
+}
+
+@keyframes vishesh-strap-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(1.4rem, -0.9rem); }
+}
+
+@media screen and (max-width: 749px) {
+  /* Tighter band on phones - drop the rickshaw so the remaining
+     elements are not crowding the title. */
+  .vishesh-strap__rickshaw { display: none; }
+  .vishesh-strap__chai { left: 4%; transform: scale(0.85); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-strap__rickshaw,
+  .vishesh-strap__drift,
+  .vishesh-strap__steam span {
+    animation: none;
+  }
+
+  .vishesh-strap__steam span { opacity: 0.35; }
+  .vishesh-strap__rickshaw { transform: translateX(12vw); }
+}
+
+/* ---------- Our Story: journey intro ----------
+   Centred title over a left-aligned body at a real measure. The
+   previous version centred multi-sentence paragraphs across the full
+   section width, which is hard to scan; ~68ch keeps line length in a
+   comfortable range at this size. */
+.vishesh-jintro {
+  padding: 8rem 0 5.6rem;
+}
+
+.vishesh-jintro__inner {
+  max-width: 82rem;
+}
+
+.vishesh-jintro__head {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.vishesh-jintro__eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1.4rem;
+}
+
+.vishesh-jintro__heading {
+  font-family: var(--font-heading-family);
+  font-size: clamp(3.2rem, 4.4vw, 4.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--color-dark);
+}
+
+/* Short rule under the title - a deliberate divider rather than
+   relying on default block spacing to separate title from body. */
+.vishesh-jintro__rule {
+  display: block;
+  width: 5.6rem;
+  height: 0.3rem;
+  border-radius: 99rem;
+  background: var(--color-primary);
+  margin: 2.4rem auto 0;
+}
+
+.vishesh-jintro__body {
+  max-width: 68ch;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.vishesh-jintro__body p {
+  margin: 0 0 1.8rem;
+  font-size: 1.7rem;
+  line-height: 1.75;
+  color: var(--color-dark);
+}
+
+.vishesh-jintro__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Pulled quote: the middle paragraph, set against a left accent rule
+   so the block has a shape instead of three even paragraphs. */
+.vishesh-jintro__pull {
+  margin: 3.2rem 0;
+  padding: 0.4rem 0 0.4rem 2.4rem;
+  border-left: 0.4rem solid var(--color-primary);
+}
+
+.vishesh-jintro__pull p {
+  font-family: var(--font-heading-family);
+  font-size: clamp(1.9rem, 2.1vw, 2.3rem);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--color-dark);
+  margin: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-jintro {
+    padding: 5.6rem 0 4rem;
+  }
+
+  .vishesh-jintro__head {
+    margin-bottom: 3.2rem;
+  }
+
+  .vishesh-jintro__rule {
+    margin-top: 2rem;
+  }
+
+  .vishesh-jintro__body p {
+    font-size: 1.6rem;
+    line-height: 1.7;
+  }
+
+  .vishesh-jintro__pull {
+    margin: 2.4rem 0;
+    padding-left: 1.6rem;
+    border-left-width: 0.3rem;
+  }
+}

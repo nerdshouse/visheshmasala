@@ -11,6 +11,39 @@
 
 <div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
   <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {%- comment -%}
+      Ambient strap behind the collection title. Deliberately quiet -
+      low opacity, small elements, slow loops - so it reads as texture
+      the title sits on rather than competing with it. Purely
+      decorative, so the whole layer is aria-hidden and carries no
+      text. Being in this shared banner section, it appears on every
+      collection page, including empty ones, without any per-collection
+      setup.
+    {%- endcomment -%}
+    <div class="vishesh-strap" aria-hidden="true">
+      <span class="vishesh-strap__chai">
+        <span class="vishesh-strap__steam">
+          <span></span><span></span><span></span>
+        </span>
+        <span class="vishesh-strap__cup"></span>
+        <span class="vishesh-strap__saucer"></span>
+      </span>
+
+      <span class="vishesh-strap__rickshaw">
+        <svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <path d="M14 30h30V16c0-6-5-10-11-10h-4c-8 0-15 6-15 14v10Z" opacity="0.55"/>
+          <path d="M44 30h8l-4-9h-4v9Z" opacity="0.45"/>
+          <circle cx="18" cy="32" r="6" opacity="0.7"/>
+          <circle cx="46" cy="32" r="5" opacity="0.7"/>
+          <rect x="20" y="12" width="16" height="8" rx="2" opacity="0.3"/>
+        </svg>
+      </span>
+
+      <span class="vishesh-strap__drift vishesh-strap__drift--1"></span>
+      <span class="vishesh-strap__drift vishesh-strap__drift--2"></span>
+      <span class="vishesh-strap__drift vishesh-strap__drift--3"></span>
+    </div>
+
     <div class="collection-hero__text-wrapper">
       <h1 class="collection-hero__title" data-animate="fade-up">
         <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>

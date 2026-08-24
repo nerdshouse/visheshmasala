@@ -1,42 +1,14 @@
 {
   "sections": {
     "journey": {
-      "type": "rich-text",
-      "blocks": {
-        "journey-caption": {
-          "type": "caption",
-          "settings": {
-            "caption": "Since the early 70's",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
-          }
-        },
-        "journey-heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Vishesh Journey",
-            "heading_size": "h0"
-          }
-        },
-        "journey-text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>With over 50+ years of experience in the business of Spices (Masala) production, Wankawala family has taken the legacy forward with a brand VISHESH MASALA under the eminent leadership of Mr. Sundeep Wankawala and Mr. Nilesh Wankawala.</p><p>The foundation of Vishesh is based on strong values of simplicity, honesty and the company's dynamic workforce - its biggest asset - that blends a remarkable history and legacy with visionary growth and innovation.</p><p>Vishesh Masala has always remained committed to creating uncompromised quality and exceptional taste, and continues to expand its circle of committed stakeholders and ever-growing loyal customer base.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "journey-caption",
-        "journey-heading",
-        "journey-text"
-      ],
+      "type": "vishesh-journey-intro",
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-1",
-        "full_width": true,
-        "padding_top": 80,
-        "padding_bottom": 52
+        "eyebrow": "Since the early 70's",
+        "heading": "Vishesh Journey",
+        "lead": "<p>With over 50+ years of experience in the business of Spices (Masala) production, Wankawala family has taken the legacy forward with a brand VISHESH MASALA under the eminent leadership of Mr. Sundeep Wankawala and Mr. Nilesh Wankawala.</p>",
+        "pull_quote": "<p>The foundation of Vishesh is based on strong values of simplicity, honesty and the company's dynamic workforce - its biggest asset - that blends a remarkable history and legacy with visionary growth and innovation.</p>",
+        "body": "<p>Vishesh Masala has always remained committed to creating uncompromised quality and exceptional taste, and continues to expand its circle of committed stakeholders and ever-growing loyal customer base.</p>",
+        "color_scheme": "scheme-1"
       }
     },
     "founder": {

@@ -1,0 +1,65 @@
+{{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+  Our Story intro. Replaces a stock Dawn rich-text block that centred
+  everything at full section width - the heading ran to 52px with no
+  column measure and the three multi-sentence paragraphs were centred,
+  which is hard to scan and read as a default section rather than a
+  designed one.
+
+  Structure here: eyebrow and heading stay centred as a section title,
+  the body drops to a real measure and left-aligns, and the middle
+  paragraph is pulled out as a quote against a left accent rule so the
+  block has a deliberate shape instead of three even paragraphs.
+
+  The body stays inside .rte because the Phase 14 highlighter finds its
+  phrases by scanning .rte blocks and wrapping them client-side. Move
+  the copy out of .rte and the animated highlight silently stops
+  working - the mechanic itself is untouched here.
+{% endcomment %}
+<div class="vishesh-jintro color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width vishesh-jintro__inner">
+    <header class="vishesh-jintro__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="vishesh-jintro__eyebrow" data-animate="fade-up">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="vishesh-jintro__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      <span class="vishesh-jintro__rule" aria-hidden="true"></span>
+    </header>
+
+    <div class="vishesh-jintro__body">
+      {%- if section.settings.lead != blank -%}
+        <div class="vishesh-jintro__lead rte" data-animate="fade-up">{{ section.settings.lead }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.pull_quote != blank -%}
+        <blockquote class="vishesh-jintro__pull rte" data-animate="fade-up">
+          {{ section.settings.pull_quote }}
+        </blockquote>
+      {%- endif -%}
+
+      {%- if section.settings.body != blank -%}
+        <div class="vishesh-jintro__text rte" data-animate="fade-up">{{ section.settings.body }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Vishesh Journey Intro",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Since the early 70's" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Vishesh Journey" },
+    { "type": "richtext", "id": "lead", "label": "Lead paragraph" },
+    { "type": "richtext", "id": "pull_quote", "label": "Pulled quote" },
+    { "type": "richtext", "id": "body", "label": "Closing paragraph" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" }
+  ],
+  "presets": [{ "name": "Vishesh Journey Intro" }]
+}
+{% endschema %}
