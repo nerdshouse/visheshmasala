@@ -42,19 +42,28 @@
       silhouette with a stagger of "flavour waves" (styled like a mini
       equaliser) rather than a generic speaker icon.
     {% endcomment %}
+    {%- comment -%}
+      Both states are a speaker cone, the conventional pattern: muted
+      shows a slash, playing shows sound-wave arcs. The arcs keep the
+      staggered animation the old equaliser bars had, so the button
+      still reads as actively playing rather than just toggled.
+    {%- endcomment -%}
     <span class="vishesh-sound-btn__icon vishesh-sound-btn__icon--off" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M12 2.5 13.9 9 20.5 9.9 15.7 14.2 17 20.8 12 17.4 7 20.8 8.3 14.2 3.5 9.9 10.1 9Z"
-          fill="currentColor"
-        />
+        <path d="M4 9.5h3.4L12 5.6v12.8L7.4 14.5H4Z" fill="currentColor"/>
+        <path d="M16.5 9.5 21 14M21 9.5 16.5 14" stroke="currentColor" stroke-width="1.9"
+              stroke-linecap="round"/>
       </svg>
     </span>
     <span class="vishesh-sound-btn__icon vishesh-sound-btn__icon--on" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect class="vishesh-sound-btn__bar vishesh-sound-btn__bar--1" x="5.5" y="10" width="3" height="8" rx="1.5" fill="currentColor"/>
-        <rect class="vishesh-sound-btn__bar vishesh-sound-btn__bar--2" x="10.5" y="5.5" width="3" height="13" rx="1.5" fill="currentColor"/>
-        <rect class="vishesh-sound-btn__bar vishesh-sound-btn__bar--3" x="15.5" y="8" width="3" height="10.5" rx="1.5" fill="currentColor"/>
+        <path d="M4 9.5h3.4L12 5.6v12.8L7.4 14.5H4Z" fill="currentColor"/>
+        <path class="vishesh-sound-btn__wave vishesh-sound-btn__wave--1"
+              d="M15.2 9.6a3.6 3.6 0 0 1 0 4.8" stroke="currentColor" stroke-width="1.9"
+              stroke-linecap="round"/>
+        <path class="vishesh-sound-btn__wave vishesh-sound-btn__wave--2"
+              d="M18 7.6a7 7 0 0 1 0 8.8" stroke="currentColor" stroke-width="1.9"
+              stroke-linecap="round"/>
       </svg>
     </span>
   </button>

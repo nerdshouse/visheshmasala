@@ -52,6 +52,12 @@
 
 <div class="vishesh-city-scene vishesh-city-scene--{{ city }}" data-animate="fade-up">
     <div class="page-width vishesh-city-scene__header">
+      {%- comment -%}
+        The sound button belongs to this moment, not the price row it
+        used to sit in - it plays the sound of the scene beside it.
+        Same snippet, same data-sound-key / aria wiring, just rendered
+        here instead.
+      {%- endcomment -%}
       <p class="vishesh-city-scene__caption">
         {%- if city == 'mumbai' -%}
           A taste that feels like Mumbai's streets
@@ -79,6 +85,7 @@
           Stone-ground, the traditional way
         {%- endif -%}
       </p>
+      {% render 'vishesh-sound-button', product: product %}
     </div>
     <div class="vishesh-city-scene__stage" aria-hidden="true">
       {%- case city -%}
@@ -760,11 +767,88 @@
           </svg>
         {%- else -%}
           {%- comment -%}
-            Generic "spice-dust" fallback for any product without a
-            recognised city_theme value - a soft drift of small ground-
-            spice motes over a plain gradient, no illustration, no
-            invented story. CSS-only ambient motion, no SVG needed.
+            Fallback scene for any product without a recognised
+            city_theme. This used to be dust motes over a bare
+            gradient, which read as an empty section.
+
+            It is a rasoi (kitchen) vignette rather than a city on
+            purpose: eight products were deliberately left without a
+            regional association in Phase 11 ("don't invent an
+            association for these"), and this is what they fall back
+            to. A kitchen is true of every product in the range, so it
+            gives the section real content without inventing a place
+            the spice is not actually from. The dust layer is kept on
+            top, where it now reads as spice in the air above the
+            counter rather than as the whole scene.
           {%- endcomment -%}
+          <svg
+            class="vishesh-city-scene__svg"
+            viewBox="0 0 800 220"
+            preserveAspectRatio="xMidYMax slice"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="vm-rasoi-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="var(--color-cream)"/>
+                <stop offset="1" stop-color="#fff9ee"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="800" height="220" fill="url(#vm-rasoi-sky)"/>
+
+            <!-- Back wall shelf with masala jars -->
+            <g fill="var(--color-dark)" opacity="0.16">
+              <rect x="70" y="74" width="220" height="5" rx="2"/>
+              <rect x="92" y="46" width="26" height="28" rx="3"/>
+              <rect x="130" y="52" width="22" height="22" rx="3"/>
+              <rect x="164" y="42" width="28" height="32" rx="3"/>
+              <rect x="204" y="54" width="20" height="20" rx="3"/>
+              <rect x="236" y="48" width="26" height="26" rx="3"/>
+            </g>
+
+            <!-- Hanging ladle and strainer -->
+            <g stroke="var(--color-dark)" stroke-width="2" opacity="0.18" fill="none">
+              <path d="M596 40 V72"/>
+              <circle cx="596" cy="80" r="9"/>
+              <path d="M636 40 V66"/>
+              <path d="M624 66 h24 a12 12 0 0 1 -24 0 Z" fill="var(--color-dark)" stroke="none"/>
+            </g>
+
+            <!-- Counter -->
+            <rect x="0" y="176" width="800" height="6" fill="var(--color-dark)" opacity="0.28"/>
+
+            <!-- Spice mounds on the counter -->
+            <g opacity="0.75">
+              <path d="M120 176 q26 -34 52 0 Z" fill="var(--color-accent)"/>
+              <path d="M186 176 q22 -26 44 0 Z" fill="var(--color-terracotta)"/>
+              <path d="M660 176 q24 -30 48 0 Z" fill="var(--color-sage)" opacity="0.8"/>
+            </g>
+
+            <!-- Mortar and pestle: the "stone-ground" the caption speaks to -->
+            <g>
+              <path d="M300 176 h84 l-10 -34 h-64 Z" fill="var(--color-dark)" opacity="0.38"/>
+              <rect class="vishesh-rasoi-pestle" x="336" y="104" width="9" height="42" rx="4"
+                    fill="var(--color-dark)" opacity="0.42"/>
+            </g>
+
+            <!-- Stove, pot and flame -->
+            <g>
+              <rect x="452" y="168" width="96" height="10" rx="3" fill="var(--color-dark)" opacity="0.34"/>
+              <g class="vishesh-rasoi-flame">
+                <path d="M500 168 q-16 -18 0 -34 q4 12 12 16 q6 8 -12 18 Z" fill="var(--color-accent)"/>
+                <path d="M500 168 q-8 -10 0 -19 q3 7 7 9 q3 5 -7 10 Z" fill="var(--color-primary)" opacity="0.85"/>
+              </g>
+              <path d="M462 148 h76 l-9 -30 h-58 Z" fill="var(--color-dark)" opacity="0.5"/>
+              <rect x="456" y="112" width="88" height="8" rx="4" fill="var(--color-dark)" opacity="0.55"/>
+            </g>
+
+            <!-- Steam off the pot -->
+            <g class="vishesh-rasoi-steam" stroke="var(--color-dark)" stroke-width="3"
+               stroke-linecap="round" fill="none" opacity="0.22">
+              <path class="vishesh-rasoi-steam--1" d="M478 104 q-8 -14 0 -26 q8 -12 0 -24"/>
+              <path class="vishesh-rasoi-steam--2" d="M500 100 q-8 -16 0 -30 q8 -14 0 -26"/>
+              <path class="vishesh-rasoi-steam--3" d="M522 104 q-8 -14 0 -26 q8 -12 0 -24"/>
+            </g>
+          </svg>
           <div class="vishesh-city-scene__dust" aria-hidden="true">
             <span class="vishesh-dust-mote vishesh-dust-mote--1"></span>
             <span class="vishesh-dust-mote vishesh-dust-mote--2"></span>
