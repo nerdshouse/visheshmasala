@@ -2145,19 +2145,41 @@
    5rem/3.6rem padded box - oversized relative to its content, out of
    step with the type-scale reduction pass elsewhere in the theme. */
 .collection-hero {
-  padding: 3rem 0 2.2rem;
+  /* Mobile only in practice: Dawn's component-collection-hero.css sets
+     padding: 0 from 750px up, and that @media rule wins over this one
+     on desktop. So this value is what actually adds height on phones,
+     and the desktop height comes purely from the type below. */
+  padding: 1.75rem 0 1.5rem;
 }
 
 .collection-hero__title {
   color: var(--color-primary);
   font-weight: 800;
   text-transform: uppercase;
-  font-size: clamp(2.2rem, 3vw, 3.6rem);
+  /* Down from clamp(2.2rem, 3vw, 3.6rem). With desktop padding already
+     zeroed by Dawn, the title's size and margin are the only levers on
+     the banner's height there. */
+  font-size: clamp(1.8rem, 2.4vw, 2.8rem);
 }
 
-.collection-hero__description {
+/* These two need the extra class to outrank Dawn, not for effect:
+   component-collection-hero.css loads after this file, so at equal
+   specificity Dawn wins on order. It sets `margin: 2.5rem 0` as a
+   shorthand on the title (which is why a plain margin-bottom here was
+   ignored) and styles the description through an adjacent-sibling
+   selector. Scoping under .collection-hero raises specificity just
+   enough to take both back. */
+.collection-hero .collection-hero__title {
+  margin: 1.3rem 0;
+}
+
+.collection-hero .collection-hero__title + .collection-hero__description {
   max-width: 64rem;
-  font-size: 1.5rem;
+  /* Scaled with the title so the band reads as one compact block
+     rather than a smaller heading beside full-size body copy. */
+  font-size: 1.35rem;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
 }
 
 /* ---------- PDP: info card + editorial price ---------- */
