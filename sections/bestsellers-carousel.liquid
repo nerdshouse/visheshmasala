@@ -60,10 +60,26 @@
                   {%- endif -%}
                   <a href="{{ product.url }}" class="vishesh-bestsellers__image-wrap">
                     {%- if product.featured_image -%}
+                      {% comment %}
+                        The card image renders at ~260px on phones and
+                        ~320px on desktop. Without a `sizes` hint the
+                        browser assumes 100vw and takes the widest
+                        candidate it has - it was pulling the 900w file
+                        for a 261px slot, measured live. On a slow
+                        connection that is what makes the arch sit as a
+                        blank block of colour for a beat before the pack
+                        photo appears. Candidates are sized for the real
+                        slot instead, with headroom for 2x screens.
+                      {% endcomment %}
                       {{
                         product.featured_image
-                        | image_url: width: 900
-                        | image_tag: loading: 'lazy', class: 'vishesh-bestsellers__image', widths: '450, 700, 900', alt: product.title
+                        | image_url: width: 640
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'vishesh-bestsellers__image',
+                          widths: '260, 400, 520, 640',
+                          sizes: '(min-width: 990px) 320px, 260px',
+                          alt: product.title
                       }}
                     {%- endif -%}
                   </a>
