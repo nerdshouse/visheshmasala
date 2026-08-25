@@ -1298,26 +1298,88 @@
 }
 
 .vishesh-timeline__card {
+  position: relative;
+  overflow: hidden;
   background: #ffffff;
   border-radius: 1.6rem;
-  padding: 3.2rem 2.8rem;
+  padding: 4rem 3.2rem;
   box-shadow: 0 1.2rem 3.2rem rgba(74, 52, 24, 0.12);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.6rem;
+  gap: 2.4rem;
+}
+
+/* ---- Card meta: pin + step counter + progress ----
+   The counter was 1.3rem and easy to miss despite doing the wayfinding
+   through nine steps. It now sits on the card's top row beside the pin,
+   at display size, with a bar underneath showing how far along the
+   journey the reader is. */
+.vishesh-timeline__meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.8rem;
+  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .vishesh-timeline__count {
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 0.2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
   color: var(--color-primary);
+  line-height: 1;
+}
+
+.vishesh-timeline__count-now {
+  font-size: 3.2rem;
 }
 
 .vishesh-timeline__count-total {
+  font-size: 1.8rem;
   opacity: 0.45;
+}
+
+.vishesh-timeline__count-bar {
+  display: block;
+  /* Own row under the n/9 pair. */
+  flex-basis: 100%;
+  margin-top: 0.9rem;
+  width: 11rem;
+  height: 0.4rem;
+  border-radius: 99rem;
+  background: rgba(74, 52, 24, 0.14);
+  overflow: hidden;
+}
+
+.vishesh-timeline__count-fill {
+  display: block;
+  height: 100%;
+  border-radius: 99rem;
+  background: var(--color-primary);
+}
+
+/* Oversized era year behind the copy - fills the lower half of a card
+   that now spans the whole stage, with no image request. */
+.vishesh-timeline__watermark {
+  position: absolute;
+  right: 2.4rem;
+  bottom: -1.2rem;
+  font-size: clamp(8rem, 11vw, 15rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--color-primary);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
 }
 
 .vishesh-timeline__pin {
@@ -1345,10 +1407,14 @@
 
 .vishesh-timeline__text {
   margin: 0;
-  font-size: 1.7rem;
-  line-height: 1.6;
+  /* Up from 1.7rem: the card carries the whole stage now, and body copy
+     at the old size read as a caption inside it. */
+  font-size: 1.9rem;
+  line-height: 1.65;
   font-weight: 500;
   color: #4a3418;
+  position: relative;
+  z-index: 1;
 }
 
 /* ---- Enhanced: one stuck stage, milestones swap inside it ---- */
@@ -1359,31 +1425,55 @@
   position: relative;
 }
 
-/* The stage fills the viewport and centres its milestone.
-   Note this partly walks back the earlier "remove display:flex"
-   change: with the stage hugging its content at the top of a sticky
-   full-height area, the leftover viewport height all pooled into one
-   dead band underneath (measured 451px of empty cream below a 449px
-   stage in a 900px viewport). Centring spreads that space evenly
-   above and below instead, which is what removes the empty look.
-   Uses grid rather than flex purely because align-content does the
-   job in one property here. */
+/* The stage fills the viewport and its milestone fills the stage.
+   History worth keeping: this first hugged its content at the top of a
+   sticky full-height area, which pooled all the leftover height into one
+   dead band underneath. Centring (align-content: center) split that band
+   in two instead of removing it - measured 900px stage against 374px of
+   content, so 263px of dead cream above the card and another 263px
+   below, on every one of the nine steps. Stretching is what actually
+   closes it: the row now takes the stage's full height and the rail and
+   card below fill it, rather than floating in the middle of it. */
 .vishesh-timeline--live .vishesh-timeline__stage {
   position: sticky;
   top: 0;
-  min-height: 100vh;
+  /* Capped so a very tall desktop window does not stretch one milestone
+     over 1200px of card. */
+  min-height: min(100vh, 82rem);
   display: grid;
-  align-content: center;
+  align-content: stretch;
   padding: 3rem 0;
+}
+
+.vishesh-timeline--live .vishesh-timeline__inner {
+  height: 100%;
+}
+
+.vishesh-timeline--live .vishesh-timeline__cards {
+  height: 100%;
+}
+
+.vishesh-timeline--live .vishesh-timeline__card {
+  height: 100%;
+  /* Meta and copy centre together as one group, with the watermark
+     anchoring the bottom. Pinning the meta to the top and centring the
+     copy in the leftover space (the first attempt) opened a gap through
+     the middle of the card that read as another hole to fill. */
+  justify-content: center;
 }
 
 .vishesh-timeline--live .vishesh-timeline__rail {
   flex-direction: column;
   align-items: flex-start;
   flex-wrap: nowrap;
+  /* space-between rather than a fixed gap: the nine years now spread
+     across the stage's full height, so the rail carries real weight
+     instead of bunching into a short list beside a tall card. */
+  justify-content: space-between;
   gap: 1.6rem;
+  height: 100%;
   position: relative;
-  padding-left: 2.2rem;
+  padding-left: 2.6rem;
 }
 
 /* Track the milestones sit on, plus a fill that grows with --progress
@@ -1412,10 +1502,13 @@
 
 .vishesh-timeline--live .vishesh-timeline__step {
   position: relative;
-  /* Milestones arrive one at a time - anything not yet reached stays
-     out of view rather than sitting greyed out, so the list builds as
-     the reader scrolls instead of being present from the start. */
-  opacity: 0;
+  /* Phase 20 revises an earlier call here. Unreached milestones used to
+     be fully transparent so the list built up as the reader scrolled -
+     but with the rail now spanning the full stage height, that left a
+     760px column holding a single visible year and a faint track. They
+     are present but faint instead: the rail reads as a whole journey
+     with your position on it, which is the job it is doing. */
+  opacity: 0.22;
   transform: translateY(0.6rem);
   transition: opacity 0.45s ease, transform 0.45s ease, color 0.3s ease;
 }
@@ -1440,8 +1533,21 @@
 }
 
 .vishesh-timeline--live .vishesh-timeline__step.is-active .vishesh-timeline__dot {
-  transform: scale(1.9);
+  transform: scale(2.2);
   background: var(--color-primary);
+}
+
+/* The active year steps up in size as it becomes current, so the rail
+   reads as a position indicator rather than a static list. */
+.vishesh-timeline--live .vishesh-timeline__step-year {
+  display: inline-block;
+  font-size: 1.5rem;
+  transition: font-size 0.35s ease, transform 0.35s ease;
+}
+
+.vishesh-timeline--live .vishesh-timeline__step.is-active .vishesh-timeline__step-year {
+  font-size: 2.4rem;
+  font-weight: 800;
 }
 
 /* Cards become a single stack with only the current one shown. Height
@@ -1476,6 +1582,33 @@
     flex-direction: row;
     align-items: center;
     gap: 4.8rem;
+  }
+
+  /* Stretch, not centre - align-items:center would keep the rail and the
+     card at content height inside a full-height row and put the dead
+     space straight back. */
+  .vishesh-timeline--live .vishesh-timeline__inner {
+    align-items: stretch;
+  }
+
+  .vishesh-timeline--live .vishesh-timeline__card {
+    padding: 5.6rem 4.8rem;
+  }
+
+  .vishesh-timeline--live .vishesh-timeline__text {
+    font-size: 2.1rem;
+    max-width: 46rem;
+  }
+
+  .vishesh-timeline__meta {
+    justify-content: flex-start;
+  }
+
+  /* 64rem was sized for a card that hugged its copy. With the card
+     spanning the stage, that measure left the whole thing floating in a
+     narrow column down the middle of a 1440px page. */
+  .vishesh-timeline--live .vishesh-timeline__inner {
+    max-width: 104rem;
   }
 
   .vishesh-timeline__rail {
@@ -1514,6 +1647,21 @@
     min-height: calc(var(--milestone-count, 9) * 34vh);
   }
 
+  /* A full-viewport stage on a phone gave a 710px card holding four lines
+     of copy - the stage was technically full, but the empty space had
+     just moved from cream to white. Shorter stage, and the meta and copy
+     centre as one group instead of the meta pinning to the top and
+     leaving a gap in the middle of the card. */
+  .vishesh-timeline--live .vishesh-timeline__stage {
+    min-height: min(88vh, 56rem);
+  }
+
+  .vishesh-timeline__watermark {
+    right: 1.6rem;
+    bottom: -0.8rem;
+    font-size: 7.2rem;
+  }
+
   /* Mobile rail is a horizontal dot strip, not the desktop year list.
      Nine year labels cannot sit side by side at this width - they
      collided with the dots, which were still absolutely positioned
@@ -1528,6 +1676,17 @@
     align-items: center;
     gap: 0.9rem;
     padding-left: 0;
+    /* Undo the desktop rail's full-height stretch. Here the rail is a
+       horizontal dot strip, and inheriting height:100% ballooned it into
+       a 286px band with the dots floating in the middle of it. */
+    height: auto;
+    flex: 0 0 auto;
+  }
+
+  /* The card takes whatever the strip leaves, so the stage still fills. */
+  .vishesh-timeline--live .vishesh-timeline__cards {
+    flex: 1 1 auto;
+    height: auto;
   }
 
   .vishesh-timeline--live .vishesh-timeline__step {
@@ -1914,20 +2073,6 @@
   flex: none;
 }
 
-.vishesh-bestsellers__tag--std {
-  top: 9rem;
-  left: -0.6rem;
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--color-primary);
-  border: 0.1rem solid rgba(242, 28, 38, 0.26);
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  padding: 0.5rem 1.1rem;
-  box-shadow: 0 0.4rem 1.2rem rgba(74, 52, 24, 0.1);
-}
-
 .vishesh-bestsellers__content {
   display: flex;
   flex-direction: column;
@@ -2132,13 +2277,6 @@
     left: -0.8rem;
     font-size: 1.2rem;
     padding: 0.6rem 1.2rem 0.6rem 1rem;
-  }
-
-  .vishesh-bestsellers__tag--std {
-    top: 6rem;
-    left: -0.4rem;
-    font-size: 1rem;
-    padding: 0.45rem 0.9rem;
   }
 
   .vishesh-bestsellers__tag-icon {
@@ -4195,34 +4333,113 @@
   position: relative;
 }
 
-.vishesh-seal__steam {
-  position: absolute;
-  top: -1.4rem;
-  left: 0.4rem;
-  width: 3rem;
-  height: 2rem;
-  pointer-events: none;
+/* ---- Footer cooking vignette (snippets/vishesh-cooking-vignette.liquid)
+   Replaces the Phase 16 .vishesh-seal__steam wisps, which were 0.25rem
+   wide at 0.45 opacity - too small to register as an intentional touch.
+   Inline SVG + keyframes only: no image request, nothing to lazy-load. */
+.vishesh-cookpot {
+  margin: 2rem auto 0;
+  width: 100%;
+  max-width: 16rem;
 }
 
-.vishesh-seal__steam span {
-  position: absolute;
-  bottom: 0;
-  width: 0.25rem;
-  height: 1.4rem;
-  border-radius: 99rem;
-  background: linear-gradient(to top, currentColor, transparent);
+.vishesh-cookpot__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.vishesh-cookpot__steam {
+  stroke: #ffffff;
   opacity: 0;
-  animation: vishesh-steam-curl 3.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: vishesh-cookpot-steam 4.2s ease-in-out infinite;
 }
 
-.vishesh-seal__steam span:nth-child(1) { left: 0.2rem; animation-delay: 0s; }
-.vishesh-seal__steam span:nth-child(2) { left: 1.1rem; height: 1.8rem; animation-delay: 0.9s; }
-.vishesh-seal__steam span:nth-child(3) { left: 2rem; animation-delay: 1.8s; }
+.vishesh-cookpot__steam--1 {
+  animation-delay: 0s;
+}
 
-@keyframes vishesh-steam-curl {
-  0% { opacity: 0; transform: translateY(0.4rem) scaleY(0.6); }
-  35% { opacity: 0.45; }
-  100% { opacity: 0; transform: translateY(-1.4rem) scaleY(1.1); }
+.vishesh-cookpot__steam--2 {
+  animation-delay: 1.4s;
+}
+
+.vishesh-cookpot__steam--3 {
+  animation-delay: 2.6s;
+}
+
+.vishesh-cookpot__ladle {
+  transform-box: fill-box;
+  /* Pivot at the handle's top end so the bowl sweeps through the masala
+     rather than the whole ladle sliding sideways. */
+  transform-origin: 90% 8%;
+  animation: vishesh-cookpot-stir 3.4s ease-in-out infinite;
+}
+
+.vishesh-cookpot__flame-group {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: vishesh-cookpot-flame 1.5s ease-in-out infinite;
+}
+
+.vishesh-cookpot__flame--inner {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: vishesh-cookpot-flame-inner 0.9s ease-in-out infinite;
+}
+
+@keyframes vishesh-cookpot-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(0.6rem) scale(0.72);
+  }
+  30% {
+    opacity: 0.72;
+  }
+  70% {
+    opacity: 0.36;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1.5rem) scale(1.12);
+  }
+}
+
+@keyframes vishesh-cookpot-stir {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+}
+
+@keyframes vishesh-cookpot-flame {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  35% {
+    transform: scale(0.92, 1.1);
+  }
+  65% {
+    transform: scale(1.06, 0.94);
+  }
+}
+
+@keyframes vishesh-cookpot-flame-inner {
+  0%,
+  100% {
+    transform: scaleY(1);
+    opacity: 0.72;
+  }
+  50% {
+    transform: scaleY(0.82);
+    opacity: 0.5;
+  }
 }
 
 /* ---- Cart icon: golden dust puff on add (assets/vishesh-cart-puff.js) ---- */
@@ -4259,9 +4476,21 @@
 /* ---- Reduced motion: everything above goes static ---- */
 @media (prefers-reduced-motion: reduce) {
   .vishesh-trust__dust,
-  .vishesh-seal__steam,
   .vishesh-puff {
     display: none;
+  }
+
+  /* The vignette stays on screen, it just stops moving: steam parked at a
+     readable opacity, no stirring, no flicker. */
+  .vishesh-cookpot__steam,
+  .vishesh-cookpot__ladle,
+  .vishesh-cookpot__flame-group,
+  .vishesh-cookpot__flame--inner {
+    animation: none;
+  }
+
+  .vishesh-cookpot__steam {
+    opacity: 0.5;
   }
 
   .vishesh-divider__granule {

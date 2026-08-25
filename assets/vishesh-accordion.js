@@ -100,13 +100,30 @@
 
     var footerDetails = document.querySelectorAll('.vishesh-footer-accordion');
     footerDetails.forEach(setup);
-    // Start collapsed on mobile (progressive enhancement - the `open`
-    // attribute in the markup is the no-JS/desktop default so content
-    // is never hidden without a way to reach it).
-    if (window.matchMedia('(max-width: 989px)').matches) {
+
+    // Collapsed on mobile, open on desktop (progressive enhancement - the
+    // `open` attribute in the markup is the no-JS default so content is
+    // never hidden without a way to reach it).
+    //
+    // This has to re-run on breakpoint changes, not just at load. Loading
+    // narrow and then widening past 990px used to strand every column
+    // closed: the desktop rules hide the caret and set the summary to
+    // cursor:default, and the click handler preventDefaults there, so the
+    // columns could not be reopened by any means short of a reload.
+    var mobile = window.matchMedia('(max-width: 989px)');
+
+    function syncFooterAccordions(event) {
+      var isMobile = event.matches;
       footerDetails.forEach(function (details) {
-        details.open = false;
+        details.open = !isMobile;
       });
+    }
+
+    syncFooterAccordions(mobile);
+    if (typeof mobile.addEventListener === 'function') {
+      mobile.addEventListener('change', syncFooterAccordions);
+    } else if (typeof mobile.addListener === 'function') {
+      mobile.addListener(syncFooterAccordions);
     }
   }
 

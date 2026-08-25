@@ -50,17 +50,34 @@
 
         <ol class="vishesh-timeline__cards" role="list">
           {%- for block in section.blocks -%}
+            {%- assign step_pct = forloop.index | times: 100.0 | divided_by: forloop.length -%}
             <li
               class="vishesh-timeline__card"
               data-timeline-card="{{ forloop.index0 }}"
               {{ block.shopify_attributes }}
             >
-              <span class="vishesh-timeline__count" aria-hidden="true">
-                {{ forloop.index }}<span class="vishesh-timeline__count-total">/{{ forloop.length }}</span>
-              </span>
-              <span class="vishesh-timeline__pin" aria-hidden="true">
-                <span class="vishesh-timeline__year">{{ block.settings.year }}</span>
-              </span>
+              {% comment %}
+                Oversized year set behind the copy. The card fills the full
+                sticky stage now, and a few lines of text centred in that
+                much white read as empty on their own - this anchors the
+                lower half and ties the step to its era without needing a
+                per-milestone image to download.
+              {% endcomment %}
+              <span class="vishesh-timeline__watermark" aria-hidden="true">{{ block.settings.year }}</span>
+
+              <div class="vishesh-timeline__meta">
+                <span class="vishesh-timeline__pin" aria-hidden="true">
+                  <span class="vishesh-timeline__year">{{ block.settings.year }}</span>
+                </span>
+                <span class="vishesh-timeline__count" aria-hidden="true">
+                  <span class="vishesh-timeline__count-now">{{ forloop.index }}</span
+                  ><span class="vishesh-timeline__count-total">/{{ forloop.length }}</span>
+                  <span class="vishesh-timeline__count-bar">
+                    <span class="vishesh-timeline__count-fill" style="width: {{ step_pct }}%;"></span>
+                  </span>
+                </span>
+              </div>
+
               <p class="vishesh-timeline__text">{{ block.settings.text }}</p>
             </li>
           {%- endfor -%}

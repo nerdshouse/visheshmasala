@@ -151,10 +151,19 @@
                   {%- when 'text' -%}
                     {%- if block.settings.logo != blank -%}
                       <a href="{{ routes.root_url }}" class="vishesh-footer-logo" aria-label="{{ shop.name | escape }}">
+                        {%- comment -%}
+                          The seal renders at 70px wide. Without a `sizes`
+                          hint the browser assumes 100vw and picks the
+                          largest candidate - it was pulling the 800w JPEG
+                          (59KB) for that 70px slot, and because the logo
+                          sits in a white rounded card it read as a blank
+                          white box for the whole time it was in flight.
+                          The asset itself is fine (769x644, HTTP 200).
+                        {%- endcomment -%}
                         {{
                           block.settings.logo
-                          | image_url: width: 800
-                          | image_tag: loading: 'lazy', alt: shop.name
+                          | image_url: width: 280
+                          | image_tag: loading: 'lazy', alt: shop.name, widths: '70, 140, 210, 280', sizes: '70px'
                         }}
                       </a>
                     {%- elsif block.id contains 'brand-seal' -%}
@@ -175,10 +184,10 @@
                       is blank, so attaching it there showed nothing.
                     {%- endcomment -%}
                     <div class="footer-block__details-content rte vishesh-seal">
-                      <span class="vishesh-seal__steam" aria-hidden="true">
-                        <span></span><span></span><span></span>
-                      </span>
                       {{ block.settings.subtext }}
+                      {%- if block.id contains 'brand-seal' -%}
+                        {%- render 'vishesh-cooking-vignette' -%}
+                      {%- endif -%}
                     </div>
                   {%- when 'link_list' -%}
                     {%- if block.settings.menu != blank -%}
