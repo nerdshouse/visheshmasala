@@ -139,8 +139,21 @@
           event.stopPropagation();
         }
       }
+      // Dawn locks background scroll with three different classes, not one:
+      // `overflow-hidden` (cart drawer, quick-add modal) and the responsive
+      // `overflow-hidden-mobile` / `overflow-hidden-tablet` (the header menu
+      // drawer, which picks one from its data-breakpoint). This check used
+      // to be classList.contains('overflow-hidden'), an exact match - so it
+      // fired for the cart drawer but never for the mobile menu, and a swipe
+      // over the open menu scrolled the page behind it instead.
+      function backgroundScrollLocked() {
+        return Array.prototype.some.call(document.body.classList, function (name) {
+          return name.indexOf('overflow-hidden') === 0;
+        });
+      }
+
       var modalScrollLockObserver = new MutationObserver(function () {
-        if (document.body.classList.contains('overflow-hidden')) {
+        if (backgroundScrollLocked()) {
           document.addEventListener('wheel', preventLenisOnModalContent);
           document.addEventListener('touchmove', preventLenisOnModalContent);
         } else {

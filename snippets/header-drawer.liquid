@@ -17,7 +17,14 @@
       </span>
     </summary>
     <div id="menu-drawer" class="gradient menu-drawer motion-reduce color-{{ section.settings.menu_color_scheme }}">
-      <div class="menu-drawer__inner-container">
+      {% comment %}
+        data-lenis-prevent marks this as the drawer's own scroll area, so a
+        gesture over the open menu scrolls the menu rather than being handed
+        to Lenis and scrolling the page behind it. The cart drawer and the
+        quick-add modal already carry it; the menu drawer was missed. See
+        assets/vishesh-motion.js for how it is enforced.
+      {% endcomment %}
+      <div class="menu-drawer__inner-container" data-lenis-prevent>
         <div class="menu-drawer__navigation-container">
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
