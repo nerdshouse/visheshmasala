@@ -206,7 +206,6 @@
       "settings": {
         "heading": "Bestsellers",
         "products_to_show": 8,
-        "show_quick_add": true,
         "show_view_all": true,
         "color_scheme": "scheme-1",
         "collection": "bestsellers",
