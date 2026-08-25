@@ -1227,45 +1227,54 @@
   transform: translate(-50%, -60%) rotate(45deg);
 }
 
-/* ---------- Our Journey: alternating spine timeline ----------
-   Replaces the sticky one-at-a-time stage. Nothing here is sticky and
-   nothing is JS-driven: the milestones sit in normal flow, so the
-   section is exactly as tall as its content and the dead-space problem
-   the old stage kept reintroducing cannot occur. Items ease in on
-   scroll through the theme's shared data-animate hook. */
+/* ---------- Our Journey: editorial trail ----------
+   Third pass on this section, and the last two failures were both about
+   shape rather than polish.
+
+   The zigzag of bubble cards read as a stock timeline widget: rounded
+   boxes with little beaks pointing at a line, an icon in a circle, both
+   sides weighted the same. It also carried a real bug - the node took
+   grid column 2 first, so a card asking for column 1 was pushed onto a
+   second grid row and sat 142px below its own node, while the cards on
+   column 3 stayed level. Every left-hand milestone was misaligned.
+
+   This is a ledger instead: one continuous trail down the middle, the
+   year set large on its left, the copy on its right, no boxes at all.
+   The weight comes from typography and whitespace rather than borders
+   and drop shadows, which suits a fifty year family business better
+   than a card deck does. Every child is placed on an explicit grid row,
+   so the auto-placement bug cannot come back. */
 .vishesh-journey {
-  padding: 7.2rem 0 8rem;
+  padding: 8rem 0 8.8rem;
 }
 
 .vishesh-journey__head {
   text-align: center;
-  margin: 0 0 5.6rem;
+  margin: 0 0 6.4rem;
 }
 
 .vishesh-journey__eyebrow {
   display: block;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-terracotta);
-  margin: 0 0 1.2rem;
+  margin: 0 0 1.4rem;
 }
 
 .vishesh-journey__heading {
   margin: 0;
-  font-size: clamp(2.8rem, 4vw, 4.4rem);
+  font-size: clamp(3rem, 4.4vw, 5rem);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
   color: var(--color-primary);
 }
 
-/* The track is the positioning context the path is measured against;
-   the list inside it is a plain <ol>. */
 .vishesh-journey__track {
   position: relative;
-  max-width: 104rem;
+  max-width: 96rem;
   margin: 0 auto;
 }
 
@@ -1275,8 +1284,7 @@
   padding: 0;
 }
 
-/* The drawn path (assets/vishesh-journey-path.js). Sits behind the
-   nodes, spans the list box exactly, and never takes pointer events. */
+/* The drawn trail (assets/vishesh-journey-path.js). */
 .vishesh-journey__path {
   position: absolute;
   top: 0;
@@ -1286,234 +1294,247 @@
 }
 
 .vishesh-journey__path-track {
-  stroke: rgba(242, 28, 38, 0.2);
-  stroke-width: 2;
+  stroke: rgba(74, 52, 24, 0.18);
+  stroke-width: 1.5;
   stroke-linecap: round;
+  /* Dashed, like a route drawn on a map rather than a border. */
+  stroke-dasharray: 1 7;
 }
 
 .vishesh-journey__path-line {
   stroke: var(--color-primary);
-  stroke-width: 2.6;
+  stroke-width: 2;
   stroke-linecap: round;
 }
 
-/* Once the script has measured and built the path, the CSS fallback
-   spine steps aside and the nodes start out waiting to be reached. */
+/* Fallback trail for the no-JS case; hidden once the path is built. */
+.vishesh-journey__track::before {
+  content: '';
+  position: absolute;
+  top: 1.6rem;
+  bottom: 1.6rem;
+  left: 50%;
+  width: 0.1rem;
+  margin-left: -0.05rem;
+  background: rgba(74, 52, 24, 0.18);
+}
+
 .vishesh-journey--drawn .vishesh-journey__track::before {
   display: none;
 }
 
-.vishesh-journey--drawn .vishesh-journey__node {
+/* Decade chapter markers. The label carries the section background so it
+   masks the trail running behind it - the line reads as broken by the
+   marker rather than crossed out by it. */
+.vishesh-journey__era {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 1.6rem 0 3.2rem;
+}
+
+.vishesh-journey__era:first-child {
+  padding-top: 0;
+}
+
+.vishesh-journey__era-label {
   background: rgb(var(--color-background));
-  color: rgba(242, 28, 38, 0.55);
-  box-shadow: inset 0 0 0 0.2rem rgba(242, 28, 38, 0.28), 0 0 0 0.6rem rgb(var(--color-background));
-  transform: scale(0.9);
-  transition: background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease,
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0 1.8rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(74, 52, 24, 0.38);
+}
+
+/* aside (motif + year) | trail | copy. Everything is pinned to row 1 so
+   nothing can be auto-placed onto a row of its own. */
+.vishesh-journey__item {
+  display: grid;
+  grid-template-columns: 1fr 6.4rem 1fr;
+  align-items: start;
+  padding: 3.2rem 0;
+}
+
+.vishesh-journey__item:first-child {
+  padding-top: 0;
+}
+
+.vishesh-journey__item:last-child {
+  padding-bottom: 0;
+}
+
+.vishesh-journey__aside {
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+  padding-right: 1.6rem;
+}
+
+.vishesh-journey__body {
+  grid-column: 3;
+  grid-row: 1;
+  padding-left: 1.6rem;
+}
+
+.vishesh-journey__node {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  /* Nudged down to sit on the year's optical centre rather than its
+     box top. */
+  margin-top: 1.2rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: rgb(var(--color-background));
+  box-shadow: inset 0 0 0 0.2rem rgba(74, 52, 24, 0.28);
+  position: relative;
+  z-index: 2;
+}
+
+.vishesh-journey--drawn .vishesh-journey__node {
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .vishesh-journey--drawn .vishesh-journey__node.is-reached {
   background: var(--color-primary);
-  color: #ffffff;
-  box-shadow: 0 0.6rem 1.8rem rgba(242, 28, 38, 0.28), 0 0 0 0.6rem rgb(var(--color-background));
-  transform: scale(1);
+  box-shadow: inset 0 0 0 0.2rem var(--color-primary), 0 0 0 0.5rem rgba(242, 28, 38, 0.14);
+  transform: scale(1.25);
+}
+
+/* Era motif: a line drawing, not a filled chip. */
+.vishesh-journey__motif {
+  display: inline-flex;
+  color: var(--color-terracotta);
+  margin: 0 0 1rem;
+}
+
+.vishesh-journey__motif .vishesh-timeline__icon {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.vishesh-journey__year {
+  display: block;
+  font-size: clamp(3.6rem, 4.8vw, 5.6rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--color-primary);
+}
+
+.vishesh-journey__index {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(74, 52, 24, 0.42);
+}
+
+.vishesh-journey__text {
+  margin: 0;
+  font-size: 1.7rem;
+  line-height: 1.7;
+  font-weight: 500;
+  color: var(--color-dark);
+  max-width: 42rem;
+}
+
+/* Hairline over the copy, aligned to the year's cap height, so the two
+   columns read as one row without needing a box around either. */
+.vishesh-journey__body::before {
+  content: '';
+  display: block;
+  width: 3.2rem;
+  height: 0.2rem;
+  background: var(--color-accent);
+  margin: 1.6rem 0 2rem;
+}
+
+@media screen and (max-width: 989px) {
+  .vishesh-journey {
+    padding: 5.6rem 0 6.4rem;
+  }
+
+  .vishesh-journey__head {
+    margin: 0 0 4rem;
+  }
+
+  /* Trail moves to the left edge; motif, year and copy stack beside it.
+     A centred two-column ledger at this width leaves both columns too
+     narrow to hold either the year or the copy comfortably. */
+  .vishesh-journey__track::before {
+    left: 0.7rem;
+    margin-left: 0;
+  }
+
+  .vishesh-journey__item {
+    grid-template-columns: 3.2rem 1fr;
+    padding: 2.4rem 0;
+  }
+
+  /* No centred trail to mask here, so the marker just aligns with the
+     copy column. */
+  .vishesh-journey__era {
+    justify-content: flex-start;
+    padding: 1.2rem 0 2.4rem 3.2rem;
+  }
+
+  .vishesh-journey__era-label {
+    padding: 0;
+    background: none;
+  }
+
+  .vishesh-journey__node {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    margin-top: 1rem;
+  }
+
+  .vishesh-journey__aside {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: left;
+    padding-right: 0;
+  }
+
+  .vishesh-journey__body {
+    grid-column: 2;
+    grid-row: 2;
+    padding-left: 0;
+  }
+
+  .vishesh-journey__motif {
+    margin-bottom: 0.6rem;
+  }
+
+  .vishesh-journey__motif .vishesh-timeline__icon {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  .vishesh-journey__year {
+    font-size: clamp(3.2rem, 11vw, 4rem);
+  }
+
+  .vishesh-journey__body::before {
+    margin: 1.2rem 0 1.4rem;
+  }
+
+  .vishesh-journey__text {
+    font-size: 1.6rem;
+    max-width: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .vishesh-journey--drawn .vishesh-journey__node {
     transition: none;
-  }
-}
-
-/* Fallback spine, and what the no-JS section keeps. Runs the full height
-   of the list, stopping half a node short at each end so it reads as a
-   line the milestones hang off rather than a rule with loose ends. */
-.vishesh-journey__track::before {
-  content: '';
-  position: absolute;
-  top: 2.4rem;
-  bottom: 2.4rem;
-  left: 50%;
-  width: 0.2rem;
-  margin-left: -0.1rem;
-  background: linear-gradient(
-    to bottom,
-    rgba(242, 28, 38, 0) 0%,
-    rgba(242, 28, 38, 0.28) 8%,
-    rgba(242, 28, 38, 0.28) 92%,
-    rgba(242, 28, 38, 0) 100%
-  );
-}
-
-.vishesh-journey__item {
-  position: relative;
-  display: grid;
-  /* card | spine gutter | card - the milestone takes one side and the
-     other stays empty, which is what produces the alternation. */
-  grid-template-columns: 1fr 9.6rem 1fr;
-  align-items: center;
-  margin-bottom: 3.2rem;
-}
-
-.vishesh-journey__item:last-child {
-  margin-bottom: 0;
-}
-
-/* Node on the spine, carrying the era motif. */
-.vishesh-journey__node {
-  grid-column: 2;
-  justify-self: center;
-  width: 5.6rem;
-  height: 5.6rem;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0.6rem 1.8rem rgba(242, 28, 38, 0.28), 0 0 0 0.6rem rgb(var(--color-background));
-  position: relative;
-  z-index: 2;
-}
-
-.vishesh-journey__node .vishesh-timeline__icon {
-  width: 2.8rem;
-  height: 2.8rem;
-}
-
-.vishesh-journey__card {
-  position: relative;
-  z-index: 1;
-  background: #ffffff;
-  border: 0.1rem solid rgba(74, 52, 24, 0.08);
-  border-radius: 1.6rem;
-  padding: 2.8rem 3.2rem;
-  box-shadow: 0 1rem 2.8rem rgba(74, 52, 24, 0.1);
-}
-
-/* Odd milestones sit left of the spine, even ones right. Copy stays
-   left-aligned on both sides: mirroring the alignment looks tidier in a
-   wireframe, but it gives the left-hand cards a ragged left edge, and
-   these are three-to-five line paragraphs rather than captions. */
-.vishesh-journey__item:nth-child(odd) .vishesh-journey__card {
-  grid-column: 1;
-}
-
-.vishesh-journey__item:nth-child(even) .vishesh-journey__card {
-  grid-column: 3;
-}
-
-/* Little beak pointing at the spine, so each card is clearly tied to
-   its own node rather than floating beside the line. */
-.vishesh-journey__card::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 1.4rem;
-  height: 1.4rem;
-  margin-top: -0.7rem;
-  background: #ffffff;
-  border: 0.1rem solid rgba(74, 52, 24, 0.08);
-  transform: rotate(45deg);
-}
-
-.vishesh-journey__item:nth-child(odd) .vishesh-journey__card::after {
-  right: -0.8rem;
-  border-left: none;
-  border-bottom: none;
-}
-
-.vishesh-journey__item:nth-child(even) .vishesh-journey__card::after {
-  left: -0.8rem;
-  border-right: none;
-  border-top: none;
-}
-
-.vishesh-journey__year {
-  display: block;
-  font-size: 2.8rem;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--color-primary);
-  margin: 0 0 1rem;
-}
-
-.vishesh-journey__text {
-  margin: 0;
-  font-size: 1.6rem;
-  line-height: 1.65;
-  font-weight: 500;
-  color: var(--color-dark);
-}
-
-/* Below 990 the spine moves to the left edge and every card sits to its
-   right. The two-sided layout survives down to about 990px, but not
-   below: at 768 it left a 298px card carrying a 248px measure, which
-   wrapped the longest milestone to nine short lines. One column gives
-   the copy its width back. */
-@media screen and (max-width: 989px) {
-  .vishesh-journey {
-    padding: 4.8rem 0 5.6rem;
-  }
-
-  .vishesh-journey__head {
-    margin: 0 0 3.6rem;
-  }
-
-  .vishesh-journey__track::before {
-    left: 2.2rem;
-    margin-left: 0;
-  }
-
-  .vishesh-journey__item {
-    grid-template-columns: 4.4rem 1fr;
-    align-items: start;
-    gap: 1.6rem;
-    margin-bottom: 2rem;
-  }
-
-  .vishesh-journey__node {
-    grid-column: 1;
-    justify-self: start;
-    width: 4.4rem;
-    height: 4.4rem;
-    box-shadow: 0 0.4rem 1.2rem rgba(242, 28, 38, 0.26), 0 0 0 0.5rem rgb(var(--color-background));
-  }
-
-  .vishesh-journey__node .vishesh-timeline__icon {
-    width: 2.2rem;
-    height: 2.2rem;
-  }
-
-  /* Both nth-child rules collapse to the same single column here. */
-  .vishesh-journey__item:nth-child(odd) .vishesh-journey__card,
-  .vishesh-journey__item:nth-child(even) .vishesh-journey__card {
-    grid-column: 2;
-    text-align: left;
-  }
-
-  .vishesh-journey__item:nth-child(odd) .vishesh-journey__card::after,
-  .vishesh-journey__item:nth-child(even) .vishesh-journey__card::after {
-    top: 2rem;
-    left: -0.8rem;
-    right: auto;
-    border-right: none;
-    border-top: none;
-    border-left: 0.1rem solid rgba(74, 52, 24, 0.08);
-    border-bottom: 0.1rem solid rgba(74, 52, 24, 0.08);
-  }
-
-  .vishesh-journey__year {
-    font-size: 2.2rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .vishesh-journey__text {
-    font-size: 1.5rem;
-    /* Caps the line length on tablets, where the single column would
-       otherwise run the copy to ~650px. */
-    max-width: 54rem;
   }
 }
 

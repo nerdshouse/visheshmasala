@@ -25,8 +25,11 @@
  * screen. Reduced motion draws the path complete and never loops.
  */
 (function () {
-  var AMP_WIDE = 46; // px the line bows out between nodes, two-sided layout
-  var AMP_NARROW = 16; // ditto for the single-column layout under 990px
+  // The trail runs down a 6.4rem gutter between the year and the copy, so
+  // the bow has to stay inside it - well under half the gutter, or the
+  // curve reads as crossing into the text.
+  var AMP_WIDE = 22; // px the line bows out between nodes, two-column layout
+  var AMP_NARROW = 9; // ditto for the stacked layout under 990px
   var WIDE_FROM = 990;
 
   function init() {

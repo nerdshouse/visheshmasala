@@ -62,16 +62,40 @@
       </svg>
 
       <ol class="vishesh-journey__list" role="list">
+        {%- assign last_era = '' -%}
         {%- for block in section.blocks -%}
-          <li class="vishesh-journey__item" data-animate="fade-up" {{ block.shopify_attributes }}>
-            <span class="vishesh-journey__node" data-journey-node aria-hidden="true">
-              {%- render 'vishesh-timeline-icon', icon: block.settings.icon -%}
-            </span>
+          {% comment %}
+            Decade markers, derived from the years rather than authored,
+            so they stay correct if the merchant edits or reorders
+            milestones. They break fifty years into chapters instead of
+            nine identical rows. Decorative - every year is already
+            stated on its own milestone - so they are hidden from
+            assistive tech rather than announced as list items.
+          {% endcomment %}
+          {%- assign era = block.settings.year | slice: 0, 3 | append: '0s' -%}
+          {%- if era != last_era -%}
+            <li class="vishesh-journey__era" aria-hidden="true" data-animate="fade-up">
+              <span class="vishesh-journey__era-label">{{ era }}</span>
+            </li>
+            {%- assign last_era = era -%}
+          {%- endif -%}
 
-            <article class="vishesh-journey__card">
+          <li class="vishesh-journey__item" data-animate="fade-up" {{ block.shopify_attributes }}>
+            <div class="vishesh-journey__aside">
+              <span class="vishesh-journey__motif" aria-hidden="true">
+                {%- render 'vishesh-timeline-icon', icon: block.settings.icon -%}
+              </span>
               <span class="vishesh-journey__year">{{ block.settings.year }}</span>
+              <span class="vishesh-journey__index" aria-hidden="true">
+                {{- forloop.index | prepend: '0' | slice: -2, 2 }} / {{ forloop.length | prepend: '0' | slice: -2, 2 -}}
+              </span>
+            </div>
+
+            <span class="vishesh-journey__node" data-journey-node aria-hidden="true"></span>
+
+            <div class="vishesh-journey__body">
               <p class="vishesh-journey__text">{{ block.settings.text }}</p>
-            </article>
+            </div>
           </li>
         {%- endfor -%}
       </ol>
