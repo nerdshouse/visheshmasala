@@ -1316,20 +1316,11 @@
    through nine steps. It now sits on the card's top row beside the pin,
    at display size, with a bar underneath showing how far along the
    journey the reader is. */
-.vishesh-timeline__meta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.8rem;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
 .vishesh-timeline__count {
   display: flex;
   flex-direction: row;
   align-items: baseline;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 0 0.2rem;
   font-weight: 800;
@@ -1348,10 +1339,10 @@
 }
 
 .vishesh-timeline__count-bar {
-  display: block;
   /* Own row under the n/9 pair. */
+  display: block;
   flex-basis: 100%;
-  margin-top: 0.9rem;
+  margin: 0.9rem auto 0;
   width: 11rem;
   height: 0.4rem;
   border-radius: 99rem;
@@ -1366,22 +1357,8 @@
   background: var(--color-primary);
 }
 
-/* Oversized era year behind the copy - fills the lower half of a card
-   that now spans the whole stage, with no image request. */
-.vishesh-timeline__watermark {
-  position: absolute;
-  right: 2.4rem;
-  bottom: -1.2rem;
-  font-size: clamp(8rem, 11vw, 15rem);
-  font-weight: 800;
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  color: var(--color-primary);
-  opacity: 0.07;
-  pointer-events: none;
-  user-select: none;
-}
-
+/* The era motif sits inside the pin, and the year is a real headline
+   rather than a faint number bled off the card's edge. */
 .vishesh-timeline__pin {
   flex-shrink: 0;
   width: 6.4rem;
@@ -1395,14 +1372,20 @@
   box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.3);
 }
 
-.vishesh-timeline__year {
+.vishesh-timeline__icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  /* Cancels the pin's -45deg so the drawing sits upright in it. */
   transform: rotate(45deg);
-  background: #ffffff;
+  color: #ffffff;
+}
+
+.vishesh-timeline__year-big {
+  font-size: clamp(3.2rem, 4.4vw, 4.6rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: var(--color-primary);
-  font-weight: 700;
-  font-size: 1.2rem;
-  padding: 0.5rem 0.6rem;
-  border-radius: 50%;
 }
 
 .vishesh-timeline__text {
@@ -1436,13 +1419,17 @@
    card below fill it, rather than floating in the middle of it. */
 .vishesh-timeline--live .vishesh-timeline__stage {
   position: sticky;
-  top: 0;
-  /* Capped so a very tall desktop window does not stretch one milestone
-     over 1200px of card. */
-  min-height: min(100vh, 82rem);
+  /* Dawn's header is a reveal-on-scroll sticky-header. At top:0 the stage
+     stuck underneath it, so scrolling up put the rail and the top of the
+     card behind a 120px header - the milestone looked cropped. Offset by
+     the header's own measured height (sections/header.liquid sets
+     --header-height on the root element) and take that height out of the
+     stage so the two do not add up to more than the viewport. */
+  top: var(--header-height, 0px);
+  min-height: min(calc(100vh - var(--header-height, 0px)), 74rem);
   display: grid;
   align-content: stretch;
-  padding: 3rem 0;
+  padding: 2.4rem 0;
 }
 
 .vishesh-timeline--live .vishesh-timeline__inner {
@@ -1451,14 +1438,19 @@
 
 .vishesh-timeline--live .vishesh-timeline__cards {
   height: 100%;
+  /* All nine cards share one grid cell, so the row is as tall as the
+     longest milestone. Centre them in it instead of stretching every card
+     to that height: a short milestone then renders as a compact card with
+     cream around it, rather than the same short paragraph floating in a
+     535px box of white. The row height stays constant either way, so the
+     stuck stage never resizes between steps. */
+  align-items: center;
 }
 
 .vishesh-timeline--live .vishesh-timeline__card {
-  height: 100%;
-  /* Meta and copy centre together as one group, with the watermark
-     anchoring the bottom. Pinning the meta to the top and centring the
-     copy in the leftover space (the first attempt) opened a gap through
-     the middle of the card that read as another hole to fill. */
+  /* Counter, pin, year and copy centre as one group. Pinning the meta to
+     the top and centring the copy in the leftover space (an earlier
+     attempt) opened a gap through the middle of the card. */
   justify-content: center;
 }
 
@@ -1600,10 +1592,6 @@
     max-width: 46rem;
   }
 
-  .vishesh-timeline__meta {
-    justify-content: flex-start;
-  }
-
   /* 64rem was sized for a card that hugged its copy. With the card
      spanning the stage, that measure left the whole thing floating in a
      narrow column down the middle of a 1440px page. */
@@ -1639,28 +1627,31 @@
   }
 
   .vishesh-timeline__pin {
-    width: 8rem;
-    height: 8rem;
+    /* Down from 8rem. Rotated 45deg, a square's bounding box is its side
+       times root two, so 8rem was claiming 113px of column height on a
+       phone - oversized now that the year headline carries the milestone
+       and the pin only holds the motif. */
+    width: 5.6rem;
+    height: 5.6rem;
   }
 
   .vishesh-timeline--live .vishesh-timeline__scroll {
     min-height: calc(var(--milestone-count, 9) * 34vh);
   }
 
-  /* A full-viewport stage on a phone gave a 710px card holding four lines
-     of copy - the stage was technically full, but the empty space had
-     just moved from cream to white. Shorter stage, and the meta and copy
-     centre as one group instead of the meta pinning to the top and
-     leaving a gap in the middle of the card. */
+  /* Phones get a shorter cap than the shared rule: the header eats more
+     of a phone viewport, and the card's own content is what sets a
+     sensible ceiling here rather than the screen. */
   .vishesh-timeline--live .vishesh-timeline__stage {
-    min-height: min(88vh, 56rem);
+    min-height: min(calc(100vh - var(--header-height, 0px)), 58rem);
   }
 
-  .vishesh-timeline__watermark {
-    right: 1.6rem;
-    bottom: -0.8rem;
-    font-size: 7.2rem;
+  .vishesh-timeline__icon {
+    width: 2.8rem;
+    height: 2.8rem;
   }
+
+
 
   /* Mobile rail is a horizontal dot strip, not the desktop year list.
      Nine year labels cannot sit side by side at this width - they

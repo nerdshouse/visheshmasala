@@ -57,26 +57,26 @@
               {{ block.shopify_attributes }}
             >
               {% comment %}
-                Oversized year set behind the copy. The card fills the full
-                sticky stage now, and a few lines of text centred in that
-                much white read as empty on their own - this anchors the
-                lower half and ties the step to its era without needing a
-                per-milestone image to download.
+                A previous pass set an oversized year behind the copy to
+                fill the card. It duplicated the year the pin already
+                showed and, sitting on a negative offset inside an
+                overflow:hidden card, rendered as a cut-off number. The
+                card is built out properly instead: the pin now carries an
+                era motif, and the year is a real headline.
               {% endcomment %}
-              <span class="vishesh-timeline__watermark" aria-hidden="true">{{ block.settings.year }}</span>
+              <span class="vishesh-timeline__count" aria-hidden="true">
+                <span class="vishesh-timeline__count-now">{{ forloop.index }}</span
+                ><span class="vishesh-timeline__count-total">/{{ forloop.length }}</span>
+                <span class="vishesh-timeline__count-bar">
+                  <span class="vishesh-timeline__count-fill" style="width: {{ step_pct }}%;"></span>
+                </span>
+              </span>
 
-              <div class="vishesh-timeline__meta">
-                <span class="vishesh-timeline__pin" aria-hidden="true">
-                  <span class="vishesh-timeline__year">{{ block.settings.year }}</span>
-                </span>
-                <span class="vishesh-timeline__count" aria-hidden="true">
-                  <span class="vishesh-timeline__count-now">{{ forloop.index }}</span
-                  ><span class="vishesh-timeline__count-total">/{{ forloop.length }}</span>
-                  <span class="vishesh-timeline__count-bar">
-                    <span class="vishesh-timeline__count-fill" style="width: {{ step_pct }}%;"></span>
-                  </span>
-                </span>
-              </div>
+              <span class="vishesh-timeline__pin" aria-hidden="true">
+                {%- render 'vishesh-timeline-icon', icon: block.settings.icon -%}
+              </span>
+
+              <span class="vishesh-timeline__year-big">{{ block.settings.year }}</span>
 
               <p class="vishesh-timeline__text">{{ block.settings.text }}</p>
             </li>
@@ -112,7 +112,25 @@
       "name": "Milestone",
       "settings": [
         { "type": "text", "id": "year", "label": "Year" },
-        { "type": "textarea", "id": "text", "label": "Text" }
+        { "type": "textarea", "id": "text", "label": "Text" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Era motif",
+          "default": "tin",
+          "info": "Line drawing shown in the pin on this milestone's card.",
+          "options": [
+            { "value": "tin", "label": "Masala tin" },
+            { "value": "factory", "label": "Production unit" },
+            { "value": "cart", "label": "Bullock cart" },
+            { "value": "people", "label": "Next generation" },
+            { "value": "certificate", "label": "Certification" },
+            { "value": "pack", "label": "Consumer pack" },
+            { "value": "network", "label": "Distribution" },
+            { "value": "star", "label": "New brand" },
+            { "value": "facility", "label": "Modern facility" }
+          ]
+        }
       ]
     }
   ],
