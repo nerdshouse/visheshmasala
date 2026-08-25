@@ -1,89 +1,55 @@
 {{ 'vishesh-sections.css' | asset_url | stylesheet_tag }}
 
 {% comment %}
-  Journey stage. One sticky stage holds while a tall wrapper scrolls
-  past it, and the milestones advance one at a time inside that stage -
-  the same mechanic as the reference, which uses a single
-  `sticky top-0 h-screen` stage inside a 400vh parent rather than one
-  sticky panel per milestone.
+  Our Journey. An alternating spine timeline: a vertical line down the
+  middle with milestone cards stepping left and right off it, each with
+  its year, an era motif and its copy.
 
-  An earlier version here gave every milestone its own sticky panel, so
-  they stacked and slid over one another. That is a different effect,
-  and not the one asked for - the stage is now singular and the
-  milestones change within it.
+  This replaces a sticky one-at-a-time stage. That mechanic worked, but
+  its shape was the problem rather than its implementation: a single
+  short milestone card held inside a viewport-tall stuck stage always
+  leaves a large empty band, and every attempt to close it only moved
+  the emptiness around - centre it and you get two cream bands, stretch
+  the card and you get one white one. It also had to fight Dawn's
+  reveal-on-scroll header for the top of the viewport, which is what
+  cropped the card on phones.
 
-  The hold is native CSS position:sticky, not a scripted pin: no
-  spacer element, scroll is never taken from the user, and if the JS
-  below never runs the section degrades to a plain readable list of all
-  nine milestones (see .vishesh-timeline--live in the CSS - the
-  swap-one-at-a-time behaviour is gated behind a class that only JS
-  adds). That matters on this theme, where scripted pins have twice
-  left this section's content stranded invisible.
+  Laying the nine milestones out in flow removes the whole class of
+  problem: there is no stage to fill, nothing is position:sticky, no
+  scroll is taken from the user, and the section is exactly as tall as
+  its content. It also suits the content better - a fifty year family
+  history reads as one continuous line rather than nine slides a reader
+  has to scrub through to see.
 
-  assets/vishesh-timeline.js only computes which milestone is current
-  from scroll progress and toggles a class - it does not move, size, or
-  position anything.
+  Motion is limited to each item easing in as it scrolls into view, via
+  the theme's existing data-animate="fade-up" hook, which is already
+  gated on prefers-reduced-motion.
 {% endcomment %}
-<script src="{{ 'vishesh-timeline.js' | asset_url }}" defer="defer"></script>
-<div class="vishesh-timeline color-{{ section.settings.color_scheme }} gradient" data-timeline>
+<div class="vishesh-journey color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width">
-    {%- if section.settings.heading != blank -%}
-      <h2 class="h1 vishesh-timeline__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
-    {%- endif -%}
-  </div>
+    <header class="vishesh-journey__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="vishesh-journey__eyebrow" data-animate="fade-up">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="vishesh-journey__heading" data-animate="fade-up">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </header>
 
-  <div
-    class="vishesh-timeline__scroll"
-    data-timeline-scroll
-    style="--milestone-count: {{ section.blocks.size }};"
-  >
-    <div class="vishesh-timeline__stage">
-      <div class="vishesh-timeline__inner">
-        <ol class="vishesh-timeline__rail" role="list">
-          {%- for block in section.blocks -%}
-            <li class="vishesh-timeline__step" data-timeline-step="{{ forloop.index0 }}">
-              <span class="vishesh-timeline__dot" aria-hidden="true"></span>
-              <span class="vishesh-timeline__step-year">{{ block.settings.year }}</span>
-            </li>
-          {%- endfor -%}
-        </ol>
+    <ol class="vishesh-journey__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="vishesh-journey__item" data-animate="fade-up" {{ block.shopify_attributes }}>
+          <span class="vishesh-journey__node" aria-hidden="true">
+            {%- render 'vishesh-timeline-icon', icon: block.settings.icon -%}
+          </span>
 
-        <ol class="vishesh-timeline__cards" role="list">
-          {%- for block in section.blocks -%}
-            {%- assign step_pct = forloop.index | times: 100.0 | divided_by: forloop.length -%}
-            <li
-              class="vishesh-timeline__card"
-              data-timeline-card="{{ forloop.index0 }}"
-              {{ block.shopify_attributes }}
-            >
-              {% comment %}
-                A previous pass set an oversized year behind the copy to
-                fill the card. It duplicated the year the pin already
-                showed and, sitting on a negative offset inside an
-                overflow:hidden card, rendered as a cut-off number. The
-                card is built out properly instead: the pin now carries an
-                era motif, and the year is a real headline.
-              {% endcomment %}
-              <span class="vishesh-timeline__count" aria-hidden="true">
-                <span class="vishesh-timeline__count-now">{{ forloop.index }}</span
-                ><span class="vishesh-timeline__count-total">/{{ forloop.length }}</span>
-                <span class="vishesh-timeline__count-bar">
-                  <span class="vishesh-timeline__count-fill" style="width: {{ step_pct }}%;"></span>
-                </span>
-              </span>
-
-              <span class="vishesh-timeline__pin" aria-hidden="true">
-                {%- render 'vishesh-timeline-icon', icon: block.settings.icon -%}
-              </span>
-
-              <span class="vishesh-timeline__year-big">{{ block.settings.year }}</span>
-
-              <p class="vishesh-timeline__text">{{ block.settings.text }}</p>
-            </li>
-          {%- endfor -%}
-        </ol>
-      </div>
-    </div>
+          <article class="vishesh-journey__card">
+            <span class="vishesh-journey__year">{{ block.settings.year }}</span>
+            <p class="vishesh-journey__text">{{ block.settings.text }}</p>
+          </article>
+        </li>
+      {%- endfor -%}
+    </ol>
   </div>
 </div>
 
@@ -93,6 +59,12 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "1970 to today"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -118,7 +90,7 @@
           "id": "icon",
           "label": "Era motif",
           "default": "tin",
-          "info": "Line drawing shown in the pin on this milestone's card.",
+          "info": "Line drawing shown in this milestone's node on the line.",
           "options": [
             { "value": "tin", "label": "Masala tin" },
             { "value": "factory", "label": "Production unit" },
@@ -145,22 +117,6 @@
         {
           "type": "milestone",
           "settings": { "year": "1971", "text": "Extended our production unit, manufacturing only Hing for five years." }
-        },
-        {
-          "type": "milestone",
-          "settings": { "year": "1990", "text": "Received our first Agmark certification for Hing." }
-        },
-        {
-          "type": "milestone",
-          "settings": { "year": "1991", "text": "First mover in the market with Rajwadi Garam Masala and other spices." }
-        },
-        {
-          "type": "milestone",
-          "settings": { "year": "2009", "text": "The family parted ways and introduced Vishesh Masala to the market." }
-        },
-        {
-          "type": "milestone",
-          "settings": { "year": "2022", "text": "Installed our state-of-the-art production facility at Navsari, Gujarat." }
         }
       ]
     }

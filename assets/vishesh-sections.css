@@ -1227,490 +1227,238 @@
   transform: translate(-50%, -60%) rotate(45deg);
 }
 
-/* ---------- Timeline (red map-pins, brochure style) ---------- */
-/* ---------- Our Journey: single sticky stage ----------
-   A tall wrapper scrolls past one stuck stage; the milestones advance
-   inside it. Native position:sticky, no scripted pin. The
-   one-at-a-time behaviour is gated behind .vishesh-timeline--live,
-   which only assets/vishesh-timeline.js adds - without it every
-   milestone stays in flow and the section reads as a plain list. */
-.vishesh-timeline {
-  padding: 5.6rem 0 0;
+/* ---------- Our Journey: alternating spine timeline ----------
+   Replaces the sticky one-at-a-time stage. Nothing here is sticky and
+   nothing is JS-driven: the milestones sit in normal flow, so the
+   section is exactly as tall as its content and the dead-space problem
+   the old stage kept reintroducing cannot occur. Items ease in on
+   scroll through the theme's shared data-animate hook. */
+.vishesh-journey {
+  padding: 7.2rem 0 8rem;
 }
 
-.vishesh-timeline__heading {
+.vishesh-journey__head {
   text-align: center;
-  margin: 0 0 4rem;
+  margin: 0 0 5.6rem;
 }
 
-.vishesh-timeline__stage {
-  padding: 4rem 0 6rem;
-}
-
-.vishesh-timeline__inner {
-  width: 100%;
-  max-width: 64rem;
-  margin: 0 auto;
-  padding: 0 1.6rem;
-  display: flex;
-  flex-direction: column;
-  gap: 3.2rem;
-}
-
-/* ---- Rail (the year steps) ---- */
-.vishesh-timeline__rail {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.2rem 2rem;
-}
-
-.vishesh-timeline__step {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
+.vishesh-journey__eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 1.2rem;
   font-weight: 700;
-  font-size: 1.3rem;
-  color: var(--color-dark);
-  opacity: 0.4;
-  transition: opacity 0.3s ease, color 0.3s ease;
+  color: var(--color-terracotta);
+  margin: 0 0 1.2rem;
 }
 
-.vishesh-timeline__dot {
-  width: 0.9rem;
-  height: 0.9rem;
-  border-radius: 50%;
-  background: currentColor;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-
-/* ---- Cards ---- */
-.vishesh-timeline__cards {
-  list-style: none;
+.vishesh-journey__heading {
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.vishesh-timeline__card {
-  position: relative;
-  overflow: hidden;
-  background: #ffffff;
-  border-radius: 1.6rem;
-  padding: 4rem 3.2rem;
-  box-shadow: 0 1.2rem 3.2rem rgba(74, 52, 24, 0.12);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 2.4rem;
-}
-
-/* ---- Card meta: pin + step counter + progress ----
-   The counter was 1.3rem and easy to miss despite doing the wayfinding
-   through nine steps. It now sits on the card's top row beside the pin,
-   at display size, with a bar underneath showing how far along the
-   journey the reader is. */
-.vishesh-timeline__count {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0 0.2rem;
+  font-size: clamp(2.8rem, 4vw, 4.4rem);
   font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--color-primary);
-  line-height: 1;
-}
-
-.vishesh-timeline__count-now {
-  font-size: 3.2rem;
-}
-
-.vishesh-timeline__count-total {
-  font-size: 1.8rem;
-  opacity: 0.45;
-}
-
-.vishesh-timeline__count-bar {
-  /* Own row under the n/9 pair. */
-  display: block;
-  flex-basis: 100%;
-  margin: 0.9rem auto 0;
-  width: 11rem;
-  height: 0.4rem;
-  border-radius: 99rem;
-  background: rgba(74, 52, 24, 0.14);
-  overflow: hidden;
-}
-
-.vishesh-timeline__count-fill {
-  display: block;
-  height: 100%;
-  border-radius: 99rem;
-  background: var(--color-primary);
-}
-
-/* The era motif sits inside the pin, and the year is a real headline
-   rather than a faint number bled off the card's edge. */
-.vishesh-timeline__pin {
-  flex-shrink: 0;
-  width: 6.4rem;
-  height: 6.4rem;
-  border-radius: 50% 50% 50% 0.6rem;
-  transform: rotate(-45deg);
-  background: var(--color-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.3);
-}
-
-.vishesh-timeline__icon {
-  width: 3.2rem;
-  height: 3.2rem;
-  /* Cancels the pin's -45deg so the drawing sits upright in it. */
-  transform: rotate(45deg);
-  color: #ffffff;
-}
-
-.vishesh-timeline__year-big {
-  font-size: clamp(3.2rem, 4.4vw, 4.6rem);
-  font-weight: 800;
-  line-height: 1;
+  line-height: 1.05;
   letter-spacing: -0.02em;
   color: var(--color-primary);
 }
 
-.vishesh-timeline__text {
-  margin: 0;
-  /* Up from 1.7rem: the card carries the whole stage now, and body copy
-     at the old size read as a caption inside it. */
-  font-size: 1.9rem;
-  line-height: 1.65;
-  font-weight: 500;
-  color: #4a3418;
+.vishesh-journey__list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 104rem;
+  position: relative;
+}
+
+/* The spine. Sits behind the nodes and runs the full height of the
+   list, stopping half a node short at each end so it reads as a line
+   the milestones hang off rather than a rule with loose ends. */
+.vishesh-journey__list::before {
+  content: '';
+  position: absolute;
+  top: 2.4rem;
+  bottom: 2.4rem;
+  left: 50%;
+  width: 0.2rem;
+  margin-left: -0.1rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(242, 28, 38, 0) 0%,
+    rgba(242, 28, 38, 0.28) 8%,
+    rgba(242, 28, 38, 0.28) 92%,
+    rgba(242, 28, 38, 0) 100%
+  );
+}
+
+.vishesh-journey__item {
+  position: relative;
+  display: grid;
+  /* card | spine gutter | card - the milestone takes one side and the
+     other stays empty, which is what produces the alternation. */
+  grid-template-columns: 1fr 9.6rem 1fr;
+  align-items: center;
+  margin-bottom: 3.2rem;
+}
+
+.vishesh-journey__item:last-child {
+  margin-bottom: 0;
+}
+
+/* Node on the spine, carrying the era motif. */
+.vishesh-journey__node {
+  grid-column: 2;
+  justify-self: center;
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.6rem 1.8rem rgba(242, 28, 38, 0.28), 0 0 0 0.6rem rgb(var(--color-background));
   position: relative;
   z-index: 1;
 }
 
-/* ---- Enhanced: one stuck stage, milestones swap inside it ---- */
-.vishesh-timeline--live .vishesh-timeline__scroll {
-  /* Scroll runway: roughly half a viewport per milestone. The stage
-     stays stuck for all of it. */
-  min-height: calc(var(--milestone-count, 9) * 36vh);
+.vishesh-journey__node .vishesh-timeline__icon {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.vishesh-journey__card {
   position: relative;
+  background: #ffffff;
+  border: 0.1rem solid rgba(74, 52, 24, 0.08);
+  border-radius: 1.6rem;
+  padding: 2.8rem 3.2rem;
+  box-shadow: 0 1rem 2.8rem rgba(74, 52, 24, 0.1);
 }
 
-/* The stage fills the viewport and its milestone fills the stage.
-   History worth keeping: this first hugged its content at the top of a
-   sticky full-height area, which pooled all the leftover height into one
-   dead band underneath. Centring (align-content: center) split that band
-   in two instead of removing it - measured 900px stage against 374px of
-   content, so 263px of dead cream above the card and another 263px
-   below, on every one of the nine steps. Stretching is what actually
-   closes it: the row now takes the stage's full height and the rail and
-   card below fill it, rather than floating in the middle of it. */
-.vishesh-timeline--live .vishesh-timeline__stage {
-  position: sticky;
-  /* Dawn's header is a reveal-on-scroll sticky-header. At top:0 the stage
-     stuck underneath it, so scrolling up put the rail and the top of the
-     card behind a 120px header - the milestone looked cropped. Offset by
-     the header's own measured height (sections/header.liquid sets
-     --header-height on the root element) and take that height out of the
-     stage so the two do not add up to more than the viewport. */
-  top: var(--header-height, 0px);
-  min-height: min(calc(100vh - var(--header-height, 0px)), 74rem);
-  display: grid;
-  align-content: stretch;
-  padding: 2.4rem 0;
+/* Odd milestones sit left of the spine, even ones right. Copy stays
+   left-aligned on both sides: mirroring the alignment looks tidier in a
+   wireframe, but it gives the left-hand cards a ragged left edge, and
+   these are three-to-five line paragraphs rather than captions. */
+.vishesh-journey__item:nth-child(odd) .vishesh-journey__card {
+  grid-column: 1;
 }
 
-.vishesh-timeline--live .vishesh-timeline__inner {
-  height: 100%;
+.vishesh-journey__item:nth-child(even) .vishesh-journey__card {
+  grid-column: 3;
 }
 
-.vishesh-timeline--live .vishesh-timeline__cards {
-  height: 100%;
-  /* All nine cards share one grid cell, so the row is as tall as the
-     longest milestone. Centre them in it instead of stretching every card
-     to that height: a short milestone then renders as a compact card with
-     cream around it, rather than the same short paragraph floating in a
-     535px box of white. The row height stays constant either way, so the
-     stuck stage never resizes between steps. */
-  align-items: center;
-}
-
-.vishesh-timeline--live .vishesh-timeline__card {
-  /* Counter, pin, year and copy centre as one group. Pinning the meta to
-     the top and centring the copy in the leftover space (an earlier
-     attempt) opened a gap through the middle of the card. */
-  justify-content: center;
-}
-
-.vishesh-timeline--live .vishesh-timeline__rail {
-  flex-direction: column;
-  align-items: flex-start;
-  flex-wrap: nowrap;
-  /* space-between rather than a fixed gap: the nine years now spread
-     across the stage's full height, so the rail carries real weight
-     instead of bunching into a short list beside a tall card. */
-  justify-content: space-between;
-  gap: 1.6rem;
-  height: 100%;
-  position: relative;
-  padding-left: 2.6rem;
-}
-
-/* Track the milestones sit on, plus a fill that grows with --progress
-   so the journey visibly builds as you scroll. */
-.vishesh-timeline--live .vishesh-timeline__rail::before,
-.vishesh-timeline--live .vishesh-timeline__rail::after {
+/* Little beak pointing at the spine, so each card is clearly tied to
+   its own node rather than floating beside the line. */
+.vishesh-journey__card::after {
   content: '';
   position: absolute;
-  left: 0.45rem;
-  top: 0.4rem;
-  bottom: 0.4rem;
-  width: 0.2rem;
-  border-radius: 99rem;
+  top: 50%;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-top: -0.7rem;
+  background: #ffffff;
+  border: 0.1rem solid rgba(74, 52, 24, 0.08);
+  transform: rotate(45deg);
 }
 
-.vishesh-timeline--live .vishesh-timeline__rail::before {
-  background: rgba(var(--color-foreground), 0.16);
+.vishesh-journey__item:nth-child(odd) .vishesh-journey__card::after {
+  right: -0.8rem;
+  border-left: none;
+  border-bottom: none;
 }
 
-.vishesh-timeline--live .vishesh-timeline__rail::after {
-  background: var(--color-primary);
-  transform-origin: top;
-  transform: scaleY(var(--progress, 0));
-  transition: transform 0.45s ease;
+.vishesh-journey__item:nth-child(even) .vishesh-journey__card::after {
+  left: -0.8rem;
+  border-right: none;
+  border-top: none;
 }
 
-.vishesh-timeline--live .vishesh-timeline__step {
-  position: relative;
-  /* Phase 20 revises an earlier call here. Unreached milestones used to
-     be fully transparent so the list built up as the reader scrolled -
-     but with the rail now spanning the full stage height, that left a
-     760px column holding a single visible year and a faint track. They
-     are present but faint instead: the rail reads as a whole journey
-     with your position on it, which is the job it is doing. */
-  opacity: 0.22;
-  transform: translateY(0.6rem);
-  transition: opacity 0.45s ease, transform 0.45s ease, color 0.3s ease;
-}
-
-.vishesh-timeline--live .vishesh-timeline__step .vishesh-timeline__dot {
-  position: absolute;
-  left: -2.2rem;
-}
-
-.vishesh-timeline--live .vishesh-timeline__step.is-past,
-.vishesh-timeline--live .vishesh-timeline__step.is-active {
-  opacity: 1;
-  transform: none;
-}
-
-.vishesh-timeline--live .vishesh-timeline__step.is-past {
-  opacity: 0.6;
-}
-
-.vishesh-timeline--live .vishesh-timeline__step.is-active {
-  color: var(--color-primary);
-}
-
-.vishesh-timeline--live .vishesh-timeline__step.is-active .vishesh-timeline__dot {
-  transform: scale(2.2);
-  background: var(--color-primary);
-}
-
-/* The active year steps up in size as it becomes current, so the rail
-   reads as a position indicator rather than a static list. */
-.vishesh-timeline--live .vishesh-timeline__step-year {
-  display: inline-block;
-  font-size: 1.5rem;
-  transition: font-size 0.35s ease, transform 0.35s ease;
-}
-
-.vishesh-timeline--live .vishesh-timeline__step.is-active .vishesh-timeline__step-year {
-  font-size: 2.4rem;
+.vishesh-journey__year {
+  display: block;
+  font-size: 2.8rem;
   font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-primary);
+  margin: 0 0 1rem;
 }
 
-/* Cards become a single stack with only the current one shown. Height
-   comes from the tallest card so the stage does not jump between
-   milestones of different copy lengths. */
-.vishesh-timeline--live .vishesh-timeline__cards {
-  display: grid;
-  gap: 0;
-  /* Cards share one grid cell so they can cross-fade in place. Without
-     this they all stretch to the tallest milestone's height, so short
-     milestones rendered as a mostly-empty white box. Each card now
-     takes only the height its own copy needs. */
-  align-items: start;
+.vishesh-journey__text {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.65;
+  font-weight: 500;
+  color: var(--color-dark);
 }
 
-.vishesh-timeline--live .vishesh-timeline__card {
-  grid-area: 1 / 1;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(1.6rem);
-  transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
-}
-
-.vishesh-timeline--live .vishesh-timeline__card.is-active {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-}
-
-@media screen and (min-width: 750px) {
-  .vishesh-timeline__inner {
-    flex-direction: row;
-    align-items: center;
-    gap: 4.8rem;
+/* Below 990 the spine moves to the left edge and every card sits to its
+   right. The two-sided layout survives down to about 990px, but not
+   below: at 768 it left a 298px card carrying a 248px measure, which
+   wrapped the longest milestone to nine short lines. One column gives
+   the copy its width back. */
+@media screen and (max-width: 989px) {
+  .vishesh-journey {
+    padding: 4.8rem 0 5.6rem;
   }
 
-  /* Stretch, not centre - align-items:center would keep the rail and the
-     card at content height inside a full-height row and put the dead
-     space straight back. */
-  .vishesh-timeline--live .vishesh-timeline__inner {
-    align-items: stretch;
+  .vishesh-journey__head {
+    margin: 0 0 3.6rem;
   }
 
-  .vishesh-timeline--live .vishesh-timeline__card {
-    padding: 5.6rem 4.8rem;
+  .vishesh-journey__list::before {
+    left: 2.2rem;
+    margin-left: 0;
   }
 
-  .vishesh-timeline--live .vishesh-timeline__text {
-    font-size: 2.1rem;
-    max-width: 46rem;
+  .vishesh-journey__item {
+    grid-template-columns: 4.4rem 1fr;
+    align-items: start;
+    gap: 1.6rem;
+    margin-bottom: 2rem;
   }
 
-  /* 64rem was sized for a card that hugged its copy. With the card
-     spanning the stage, that measure left the whole thing floating in a
-     narrow column down the middle of a 1440px page. */
-  .vishesh-timeline--live .vishesh-timeline__inner {
-    max-width: 104rem;
+  .vishesh-journey__node {
+    grid-column: 1;
+    justify-self: start;
+    width: 4.4rem;
+    height: 4.4rem;
+    box-shadow: 0 0.4rem 1.2rem rgba(242, 28, 38, 0.26), 0 0 0 0.5rem rgb(var(--color-background));
   }
 
-  .vishesh-timeline__rail {
-    width: 30%;
+  .vishesh-journey__node .vishesh-timeline__icon {
+    width: 2.2rem;
+    height: 2.2rem;
   }
 
-  .vishesh-timeline__cards {
-    width: 70%;
-  }
-
-  .vishesh-timeline__card {
-    align-items: flex-start;
+  /* Both nth-child rules collapse to the same single column here. */
+  .vishesh-journey__item:nth-child(odd) .vishesh-journey__card,
+  .vishesh-journey__item:nth-child(even) .vishesh-journey__card {
+    grid-column: 2;
     text-align: left;
   }
-}
 
-@media screen and (max-width: 749px) {
-  .vishesh-timeline {
-    padding: 4rem 0 0;
+  .vishesh-journey__item:nth-child(odd) .vishesh-journey__card::after,
+  .vishesh-journey__item:nth-child(even) .vishesh-journey__card::after {
+    top: 2rem;
+    left: -0.8rem;
+    right: auto;
+    border-right: none;
+    border-top: none;
+    border-left: 0.1rem solid rgba(74, 52, 24, 0.08);
+    border-bottom: 0.1rem solid rgba(74, 52, 24, 0.08);
   }
 
-  .vishesh-timeline__heading {
-    margin: 0 0 2.8rem;
+  .vishesh-journey__year {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
   }
 
-  .vishesh-timeline__card {
-    padding: 2.4rem 2rem;
-  }
-
-  .vishesh-timeline__pin {
-    /* Down from 8rem. Rotated 45deg, a square's bounding box is its side
-       times root two, so 8rem was claiming 113px of column height on a
-       phone - oversized now that the year headline carries the milestone
-       and the pin only holds the motif. */
-    width: 5.6rem;
-    height: 5.6rem;
-  }
-
-  .vishesh-timeline--live .vishesh-timeline__scroll {
-    min-height: calc(var(--milestone-count, 9) * 34vh);
-  }
-
-  /* Phones get a shorter cap than the shared rule: the header eats more
-     of a phone viewport, and the card's own content is what sets a
-     sensible ceiling here rather than the screen. */
-  .vishesh-timeline--live .vishesh-timeline__stage {
-    min-height: min(calc(100vh - var(--header-height, 0px)), 58rem);
-  }
-
-  .vishesh-timeline__icon {
-    width: 2.8rem;
-    height: 2.8rem;
-  }
-
-
-
-  /* Mobile rail is a horizontal dot strip, not the desktop year list.
-     Nine year labels cannot sit side by side at this width - they
-     collided with the dots, which were still absolutely positioned
-     from the desktop rule (left: -2.2rem) and so landed on top of the
-     text. Dots go back into normal flow here and the years are
-     dropped: the active year is already shown large on the card's pin
-     and in its n/9 counter, so nothing is lost. */
-  .vishesh-timeline--live .vishesh-timeline__rail {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.9rem;
-    padding-left: 0;
-    /* Undo the desktop rail's full-height stretch. Here the rail is a
-       horizontal dot strip, and inheriting height:100% ballooned it into
-       a 286px band with the dots floating in the middle of it. */
-    height: auto;
-    flex: 0 0 auto;
-  }
-
-  /* The card takes whatever the strip leaves, so the stage still fills. */
-  .vishesh-timeline--live .vishesh-timeline__cards {
-    flex: 1 1 auto;
-    height: auto;
-  }
-
-  .vishesh-timeline--live .vishesh-timeline__step {
-    gap: 0;
-  }
-
-  .vishesh-timeline--live .vishesh-timeline__step .vishesh-timeline__dot {
-    position: static;
-    left: auto;
-  }
-
-  .vishesh-timeline--live .vishesh-timeline__step-year {
-    display: none;
-  }
-
-  /* Track runs horizontally here, so the fill grows along X. */
-  .vishesh-timeline--live .vishesh-timeline__rail::before,
-  .vishesh-timeline--live .vishesh-timeline__rail::after {
-    left: 0.3rem;
-    right: 0.3rem;
-    top: 50%;
-    bottom: auto;
-    width: auto;
-    height: 0.2rem;
-    transform: translateY(-50%);
-  }
-
-  .vishesh-timeline--live .vishesh-timeline__rail::after {
-    transform-origin: left center;
-    transform: translateY(-50%) scaleX(var(--progress, 0));
+  .vishesh-journey__text {
+    font-size: 1.5rem;
+    /* Caps the line length on tablets, where the single column would
+       otherwise run the copy to ~650px. */
+    max-width: 54rem;
   }
 }
-
 
 /* ---------- Our Story: founder photo ----------
    Dawn's image-with-text sets .image-with-text__media to min-height:
@@ -3901,51 +3649,6 @@
 
   .vishesh-vision__index {
     font-size: 5rem;
-  }
-}
-
-/* ---------- Our Journey: motion ----------
-   The pin gently bobs so the marker has some life, and each milestone
-   card arrives with a small lift and scale as it becomes active
-   (rather than a plain opacity swap). Both are cheap transforms, and
-   both are dropped entirely under reduced motion. */
-@keyframes vishesh-pin-bob {
-  0%,
-  100% {
-    transform: rotate(-45deg) translateY(0);
-  }
-  50% {
-    transform: rotate(-45deg) translateY(-0.5rem);
-  }
-}
-
-.vishesh-timeline__pin {
-  animation: vishesh-pin-bob 2.8s ease-in-out infinite;
-}
-
-.vishesh-timeline--live .vishesh-timeline__card {
-  transform: translateY(2.4rem) scale(0.97);
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.5s;
-}
-
-.vishesh-timeline--live .vishesh-timeline__card.is-active {
-  transform: none;
-}
-
-/* Active step's dot gets a soft halo so the current milestone reads at
-   a glance on the rail. */
-.vishesh-timeline--live .vishesh-timeline__step.is-active .vishesh-timeline__dot {
-  box-shadow: 0 0 0 0.4rem rgba(242, 28, 38, 0.18);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .vishesh-timeline__pin {
-    animation: none;
-  }
-
-  .vishesh-timeline--live .vishesh-timeline__card {
-    transform: none;
-    transition: opacity 0.2s linear;
   }
 }
 
