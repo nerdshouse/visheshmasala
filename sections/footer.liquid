@@ -126,6 +126,15 @@
                   <ul class="footer-block__details-content list-unstyled">
                     <li><a href="/pages/return-and-refund-policy" class="link link--text list-menu__item list-menu__item--link">Return and Refund Policy</a></li>
                     <li><a href="/pages/shipping-policy" class="link link--text list-menu__item list-menu__item--link">Shipping Policy</a></li>
+                    {%- comment -%}
+                      Privacy points at Shopify's own policy record, not a
+                      page. Shopify links that record from checkout whatever
+                      we do, so authoring a second privacy document as a page
+                      would leave two versions of the same legal text live at
+                      once - and the record's text is the more complete of
+                      the two.
+                    {%- endcomment -%}
+                    <li><a href="/policies/privacy-policy" class="link link--text list-menu__item list-menu__item--link">Privacy Policy</a></li>
                     <li><a href="/pages/disclaimer" class="link link--text list-menu__item list-menu__item--link">Disclaimer</a></li>
                   </ul>
                 </div>
