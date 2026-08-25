@@ -1261,18 +1261,74 @@
   color: var(--color-primary);
 }
 
-.vishesh-journey__list {
-  list-style: none;
-  margin: 0 auto;
-  padding: 0;
-  max-width: 104rem;
+/* The track is the positioning context the path is measured against;
+   the list inside it is a plain <ol>. */
+.vishesh-journey__track {
   position: relative;
+  max-width: 104rem;
+  margin: 0 auto;
 }
 
-/* The spine. Sits behind the nodes and runs the full height of the
-   list, stopping half a node short at each end so it reads as a line
-   the milestones hang off rather than a rule with loose ends. */
-.vishesh-journey__list::before {
+.vishesh-journey__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* The drawn path (assets/vishesh-journey-path.js). Sits behind the
+   nodes, spans the list box exactly, and never takes pointer events. */
+.vishesh-journey__path {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.vishesh-journey__path-track {
+  stroke: rgba(242, 28, 38, 0.2);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.vishesh-journey__path-line {
+  stroke: var(--color-primary);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+/* Once the script has measured and built the path, the CSS fallback
+   spine steps aside and the nodes start out waiting to be reached. */
+.vishesh-journey--drawn .vishesh-journey__track::before {
+  display: none;
+}
+
+.vishesh-journey--drawn .vishesh-journey__node {
+  background: rgb(var(--color-background));
+  color: rgba(242, 28, 38, 0.55);
+  box-shadow: inset 0 0 0 0.2rem rgba(242, 28, 38, 0.28), 0 0 0 0.6rem rgb(var(--color-background));
+  transform: scale(0.9);
+  transition: background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vishesh-journey--drawn .vishesh-journey__node.is-reached {
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 0.6rem 1.8rem rgba(242, 28, 38, 0.28), 0 0 0 0.6rem rgb(var(--color-background));
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-journey--drawn .vishesh-journey__node {
+    transition: none;
+  }
+}
+
+/* Fallback spine, and what the no-JS section keeps. Runs the full height
+   of the list, stopping half a node short at each end so it reads as a
+   line the milestones hang off rather than a rule with loose ends. */
+.vishesh-journey__track::before {
   content: '';
   position: absolute;
   top: 2.4rem;
@@ -1317,7 +1373,7 @@
   justify-content: center;
   box-shadow: 0 0.6rem 1.8rem rgba(242, 28, 38, 0.28), 0 0 0 0.6rem rgb(var(--color-background));
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .vishesh-journey__node .vishesh-timeline__icon {
@@ -1327,6 +1383,7 @@
 
 .vishesh-journey__card {
   position: relative;
+  z-index: 1;
   background: #ffffff;
   border: 0.1rem solid rgba(74, 52, 24, 0.08);
   border-radius: 1.6rem;
@@ -1404,7 +1461,7 @@
     margin: 0 0 3.6rem;
   }
 
-  .vishesh-journey__list::before {
+  .vishesh-journey__track::before {
     left: 2.2rem;
     margin-left: 0;
   }

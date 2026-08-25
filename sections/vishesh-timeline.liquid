@@ -21,11 +21,18 @@
   history reads as one continuous line rather than nine slides a reader
   has to scrub through to see.
 
-  Motion is limited to each item easing in as it scrolls into view, via
-  the theme's existing data-animate="fade-up" hook, which is already
-  gated on prefers-reduced-motion.
+  The spine is drawn: assets/vishesh-journey-path.js measures the nodes
+  and builds an SVG path that threads through them, bowing to alternate
+  sides between milestones, then traces it with stroke-dashoffset as the
+  section scrolls. That is an enhancement on top of a finished section -
+  the plain CSS track below stays as the fallback and the nodes ship
+  fully coloured, so if the script never runs nothing is hidden.
+
+  Items also ease in via the theme's existing data-animate="fade-up"
+  hook. Both it and the path are gated on prefers-reduced-motion.
 {% endcomment %}
-<div class="vishesh-journey color-{{ section.settings.color_scheme }} gradient">
+<script src="{{ 'vishesh-journey-path.js' | asset_url }}" defer="defer"></script>
+<div class="vishesh-journey color-{{ section.settings.color_scheme }} gradient" data-journey>
   <div class="page-width">
     <header class="vishesh-journey__head">
       {%- if section.settings.eyebrow != blank -%}
@@ -36,20 +43,39 @@
       {%- endif -%}
     </header>
 
-    <ol class="vishesh-journey__list" role="list">
-      {%- for block in section.blocks -%}
-        <li class="vishesh-journey__item" data-animate="fade-up" {{ block.shopify_attributes }}>
-          <span class="vishesh-journey__node" aria-hidden="true">
-            {%- render 'vishesh-timeline-icon', icon: block.settings.icon -%}
-          </span>
+    {% comment %}
+      The path lives beside the list rather than inside it: an <svg> is
+      not a permitted child of <ol>, and as a child it also shifted every
+      milestone's :nth-child parity, which flipped the alternation.
+    {% endcomment %}
+    <div class="vishesh-journey__track" data-journey-list>
+      {% comment %}
+        Two copies of the same path: a faint track that is always there,
+        and the brand-coloured line drawn over it on scroll. Sharing one
+        `d` means they cannot drift out of alignment. Both are written by
+        the script; empty until then, which is why the CSS spine sits
+        underneath as the no-JS fallback.
+      {% endcomment %}
+      <svg class="vishesh-journey__path" data-journey-path aria-hidden="true" focusable="false">
+        <path class="vishesh-journey__path-track" data-journey-track fill="none" />
+        <path class="vishesh-journey__path-line" data-journey-line fill="none" />
+      </svg>
 
-          <article class="vishesh-journey__card">
-            <span class="vishesh-journey__year">{{ block.settings.year }}</span>
-            <p class="vishesh-journey__text">{{ block.settings.text }}</p>
-          </article>
-        </li>
-      {%- endfor -%}
-    </ol>
+      <ol class="vishesh-journey__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="vishesh-journey__item" data-animate="fade-up" {{ block.shopify_attributes }}>
+            <span class="vishesh-journey__node" data-journey-node aria-hidden="true">
+              {%- render 'vishesh-timeline-icon', icon: block.settings.icon -%}
+            </span>
+
+            <article class="vishesh-journey__card">
+              <span class="vishesh-journey__year">{{ block.settings.year }}</span>
+              <p class="vishesh-journey__text">{{ block.settings.text }}</p>
+            </article>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
   </div>
 </div>
 
