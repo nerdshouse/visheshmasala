@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -69,20 +78,11 @@
         "hing": {
           "type": "category",
           "settings": {
-            "title": "Hing Ka Tadka",
-            "tag_label": "Asafoetida (Hing)",
-            "tag_color": "saffron",
-            "link": "/collections/asafoetida-hing"
-          }
-        },
-        "blends": {
-          "type": "category",
-          "settings": {
-            "title": "Vishesh Blends",
-            "tag_label": "Blended Masalas",
-            "tag_color": "terracotta",
-            "link": "/collections/authentic-blended-spice",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Sahi_Paneer_Rs_10_Front_3D.png"
+            "title": "Chatpata Corner",
+            "tag_label": "Street & Fusion Flavors",
+            "tag_color": "accent",
+            "link": "/collections/street-fusion-flavors",
+            "image": "shopify://shop_images/Dhanhar_Vishesh_Pasta_Rs_10_Front_3D.png"
           }
         },
         "easy": {
@@ -95,55 +95,21 @@
             "image": "shopify://shop_images/Dhanhar_Vishesh_Pavbhaji_Rs_10_Front_3D.png"
           }
         },
-        "herbs": {
-          "type": "category",
-          "settings": {
-            "title": "Jadi Booti Junction",
-            "tag_label": "Herbs",
-            "tag_color": "sage",
-            "link": "/collections/herbs",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Oregano_Rs_10_Front_3D.png"
-          }
-        },
         "essentials": {
           "type": "category",
           "settings": {
             "title": "Rozmarra Rasoi",
-            "tag_label": "Essentials",
+            "tag_label": "Essential Products",
             "tag_color": "maroon",
             "link": "/collections/essential-products",
             "image": "shopify://shop_images/Dhanhar_Vishesh_Cumin_Powder_Rs_10_Front_3D.png"
-          }
-        },
-        "horeca": {
-          "type": "category",
-          "settings": {
-            "title": "Bade Order Ka Adda",
-            "tag_label": "HORECA / Bulk",
-            "tag_color": "terracotta",
-            "link": "/collections/horeca-products",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Mutton_Rs_10_Front_3D.png"
-          }
-        },
-        "upwas": {
-          "type": "category",
-          "settings": {
-            "title": "Vrat Ki Thali",
-            "tag_label": "Upwas",
-            "tag_color": "saffron",
-            "link": "/collections/upwas-products",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Khichdi_Rs_10_Front_3D.png"
           }
         }
       },
       "block_order": [
         "hing",
-        "blends",
         "easy",
-        "herbs",
-        "essentials",
-        "horeca",
-        "upwas"
+        "essentials"
       ],
       "settings": {
         "heading": "Shop by Category",
