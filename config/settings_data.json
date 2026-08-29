@@ -131,7 +131,7 @@
     "whatsapp_enable": true,
     "whatsapp_number": "919499543431",
     "welcome_sound_enable": true,
-    "welcome_sound_url": "https://cdn.shopify.com/s/files/1/0701/6762/5841/files/opening_sound.mp3?v=1788003563",
+    "welcome_sound_url": "https://cdn.shopify.com/s/files/1/0701/6762/5841/files/opening_sound_web.mp3?v=1788004660",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
@@ -421,7 +421,7 @@
       "whatsapp_enable": true,
       "whatsapp_number": "919499543431",
       "welcome_sound_enable": true,
-      "welcome_sound_url": "https://cdn.shopify.com/s/files/1/0701/6762/5841/files/opening_sound.mp3?v=1788003563"
+      "welcome_sound_url": "https://cdn.shopify.com/s/files/1/0701/6762/5841/files/opening_sound_web.mp3?v=1788004660"
     }
   }
 }
