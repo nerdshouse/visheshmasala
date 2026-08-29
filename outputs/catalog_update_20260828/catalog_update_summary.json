@@ -1,0 +1,1621 @@
+{
+  "products": [
+    {
+      "title": "Aachar Masala",
+      "handle": "aachar-masala",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 4,
+      "categories": [
+        "Achari Vichar",
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "12g",
+          "packType": "Pouch",
+          "grams": 12,
+          "price": 10
+        },
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 55
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 110
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 270
+        }
+      ]
+    },
+    {
+      "title": "Biryani / Pulav Masala",
+      "handle": "biryani-pulav-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 2,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        117,
+        118
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 47
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 92
+        }
+      ]
+    },
+    {
+      "title": "Black Label Compound Hing",
+      "handle": "black-label-compound-hing",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Compound Hing Powder (Asafoetida)"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 360
+        }
+      ]
+    },
+    {
+      "title": "Black Salt",
+      "handle": "black-salt",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Essential Powder Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 80
+        }
+      ]
+    },
+    {
+      "title": "Chat Masala",
+      "handle": "chat-masala",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 3,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        119,
+        120
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 26
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 50
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 230
+        }
+      ]
+    },
+    {
+      "title": "Chevdo Masala",
+      "handle": "chevdo-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "20g",
+          "packType": "Pouch",
+          "grams": 20,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Chhas Masala",
+      "handle": "chhas-masala",
+      "existing": true,
+      "beforeVariantCount": 3,
+      "afterVariantCount": 3,
+      "categories": [
+        "Premium Blended Spices",
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "17g",
+          "packType": "Pouch",
+          "grams": 17,
+          "price": 10
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 95
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 275
+        }
+      ]
+    },
+    {
+      "title": "Chhole-Chana Masala",
+      "handle": "chhole-chana-masala",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 3,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        121,
+        122
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 39
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 77
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 375
+        }
+      ]
+    },
+    {
+      "title": "Chicken Masala",
+      "handle": "chicken-masala",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 3,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": false,
+      "imagePair": [
+        125,
+        126
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 42
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 83
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 415
+        }
+      ]
+    },
+    {
+      "title": "Chicken Tikka Masala",
+      "handle": "chicken-tikka-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 2,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": false,
+      "imagePair": [
+        123,
+        124
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 42
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 83
+        }
+      ]
+    },
+    {
+      "title": "Chilli Powder",
+      "handle": "chilli-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 4,
+      "categories": [
+        "Essential Powder Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 59
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 115
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 278
+        },
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 550
+        }
+      ]
+    },
+    {
+      "title": "Chillie Flakes",
+      "handle": "chilli-flakes",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "12g",
+          "packType": "Pouch",
+          "grams": 12,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Chutney Masala",
+      "handle": "red-chutney-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "35g",
+          "packType": "Pouch",
+          "grams": 35,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Classic Garam Masala",
+      "handle": "classic-garam-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Garam Masala"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Pouch",
+          "grams": 50,
+          "price": 25
+        }
+      ]
+    },
+    {
+      "title": "Cold Coco Powder",
+      "handle": "cocoa-powder",
+      "existing": true,
+      "beforeVariantCount": 3,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 35
+        }
+      ]
+    },
+    {
+      "title": "Coriander & Cumin Powder",
+      "handle": "coriander-and-cumin-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 3,
+      "categories": [
+        "Essential Powder Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 43
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 84
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 200
+        }
+      ]
+    },
+    {
+      "title": "Coriander Powder",
+      "handle": "coriander-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 4,
+      "categories": [
+        "Essential Powder Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 42
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 82
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 200
+        },
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 385
+        }
+      ]
+    },
+    {
+      "title": "Cumin Powder",
+      "handle": "cumin-powder",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 2,
+      "categories": [
+        "Essential Powder Products",
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "12g",
+          "packType": "Pouch",
+          "grams": 12,
+          "price": 10
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 300
+        }
+      ]
+    },
+    {
+      "title": "Dabeli Masala",
+      "handle": "dabeli-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "18g",
+          "packType": "Pouch",
+          "grams": 18,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Dalshak Masala",
+      "handle": "dalshak-masala",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 1,
+      "categories": [
+        "Garam Masala"
+      ],
+      "jainFriendly": false,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 260
+        }
+      ]
+    },
+    {
+      "title": "Dry Ginger Powder",
+      "handle": "ginger-powder",
+      "existing": true,
+      "beforeVariantCount": 3,
+      "afterVariantCount": 3,
+      "categories": [
+        "Essential Powder Products",
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "12g",
+          "packType": "Pouch",
+          "grams": 12,
+          "price": 10
+        },
+        {
+          "size": "50g",
+          "packType": "Pouch",
+          "grams": 50,
+          "price": 46
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 375
+        }
+      ]
+    },
+    {
+      "title": "Egg Curry Masala",
+      "handle": "egg-curry-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": false,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "12g",
+          "packType": "Pouch",
+          "grams": 12,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Fish Masala",
+      "handle": "fish-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": false,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "12g",
+          "packType": "Pouch",
+          "grams": 12,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Frankie Masala",
+      "handle": "frankie-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "17g",
+          "packType": "Pouch",
+          "grams": 17,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Gol Keri Aachar Masala",
+      "handle": "gol-keri-aachar-masala",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 2,
+      "categories": [
+        "Achari Vichar"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 110
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 270
+        }
+      ]
+    },
+    {
+      "title": "Green Label Compound Hing",
+      "handle": "green-label-compound-hing",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Compound Hing Powder (Asafoetida)"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 415
+        }
+      ]
+    },
+    {
+      "title": "Idli-Sambar Masala",
+      "handle": "idli-sambar-masala",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 3,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        147,
+        148
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 39
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 77
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 345
+        }
+      ]
+    },
+    {
+      "title": "Jaljira Powder",
+      "handle": "jaljira-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 2,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        127,
+        128
+      ],
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 63
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 275
+        }
+      ]
+    },
+    {
+      "title": "Kadhi Masala",
+      "handle": "kadhi-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "27g",
+          "packType": "Pouch",
+          "grams": 27,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Kashmiri Chilli Powder",
+      "handle": "kashmiri-chilli-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 3,
+      "categories": [
+        "Essential Powder Products"
+      ],
+      "jainFriendly": false,
+      "imagePair": [
+        129,
+        130
+      ],
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 127
+        },
+        {
+          "size": "200g",
+          "packType": "Jar",
+          "grams": 200,
+          "price": 257
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 625
+        }
+      ]
+    },
+    {
+      "title": "Khichdi Masala",
+      "handle": "khichdi-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "23g",
+          "packType": "Pouch",
+          "grams": 23,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Kitchen-King Masala",
+      "handle": "kitchen-king-masala",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 3,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": false,
+      "imagePair": [
+        131,
+        132
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 39
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 77
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 375
+        }
+      ]
+    },
+    {
+      "title": "Lajawab Garam Masala",
+      "handle": "lajawab-garam-masala",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 2,
+      "categories": [
+        "Garam Masala"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        133,
+        134
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 42
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 83
+        }
+      ]
+    },
+    {
+      "title": "Methi Powder",
+      "handle": "methi-powder",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Essential Powder Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 100
+        }
+      ]
+    },
+    {
+      "title": "Mutton Masala",
+      "handle": "mutton-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 2,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": false,
+      "imagePair": [
+        135,
+        136
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 42
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 83
+        }
+      ]
+    },
+    {
+      "title": "No.300 compound Hing Powder",
+      "handle": "no-300-compound-hing-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 4,
+      "categories": [
+        "Compound Hing Powder (Asafoetida)"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Pouch",
+          "grams": 50,
+          "price": 30
+        },
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 58
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 115
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 285
+        }
+      ]
+    },
+    {
+      "title": "Oregano Flakes",
+      "handle": "oregano",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "12g",
+          "packType": "Pouch",
+          "grams": 12,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Paneer Tikka Masala",
+      "handle": "paneer-tikka-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 2,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        137,
+        138
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 42
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 83
+        }
+      ]
+    },
+    {
+      "title": "Panipuri Masala",
+      "handle": "panipuri-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 2,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        139,
+        140
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 26
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 50
+        }
+      ]
+    },
+    {
+      "title": "Pasta Masala",
+      "handle": "pasta-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": false,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "30g",
+          "packType": "Pouch",
+          "grams": 30,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Pavbhaji Masala",
+      "handle": "pavbhaji-masala",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 3,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        141,
+        142
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 42
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 83
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 415
+        }
+      ]
+    },
+    {
+      "title": "Peepramul Powder",
+      "handle": "peepramul-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 1,
+      "categories": [
+        "Essential Powder Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Pouch",
+          "grams": 50,
+          "price": 75
+        }
+      ]
+    },
+    {
+      "title": "Pizza Masala",
+      "handle": "pizza-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Easy to Cook"
+      ],
+      "jainFriendly": false,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "17g",
+          "packType": "Pouch",
+          "grams": 17,
+          "price": 10
+        }
+      ]
+    },
+    {
+      "title": "Premium Compound Hing Powder",
+      "handle": "premium-compound-hing-powder",
+      "existing": true,
+      "beforeVariantCount": 3,
+      "afterVariantCount": 4,
+      "categories": [
+        "Compound Hing Powder (Asafoetida)"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Pouch",
+          "grams": 50,
+          "price": 48
+        },
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 93
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 185
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 460
+        }
+      ]
+    },
+    {
+      "title": "Premium Tea Masala",
+      "handle": "special-tea-masala",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 2,
+      "categories": [
+        "Tea Masala"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        143,
+        144
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 65
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 125
+        }
+      ]
+    },
+    {
+      "title": "Punjabi Gravy Masala",
+      "handle": "punjabi-gravy-masala",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 3,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        145,
+        146
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 39
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 77
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 375
+        }
+      ]
+    },
+    {
+      "title": "Rajgara Atta",
+      "handle": "rajgara-atta",
+      "existing": true,
+      "beforeVariantCount": 3,
+      "afterVariantCount": 3,
+      "categories": [
+        "Fasting Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 28
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 54
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 130
+        }
+      ]
+    },
+    {
+      "title": "Rajwadi Garam Masala",
+      "handle": "rajwadi-garam-masala",
+      "existing": true,
+      "beforeVariantCount": 3,
+      "afterVariantCount": 4,
+      "categories": [
+        "Garam Masala"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Pouch",
+          "grams": 50,
+          "price": 33
+        },
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 65
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 128
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 315
+        }
+      ]
+    },
+    {
+      "title": "Red Label Compound Hing",
+      "handle": "red-label-compound-hing",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Compound Hing Powder (Asafoetida)"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 195
+        }
+      ]
+    },
+    {
+      "title": "Rock Salt",
+      "handle": "rock-salt",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Fasting Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 85
+        }
+      ]
+    },
+    {
+      "title": "Shahi Paneer Masala",
+      "handle": "sahi-paneer-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 2,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        149,
+        150
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 42
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 83
+        }
+      ]
+    },
+    {
+      "title": "Shingoda Atta",
+      "handle": "shingoda-atta",
+      "existing": true,
+      "beforeVariantCount": 2,
+      "afterVariantCount": 2,
+      "categories": [
+        "Fasting Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 42
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 205
+        }
+      ]
+    },
+    {
+      "title": "Special Garam Masala",
+      "handle": "special-garam-masala",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 1,
+      "categories": [
+        "Garam Masala"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 420
+        }
+      ]
+    },
+    {
+      "title": "Super compound Hing Powder",
+      "handle": "super-compound-hing-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 4,
+      "categories": [
+        "Compound Hing Powder (Asafoetida)"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Jar",
+          "grams": 50,
+          "price": 49
+        },
+        {
+          "size": "100g",
+          "packType": "Jar",
+          "grams": 100,
+          "price": 98
+        },
+        {
+          "size": "200g",
+          "packType": "Jar",
+          "grams": 200,
+          "price": 196
+        },
+        {
+          "size": "500g",
+          "packType": "Jar",
+          "grams": 500,
+          "price": 490
+        }
+      ]
+    },
+    {
+      "title": "Super Garam Masala",
+      "handle": "super-garam-masala",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 1,
+      "categories": [
+        "Garam Masala"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 310
+        }
+      ]
+    },
+    {
+      "title": "Surti Garam Masala",
+      "handle": "surti-garam-masala",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 1,
+      "categories": [
+        "Garam Masala"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 360
+        }
+      ]
+    },
+    {
+      "title": "Tandoori Chicken Masala",
+      "handle": "tandoori-chicken-masala",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 2,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": false,
+      "imagePair": [
+        151,
+        152
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 42
+        },
+        {
+          "size": "100g",
+          "packType": "Box",
+          "grams": 100,
+          "price": 83
+        }
+      ]
+    },
+    {
+      "title": "Turmeric Powder",
+      "handle": "turmeric-powder",
+      "existing": false,
+      "beforeVariantCount": 0,
+      "afterVariantCount": 4,
+      "categories": [
+        "Essential Powder Products"
+      ],
+      "jainFriendly": true,
+      "imagePair": null,
+      "variants": [
+        {
+          "size": "100g",
+          "packType": "Pouch",
+          "grams": 100,
+          "price": 59
+        },
+        {
+          "size": "200g",
+          "packType": "Pouch",
+          "grams": 200,
+          "price": 115
+        },
+        {
+          "size": "500g",
+          "packType": "Pouch",
+          "grams": 500,
+          "price": 278
+        },
+        {
+          "size": "1kg",
+          "packType": "Pouch",
+          "grams": 1000,
+          "price": 550
+        }
+      ]
+    },
+    {
+      "title": "Undiyu Masala",
+      "handle": "undiyu-masala",
+      "existing": true,
+      "beforeVariantCount": 1,
+      "afterVariantCount": 1,
+      "categories": [
+        "Premium Blended Spices"
+      ],
+      "jainFriendly": true,
+      "imagePair": [
+        153,
+        154
+      ],
+      "variants": [
+        {
+          "size": "50g",
+          "packType": "Box",
+          "grams": 50,
+          "price": 39
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "productsInSheet": 59,
+    "existingProductsUpdated": 42,
+    "newProductsCreated": 17,
+    "variantsAfter": 120,
+    "productsWithNewBoxImages": 19,
+    "untouchedExistingProducts": [
+      "Chinese Masala"
+    ]
+  }
+}
