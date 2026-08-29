@@ -82,7 +82,7 @@
             "tag_label": "Street & Fusion Flavors",
             "tag_color": "accent",
             "link": "/collections/street-fusion-flavors",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Pasta_Rs_10_Front_3D.png"
+            "image": "shopify://shop_images/Pasta_Masala_Pouch_1.png"
           }
         },
         "easy": {
@@ -92,7 +92,7 @@
             "tag_label": "Easy to Cook",
             "tag_color": "accent",
             "link": "/collections/easy-to-cook",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Pavbhaji_Rs_10_Front_3D.png"
+            "image": "shopify://shop_images/Pav_Bhaji_Masala_Pouch_1.png"
           }
         },
         "essentials": {
@@ -102,7 +102,7 @@
             "tag_label": "Essential Products",
             "tag_color": "maroon",
             "link": "/collections/essential-products",
-            "image": "shopify://shop_images/Dhanhar_Vishesh_Cumin_Powder_Rs_10_Front_3D.png"
+            "image": "shopify://shop_images/Cumin_Powder_Pouch_1.png"
           }
         }
       },
