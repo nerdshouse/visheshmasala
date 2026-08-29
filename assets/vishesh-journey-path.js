@@ -45,6 +45,8 @@
 
     var track = svg.querySelector('[data-journey-track]');
     var line = svg.querySelector('[data-journey-line]');
+    var head = svg.querySelector('[data-journey-head]');
+    var headGlow = svg.querySelector('[data-journey-head-glow]');
     var nodes = Array.prototype.slice.call(section.querySelectorAll('[data-journey-node]'));
     if (!track || !line || nodes.length < 2) return;
 
@@ -116,10 +118,28 @@
       var p = progress();
       line.style.strokeDashoffset = length * (1 - p);
 
+      // Move the head dot to the tip of the drawn stroke. Hidden at the
+      // very start and end so it does not sit parked on a node.
+      if (head && line.getPointAtLength) {
+        var tip = line.getPointAtLength(length * p);
+        head.setAttribute('cx', tip.x);
+        head.setAttribute('cy', tip.y);
+        var show = p > 0.01 && p < 0.995;
+        head.classList.toggle('is-visible', show);
+        if (headGlow) {
+          headGlow.setAttribute('cx', tip.x);
+          headGlow.setAttribute('cy', tip.y);
+          headGlow.style.transformOrigin = tip.x + 'px ' + tip.y + 'px';
+          headGlow.classList.toggle('is-visible', show);
+        }
+      }
+
       // A node counts as reached once the drawn head passes its centre.
-      var head = p * (points.length - 1);
+      // Named reachedIndex, not head: `head` is the SVG dot above, and a
+      // second `var head` here would hoist over it and break the dot.
+      var reachedIndex = p * (points.length - 1);
       for (var i = 0; i < nodes.length; i++) {
-        nodes[i].classList.toggle('is-reached', i <= head + 0.15);
+        nodes[i].classList.toggle('is-reached', i <= reachedIndex + 0.15);
       }
     }
 

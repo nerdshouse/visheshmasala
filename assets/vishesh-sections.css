@@ -1303,8 +1303,53 @@
 
 .vishesh-journey__path-line {
   stroke: var(--color-primary);
-  stroke-width: 2;
+  /* Thicker than the dotted track it draws over, so the drawn portion
+     reads as a deliberate line advancing rather than the track simply
+     changing colour. */
+  stroke-width: 3;
   stroke-linecap: round;
+}
+
+/* The head of the drawn line. Sits at the tip of the stroke and travels
+   with it, which is what makes the drawing legible as motion - the line
+   alone grows too slowly to register as animating. */
+.vishesh-journey__path-head {
+  fill: var(--color-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.vishesh-journey--drawn .vishesh-journey__path-head.is-visible {
+  opacity: 1;
+}
+
+.vishesh-journey__path-head-glow {
+  fill: var(--color-primary);
+  opacity: 0;
+}
+
+.vishesh-journey--drawn .vishesh-journey__path-head.is-visible + .vishesh-journey__path-head-glow,
+.vishesh-journey--drawn .vishesh-journey__path-head-glow.is-visible {
+  opacity: 0.18;
+  animation: vishesh-journey-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes vishesh-journey-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: scale(1.7);
+    opacity: 0.05;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vishesh-journey__path-head-glow {
+    animation: none;
+  }
 }
 
 /* Fallback trail for the no-JS case; hidden once the path is built. */
@@ -4105,115 +4150,6 @@
   position: relative;
 }
 
-/* ---- Footer cooking vignette (snippets/vishesh-cooking-vignette.liquid)
-   Replaces the Phase 16 .vishesh-seal__steam wisps, which were 0.25rem
-   wide at 0.45 opacity - too small to register as an intentional touch.
-   Inline SVG + keyframes only: no image request, nothing to lazy-load. */
-.vishesh-cookpot {
-  margin: 2rem auto 0;
-  width: 100%;
-  max-width: 16rem;
-}
-
-.vishesh-cookpot__svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-.vishesh-cookpot__steam {
-  stroke: #ffffff;
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: bottom center;
-  animation: vishesh-cookpot-steam 4.2s ease-in-out infinite;
-}
-
-.vishesh-cookpot__steam--1 {
-  animation-delay: 0s;
-}
-
-.vishesh-cookpot__steam--2 {
-  animation-delay: 1.4s;
-}
-
-.vishesh-cookpot__steam--3 {
-  animation-delay: 2.6s;
-}
-
-.vishesh-cookpot__ladle {
-  transform-box: fill-box;
-  /* Pivot at the handle's top end so the bowl sweeps through the masala
-     rather than the whole ladle sliding sideways. */
-  transform-origin: 90% 8%;
-  animation: vishesh-cookpot-stir 3.4s ease-in-out infinite;
-}
-
-.vishesh-cookpot__flame-group {
-  transform-box: fill-box;
-  transform-origin: bottom center;
-  animation: vishesh-cookpot-flame 1.5s ease-in-out infinite;
-}
-
-.vishesh-cookpot__flame--inner {
-  transform-box: fill-box;
-  transform-origin: bottom center;
-  animation: vishesh-cookpot-flame-inner 0.9s ease-in-out infinite;
-}
-
-@keyframes vishesh-cookpot-steam {
-  0% {
-    opacity: 0;
-    transform: translateY(0.6rem) scale(0.72);
-  }
-  30% {
-    opacity: 0.72;
-  }
-  70% {
-    opacity: 0.36;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-1.5rem) scale(1.12);
-  }
-}
-
-@keyframes vishesh-cookpot-stir {
-  0%,
-  100% {
-    transform: rotate(-7deg);
-  }
-  50% {
-    transform: rotate(7deg);
-  }
-}
-
-@keyframes vishesh-cookpot-flame {
-  0%,
-  100% {
-    transform: scale(1, 1);
-  }
-  35% {
-    transform: scale(0.92, 1.1);
-  }
-  65% {
-    transform: scale(1.06, 0.94);
-  }
-}
-
-@keyframes vishesh-cookpot-flame-inner {
-  0%,
-  100% {
-    transform: scaleY(1);
-    opacity: 0.72;
-  }
-  50% {
-    transform: scaleY(0.82);
-    opacity: 0.5;
-  }
-}
-
 /* ---- Cart icon: golden dust puff on add (assets/vishesh-cart-puff.js) ---- */
 #cart-icon-bubble {
   position: relative;
@@ -4252,18 +4188,6 @@
     display: none;
   }
 
-  /* The vignette stays on screen, it just stops moving: steam parked at a
-     readable opacity, no stirring, no flicker. */
-  .vishesh-cookpot__steam,
-  .vishesh-cookpot__ladle,
-  .vishesh-cookpot__flame-group,
-  .vishesh-cookpot__flame--inner {
-    animation: none;
-  }
-
-  .vishesh-cookpot__steam {
-    opacity: 0.5;
-  }
 
   .vishesh-divider__granule {
     animation: none;

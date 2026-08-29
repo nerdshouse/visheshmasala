@@ -79,11 +79,41 @@
         "hing": {
           "type": "category",
           "settings": {
-            "title": "Chatpata Corner",
-            "tag_label": "Street & Fusion Flavors",
+            "title": "Hing Ka Tadka",
+            "tag_label": "Compound Hing",
+            "tag_color": "saffron",
+            "link": "/collections/compound-hing-powder-asafoetida",
+            "image": "shopify://shop_images/Premium_Hing_Pouch_1.png"
+          }
+        },
+        "blends": {
+          "type": "category",
+          "settings": {
+            "title": "Vishesh Blends",
+            "tag_label": "Premium Blended Spices",
+            "tag_color": "terracotta",
+            "link": "/collections/premium-blended-spices",
+            "image": "shopify://shop_images/Pav_Bhaji_Masala_Box_1.png"
+          }
+        },
+        "garam": {
+          "type": "category",
+          "settings": {
+            "title": "Garam Ka Gharana",
+            "tag_label": "Garam Masala",
+            "tag_color": "maroon",
+            "link": "/collections/garam-masala",
+            "image": "shopify://shop_images/Rajwadi_Garam_Masala_Pouch_1.png"
+          }
+        },
+        "essentials": {
+          "type": "category",
+          "settings": {
+            "title": "Rozmarra Rasoi",
+            "tag_label": "Essential Powders",
             "tag_color": "accent",
-            "link": "/collections/street-fusion-flavors",
-            "image": "shopify://shop_images/Pasta_Masala_Pouch_1.png"
+            "link": "/collections/essential-powder-products",
+            "image": "shopify://shop_images/Cumin_Powder_Pouch_1.png"
           }
         },
         "easy": {
@@ -91,26 +121,51 @@
           "settings": {
             "title": "Jhatpati Jugaad",
             "tag_label": "Easy to Cook",
-            "tag_color": "accent",
+            "tag_color": "sage",
             "link": "/collections/easy-to-cook",
-            "image": "shopify://shop_images/Pav_Bhaji_Masala_Pouch_1.png"
+            "image": "shopify://shop_images/Frankie_Masala_Pouch_1.png"
           }
         },
-        "essentials": {
+        "tea": {
           "type": "category",
           "settings": {
-            "title": "Rozmarra Rasoi",
-            "tag_label": "Essential Products",
-            "tag_color": "maroon",
-            "link": "/collections/essential-products",
-            "image": "shopify://shop_images/Cumin_Powder_Pouch_1.png"
+            "title": "Chai Ka Saath",
+            "tag_label": "Tea Masala",
+            "tag_color": "terracotta",
+            "link": "/collections/tea-masala",
+            "image": "shopify://shop_images/Premium_Tea_Masala_Box_1.png"
+          }
+        },
+        "achari": {
+          "type": "category",
+          "settings": {
+            "title": "Achari Vichar",
+            "tag_label": "Pickle Masalas",
+            "tag_color": "saffron",
+            "link": "/collections/achari-vichar",
+            "image": "shopify://shop_images/Athana_Masala_Pouch_1.png"
+          }
+        },
+        "upwas": {
+          "type": "category",
+          "settings": {
+            "title": "Upwas Ki Thali",
+            "tag_label": "Fasting Products",
+            "tag_color": "sage",
+            "link": "/collections/fasting-products",
+            "image": "shopify://shop_images/Rajgira_Atta_Pouch_1.png"
           }
         }
       },
       "block_order": [
         "hing",
+        "blends",
+        "garam",
+        "essentials",
         "easy",
-        "essentials"
+        "tea",
+        "achari",
+        "upwas"
       ],
       "settings": {
         "heading": "Shop by Category",

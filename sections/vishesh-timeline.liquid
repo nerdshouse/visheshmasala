@@ -59,6 +59,13 @@
       <svg class="vishesh-journey__path" data-journey-path aria-hidden="true" focusable="false">
         <path class="vishesh-journey__path-track" data-journey-track fill="none" />
         <path class="vishesh-journey__path-line" data-journey-line fill="none" />
+        {%- comment -%}
+          The head of the drawn line, moved along the path as it draws.
+          The stroke alone advances too slowly to read as motion; a dot
+          at the tip is what makes it obvious the line is being drawn.
+        {%- endcomment -%}
+        <circle class="vishesh-journey__path-head-glow" data-journey-head-glow r="9" cx="0" cy="0" />
+        <circle class="vishesh-journey__path-head" data-journey-head r="4.5" cx="0" cy="0" />
       </svg>
 
       <ol class="vishesh-journey__list" role="list">
