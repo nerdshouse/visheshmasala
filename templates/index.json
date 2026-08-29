@@ -19,7 +19,8 @@
         "cta2_label": "Our Story",
         "cta2_link": "/pages/our-story",
         "color_scheme": "scheme-1",
-        "script_line": "Kitchen Se Dil Tak"
+        "script_line": "Kitchen Se Dil Tak",
+        "image": "shopify://shop_images/image_1.png"
       }
     },
     "trust": {
