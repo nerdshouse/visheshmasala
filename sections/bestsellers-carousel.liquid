@@ -6,6 +6,24 @@
 
 {%- assign collection = section.settings.collection -%}
 {%- assign slide_colors = 'var(--color-primary)|var(--color-sage)|var(--color-orange)' | split: '|' -%}
+{% comment %}
+  Two parallel palettes, deliberately.
+
+  The pack shots are opaque RGB files with a solid white background baked
+  in - no alpha channel at all - so on a saturated well they showed as a
+  white box sitting on the colour. They cannot simply be cut out either:
+  the pouch body is itself white and runs to the edge of the frame, so a
+  flood fill leaks straight into the product and turns the packaging
+  green.
+
+  So the well blends the image with mix-blend-mode: multiply instead.
+  White multiplied by the backdrop IS the backdrop, so the white box
+  disappears exactly - but the packaging's own white takes that tint too,
+  which is why the well has to be pale. slide_tints drives the well;
+  slide_colors stays saturated for the glow behind the card, which is
+  painted normally and needs the real brand colour.
+{% endcomment %}
+{%- assign slide_tints = 'var(--slide-tint-blush)|var(--slide-tint-sage)|var(--slide-tint-peach)' | split: '|' -%}
 {%- assign top_seller_id = section.settings.top_seller.id -%}
 
 <div class="vishesh-bestsellers color-{{ section.settings.color_scheme }} gradient" data-vishesh-bestsellers>
@@ -32,6 +50,7 @@
           {%- for product in collection.products limit: section.settings.products_to_show -%}
             {%- assign color_i = forloop.index0 | modulo: 3 -%}
             {%- assign color = slide_colors[color_i] -%}
+            {%- assign tint = slide_tints[color_i] -%}
             {%- assign is_top_seller = false -%}
             {%- if top_seller_id != blank and product.id == top_seller_id -%}
               {%- assign is_top_seller = true -%}
@@ -39,7 +58,7 @@
             <div
               class="swiper-slide vishesh-bestsellers__slide{% if is_top_seller %} vishesh-bestsellers__slide--top{% endif %}"
               data-color="{{ color }}"
-              style="--slide-accent: {{ color }};"
+              style="--slide-accent: {{ color }}; --slide-tint: {{ tint }};"
             >
               <article class="vishesh-bestsellers__card">
                 <div class="vishesh-bestsellers__media">

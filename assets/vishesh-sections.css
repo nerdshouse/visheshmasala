@@ -1884,20 +1884,40 @@
   position: relative;
 }
 
+/* Pale wells for the pack shots. These are tints of the brand colours,
+   not new hues: blush off --color-primary, sage off --color-sage, peach
+   off --color-orange. They have to stay this light because the image
+   multiplies against them and the packaging's own white picks up the
+   tint - at full saturation the white pouch turns green. */
+.vishesh-bestsellers {
+  --slide-tint-blush: #f6e3e0;
+  --slide-tint-sage: #e4eddc;
+  --slide-tint-peach: #fbe6cf;
+}
+
 .vishesh-bestsellers__image-wrap {
   display: block;
-  background: var(--slide-accent, var(--color-accent));
+  background: var(--slide-tint, var(--slide-tint-peach));
   border-radius: 13rem 13rem 0 0;
   overflow: hidden;
   padding: 3.4rem 2.4rem 0;
   transition: background 0.4s ease;
+  /* Confines the multiply below to this well. Without it the image would
+     blend against whatever the card and page put behind it too. */
+  isolation: isolate;
 }
 
 .vishesh-bestsellers__image {
   width: 100%;
   height: auto;
   display: block;
-  filter: drop-shadow(0 1.6rem 2rem rgba(74, 52, 24, 0.28));
+  /* The pack shots ship as opaque RGB with a white background baked in.
+     Multiply makes that white read as the well behind it, which is the
+     only way to lose the white box without re-cutting every asset. */
+  mix-blend-mode: multiply;
+  /* The old drop-shadow is gone with it: it was cast from the image's
+     alpha, and the alpha here is a full rectangle, so once the white
+     stops hiding it the shadow is a dark bar across the well. */
 }
 
 /* ---- Tiered badges ----
