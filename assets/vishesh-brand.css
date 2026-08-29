@@ -161,13 +161,23 @@ h3,
      the markup) supplies position: absolute; top: 100%; left: 0; right: 0 -
      this rule just makes sure it stacks above everything below it. */
   z-index: 30;
+  /* The category rail grew from 4 items to 10, and at 10 the dropdown
+     overflowed a 1366x768 laptop by 39px - the last category and its
+     view-all link sat below the fold with no way to reach them. The
+     rows below were tightened to claw that back, but a fixed height is
+     only ever correct for the current number of categories, so this cap
+     is the real guard: the panel can never exceed the space under the
+     header, whatever the merchant adds later. The 4rem allows for the
+     announcement bar sitting above the header. */
+  max-height: calc(100dvh - var(--header-height, 13.2rem) - 4rem);
+  overflow-y: auto;
 }
 
 .vishesh-mega__grid {
   display: flex;
   align-items: flex-start;
   gap: 4rem;
-  padding: 3.2rem 0;
+  padding: 2.6rem 0;
 }
 
 .vishesh-mega__categories {
@@ -191,7 +201,10 @@ h3,
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.3rem 1.6rem 1.3rem 0;
+  /* 1.3rem originally. Trimmed with the rail at 10 categories: four
+     pixels a row is 40 across the list, which is most of what the
+     dropdown needed to clear a 768px-tall viewport. */
+  padding: 1.1rem 1.6rem 1.1rem 0;
   color: var(--color-dark);
   text-decoration: none;
   font-weight: 600;
