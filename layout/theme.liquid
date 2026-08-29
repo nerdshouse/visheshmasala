@@ -412,7 +412,18 @@
     <script src="{{ 'vishesh-cart-puff.js' | asset_url }}" defer="defer"></script>
 
     {%- if settings.welcome_sound_enable -%}
-      <script src="{{ 'vishesh-welcome-sound.js' | asset_url }}" defer="defer"></script>
+      {% comment %}
+        The clip URL comes through as a data attribute rather than being
+        hardcoded in the JS, so the merchant can swap the sound from
+        Content > Files without a theme edit. Empty falls back to the
+        generated chime the script already carries.
+      {% endcomment %}
+      <script
+        src="{{ 'vishesh-welcome-sound.js' | asset_url }}"
+        data-welcome-sound
+        data-clip-src="{{ settings.welcome_sound_url | escape }}"
+        defer="defer"
+      ></script>
     {%- endif -%}
 
     {% render 'vishesh-whatsapp' %}

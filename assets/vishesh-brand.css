@@ -321,3 +321,53 @@ h3,
 .vishesh-mega__viewall:hover {
   text-decoration: underline;
 }
+
+/* ---------- Welcome-sound stop control ----------
+   Injected by vishesh-welcome-sound.js only on page views where the clip
+   actually starts. Required, not decorative: the clip runs past three
+   seconds, so WCAG 1.4.2 needs a way to stop it. Sits bottom-left so it
+   never collides with the WhatsApp button bottom-right. */
+.vishesh-welcome-stop {
+  position: fixed;
+  left: 1.6rem;
+  bottom: 1.6rem;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1.4rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.12);
+  border-radius: 99rem;
+  background: #ffffff;
+  color: var(--color-dark);
+  font-family: inherit;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0.6rem 1.6rem rgba(74, 52, 24, 0.18);
+}
+
+/* display is set above, so the plain [hidden] attribute would lose. */
+.vishesh-welcome-stop[hidden] {
+  display: none;
+}
+
+.vishesh-welcome-stop svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  flex: none;
+}
+
+.vishesh-welcome-stop:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+@media screen and (max-width: 749px) {
+  .vishesh-welcome-stop {
+    left: 1.2rem;
+    bottom: 1.2rem;
+    font-size: 1.2rem;
+    padding: 0.8rem 1.2rem;
+  }
+}

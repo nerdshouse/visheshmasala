@@ -31,12 +31,29 @@
  */
 (function () {
   var SESSION_KEY = 'vishesh-welcome-sound-played';
-  var CLIP_SRC = null; // set to an assets/sounds/ filename once a real clip exists
+  var MUTE_KEY = 'vishesh-welcome-sound-muted';
+
+  // Supplied by theme.liquid from the welcome_sound_url setting, so the
+  // clip can be swapped in Content > Files without touching this file.
+  // Empty leaves this null and the generated chime below takes over,
+  // exactly as it did before a real clip existed.
+  var tag = document.querySelector('script[data-welcome-sound]');
+  var CLIP_SRC = (tag && tag.getAttribute('data-clip-src')) || null;
 
   // Checked directly via matchMedia rather than window.VM.reducedMotion -
   // script load order between this file and vishesh-motion.js isn't
   // guaranteed, so this can't depend on that flag already being set.
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // A visitor who has stopped the sound once is never asked again.
+  // localStorage rather than sessionStorage precisely because it has to
+  // outlive the session the refusal happened in - a "no" that expires
+  // when the tab closes isn't a no.
+  try {
+    if (localStorage.getItem(MUTE_KEY) === 'true') return;
+  } catch (e) {
+    // Storage unavailable - there is no stored refusal to honour.
+  }
 
   var played = false;
   try {
@@ -101,18 +118,80 @@
     return true;
   }
 
+  // ---- Stop control ----
+  // The supplied clip runs about eight seconds. WCAG 1.4.2 requires that
+  // anything playing automatically for more than three seconds can be
+  // stopped, so this is not optional decoration. It is built in JS rather
+  // than in Liquid so it only ever enters the DOM on the page views where
+  // sound actually starts.
+  var stopBtn = null;
+
+  function hideStop() {
+    if (stopBtn) stopBtn.hidden = true;
+  }
+
+  function showStop() {
+    if (stopBtn) {
+      stopBtn.hidden = false;
+      return;
+    }
+    stopBtn = document.createElement('button');
+    stopBtn.type = 'button';
+    stopBtn.className = 'vishesh-welcome-stop';
+    stopBtn.setAttribute('aria-label', 'Stop welcome sound');
+    stopBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<path d="M4 9.5h3.4L12 5.6v12.8L7.4 14.5H4Z" fill="currentColor"/>' +
+      '<path d="M16.5 9.5 21 14M21 9.5 16.5 14" stroke="currentColor" stroke-width="1.9" ' +
+      'stroke-linecap="round" fill="none"/></svg><span>Stop sound</span>';
+    stopBtn.addEventListener('click', function () {
+      if (audioEl) {
+        audioEl.pause();
+        audioEl.currentTime = 0;
+      }
+      hideStop();
+      // Stopping it is a standing preference, not just this one playback.
+      try {
+        localStorage.setItem(MUTE_KEY, 'true');
+      } catch (e) {
+        // Storage unavailable - it still stops for this page view.
+      }
+    });
+    document.body.appendChild(stopBtn);
+  }
+
+  // One shared element across both attempts below. The on-load attempt
+  // is expected to fail for most visitors, and building a second Audio
+  // in the gesture handler would download the clip a second time.
+  var audioEl = null;
+
+  function ensureAudio() {
+    if (audioEl) return audioEl;
+    audioEl = new Audio(CLIP_SRC);
+    audioEl.volume = 0.6;
+    audioEl.addEventListener('playing', showStop);
+    audioEl.addEventListener('ended', hideStop);
+    audioEl.addEventListener('pause', hideStop);
+    return audioEl;
+  }
+
   function attemptPlay() {
     if (played) return;
 
     if (CLIP_SRC) {
-      var audio = new Audio(CLIP_SRC);
-      audio.volume = 0.6;
-      audio
-        .play()
-        .then(markPlayed)
-        .catch(function () {
-          if (playGeneratedChime()) markPlayed();
-        });
+      var promise = ensureAudio().play();
+      // Older browsers return undefined rather than a promise.
+      if (!promise || !promise.then) {
+        markPlayed();
+        return;
+      }
+      promise.then(markPlayed).catch(function () {
+        // Either autoplay was blocked (expected on load - the gesture
+        // fallback will call this again) or the file itself failed. The
+        // chime is tried either way; when the cause was blocking it is
+        // blocked too and reports false, so nothing is wrongly marked.
+        if (playGeneratedChime()) markPlayed();
+      });
       return;
     }
 

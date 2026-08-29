@@ -1498,6 +1498,12 @@
         "label": "Enable welcome sound",
         "default": true,
         "info": "Plays once per browser session. True unprompted autoplay isn't possible in any current browser without a prior user gesture - this attempts to play immediately on load (works for some returning visitors) and always plays on the visitor's first tap/click/scroll as the reliable fallback. Skipped entirely under reduced-motion. See assets/vishesh-welcome-sound.js."
+      },
+      {
+        "type": "text",
+        "id": "welcome_sound_url",
+        "label": "Welcome sound file URL",
+        "info": "Paste the file's URL from Content > Files. Leave empty to fall back to the built-in generated chime. Keep it short and small - it downloads on first visit."
       }
     ]
   }
