@@ -132,6 +132,21 @@
                       the two.
                     {%- endcomment -%}
                     <li><a href="/policies/privacy-policy" class="link link--text list-menu__item list-menu__item--link">Privacy Policy</a></li>
+                    {%- comment -%}
+                      Terms is a policy record as well, for the same reason
+                      as Privacy directly above, so it is linked the same
+                      way rather than authored as a page. It needs to be
+                      reachable from the storefront and not only from
+                      checkout, which is what the payment partner requires.
+
+                      This line is coupled to show_policy staying false in
+                      sections/footer-group.json. That setting makes the
+                      copyright bar loop shop.policies, and this shop has
+                      exactly two records - Privacy and Terms - so turning
+                      it on would list both of these a second time further
+                      down the same footer.
+                    {%- endcomment -%}
+                    <li><a href="/policies/terms-of-service" class="link link--text list-menu__item list-menu__item--link">Terms &amp; Conditions</a></li>
                     <li><a href="/pages/disclaimer" class="link link--text list-menu__item list-menu__item--link">Disclaimer</a></li>
                   </ul>
                 </div>
