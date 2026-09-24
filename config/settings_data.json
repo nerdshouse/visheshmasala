@@ -139,6 +139,8 @@
     "goBuynowEnable": true,
     "buyNowText": "Buy It Now",
     "enableIntlFlow": false,
+    "share_image": "shopify:\/\/shop_images\/image_1.png",
+    "seo_home_description": "Hand-blended masalas from the Wankawala family, made in Surat since 1970. Compound hing, garam masala, tea masala and everyday kitchen essentials.",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",

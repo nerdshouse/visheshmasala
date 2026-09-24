@@ -22,8 +22,16 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
+    {%- comment -%}
+      The home page shipped with no meta description at all, because
+      page_description is empty until one is set in Online Store >
+      Preferences. Search engines were left to invent one. The theme
+      setting is a fallback only - anything set in Preferences still
+      wins, and interior pages keep their own description.
+    {%- endcomment -%}
+    {%- assign meta_description = page_description | default: settings.seo_home_description -%}
+    {% if meta_description %}
+      <meta name="description" content="{{ meta_description | escape }}">
     {% endif %}
 
     {% render 'meta-tags' %}
