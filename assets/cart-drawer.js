@@ -79,6 +79,17 @@ class CartDrawer extends HTMLElement {
   renderContents(parsedState) {
     this.querySelector('.drawer__inner').classList.contains('is-empty') &&
       this.querySelector('.drawer__inner').classList.remove('is-empty');
+    // The empty-state class also sits on this host element - see
+    // snippets/cart-drawer.liquid: <cart-drawer class="drawer is-empty">.
+    // Dawn only ever cleared the one on .drawer__inner, which this
+    // theme's markup never puts it on, so the host kept a stale
+    // is-empty after the first add. open() branches on that class and
+    // then looks for .drawer__inner-empty, which only exists inside
+    // {% if cart == empty %} and is gone once real items render, so
+    // trapFocus was handed null and threw - breaking the drawer's focus
+    // trap on the first add to an empty cart. The cart always has
+    // contents by the time this runs.
+    this.classList.remove('is-empty');
     this.productId = parsedState.id;
     this.getSectionsToRender().forEach((section) => {
       const sectionElement = section.selector

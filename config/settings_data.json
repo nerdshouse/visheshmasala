@@ -132,6 +132,8 @@
     "whatsapp_number": "919499543431",
     "welcome_sound_enable": true,
     "welcome_sound_url": "https://cdn.shopify.com/s/files/1/0701/6762/5841/files/opening_sound_web.mp3?v=1788004660",
+    "share_image": "shopify:\/\/shop_images\/image_1.png",
+    "seo_home_description": "Hand-blended masalas from the Wankawala family, made in Surat since 1970. Compound hing, garam masala, tea masala and everyday kitchen essentials.",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
