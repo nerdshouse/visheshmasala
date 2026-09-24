@@ -1504,6 +1504,22 @@
         "id": "welcome_sound_url",
         "label": "Welcome sound file URL",
         "info": "Paste the file's URL from Content > Files. Leave empty to fall back to the built-in generated chime. Keep it short and small - it downloads on first visit."
+      },
+      {
+        "type": "header",
+        "content": "Search and social sharing"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Social sharing image",
+        "info": "Used as og:image and twitter:image on pages that have no image of their own, such as the home page. Without it, links shared to WhatsApp, Facebook or X render with no picture."
+      },
+      {
+        "type": "textarea",
+        "id": "seo_home_description",
+        "label": "Home page meta description",
+        "info": "Fallback used only when Online Store > Preferences has no meta description set. Aim for roughly 150-160 characters."
       }
     ]
   }

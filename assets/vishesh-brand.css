@@ -81,7 +81,19 @@ h3,
   border-radius: 50%;
   background-color: #25d366;
   box-shadow: 0 0.4rem 1.2rem rgba(43, 26, 18, 0.35);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, bottom 0.3s ease;
+}
+
+/* The PDP's sticky add-to-cart bar occupies the same corner, and this
+   button wins the stacking order (z-index 90 against the bar's 80).
+   Measured on the live PDP at 360, 390 and 430px, the bubble covered a
+   44x47px strip of the sticky Add to Cart button, and a tap there hit
+   the WhatsApp link instead of adding to the cart. While the bar is up
+   the button sits above it. The height comes from the bar itself (set by
+   vishesh-product.js) rather than a hardcoded value, so the offset stays
+   correct with the bar's env(safe-area-inset-bottom) padding. */
+body.vm-sticky-atc-visible .vishesh-whatsapp {
+  bottom: calc(var(--vm-sticky-atc-h, 0px) + 1.2rem);
 }
 
 .vishesh-whatsapp:hover {
