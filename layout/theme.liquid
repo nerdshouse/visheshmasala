@@ -323,7 +323,12 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
-  </head>
+  <!-- Gokwik theme code start -->
+<link rel="dns-prefetch" href="https://pdp.gokwik.co/">
+<link rel="dns-prefetch" href="https://api.gokwik.co">
+{% render 'gokwik' %}
+<!-- Gokwik theme code End -->
+</head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">

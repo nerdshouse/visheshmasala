@@ -132,6 +132,13 @@
     "whatsapp_number": "919499543431",
     "welcome_sound_enable": true,
     "welcome_sound_url": "https://cdn.shopify.com/s/files/1/0701/6762/5841/files/opening_sound_web.mp3?v=1788004660",
+    "mid": "19w0ssjui6cg",
+    "envType": "production",
+    "fbpixel": "1617160383302964",
+    "goEnable": true,
+    "goBuynowEnable": true,
+    "buyNowText": "Buy It Now",
+    "enableIntlFlow": false,
     "sections": {
       "main-password-header": {
         "type": "main-password-header",

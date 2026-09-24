@@ -94,7 +94,21 @@
             {%- render 'loading-spinner' -%}
           </button>
           {%- if show_dynamic_checkout -%}
-            {{ form | payment_button }}
+            {% comment %} {{ form | payment_button }} {% endcomment %}
+            {% comment %} <button class="shopify-payment-button__button shopify-payment-button__button--unbranded gokwik-marge" >Buy It Now</button> {% endcomment %}
+                   
+  <button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded" style="width: 100%;" onclick="onBuyNowClick(this)" id="gokwik-buy-now">
+    <div style="display:none" class="addloadr" id="btn-loader">
+      <div class="cir-loader">Loading..</div>
+    </div>
+    <span class="btn-text">
+      <span>Buy It Now</span>
+      <span>{{ settings.sub-titile }}</span>
+    </span>
+  
+    
+  </button>  
+
           {%- endif -%}
         </div>
       {%- endform -%}
