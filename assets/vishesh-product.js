@@ -89,8 +89,19 @@
       var observer = new IntersectionObserver(
         function (entries) {
           var visible = entries[0].isIntersecting;
-          stickyBar.classList.toggle('is-visible', !visible);
-          stickyBar.setAttribute('aria-hidden', visible ? 'true' : 'false');
+          var barShown = !visible;
+          stickyBar.classList.toggle('is-visible', barShown);
+          stickyBar.setAttribute('aria-hidden', barShown ? 'false' : 'true');
+          // The floating WhatsApp button shares the bottom of the screen
+          // with this bar and outranks it on z-index, so while the bar is
+          // up the button has to move or it sits on top of the sticky Add
+          // to Cart. Height is published rather than hardcoded so the
+          // offset stays right with the bar's safe-area padding.
+          document.body.classList.toggle('vm-sticky-atc-visible', barShown);
+          document.documentElement.style.setProperty(
+            '--vm-sticky-atc-h',
+            barShown ? stickyBar.offsetHeight + 'px' : '0px'
+          );
         },
         { rootMargin: '-80px 0px 0px 0px' }
       );
