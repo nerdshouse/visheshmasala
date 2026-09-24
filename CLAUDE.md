@@ -121,3 +121,24 @@ Work through these as sequential milestones; verify each before moving to the ne
 
 - Don't invent brand facts (founding year, retailer counts, distribution map data) - placeholders above are marked; surface them to the user for confirmation rather than guessing.
 - Ask the user for a `.env`/Shopify store connection (store URL + theme access) before running `shopify theme dev` or pushing live, if not already configured.
+
+## GoKwik integration - vendor-managed
+
+GoKwik one-click checkout is live and required. Its theme code is
+**app-generated and vendor-managed**, and it lives in four places:
+
+- `snippets/gokwik.liquid` (entire file)
+- the `<!-- Gokwik theme code start/End -->` block in `layout/theme.liquid`
+- the `show_dynamic_checkout` branch in `snippets/buy-buttons.liquid`, where
+  Shopify's native `{{ form | payment_button }}` is deliberately commented out
+- the `"Gokwik"` settings group in `config/settings_schema.json`, plus its
+  values in `config/settings_data.json`
+
+Do not edit, refactor or "clean up" any of it, and do not restore the native
+Buy It Now button.
+
+Before publishing theme-wide changes, compare the production GoKwik files and
+settings against GitHub to detect vendor updates - GoKwik modifies themes
+directly and has already caused the connected theme to drift out of production
+once (see VISHESH-MASALA-GOKWIK-GITHUB-SYNC.md). Always check which theme is
+actually MAIN before assuming a push deploys.
