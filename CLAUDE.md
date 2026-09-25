@@ -142,3 +142,29 @@ settings against GitHub to detect vendor updates - GoKwik modifies themes
 directly and has already caused the connected theme to drift out of production
 once (see VISHESH-MASALA-GOKWIK-GITHUB-SYNC.md). Always check which theme is
 actually MAIN before assuming a push deploys.
+
+## Minimum order value ₹99 - three sources, keep them in step
+
+The ₹99 minimum (merchandise value after discounts, before shipping) is enforced in three
+places. Changing the threshold means changing all three:
+
+1. **Theme** - `settings.vm_min_order_value` (Theme settings → Vishesh Masala → Minimum order).
+   Blocks the drawer/cart checkout and Buy It Now, shows the top-up suggestions
+   (`snippets/vm-min-order*.liquid`, `assets/vm-min-order.*`).
+2. **GoKwik** - Checkout Settings → Shipping → method #4, Min Order Value ₹99, price basis
+   "Discounted Price" (Live Mode). Below it GoKwik shows "Pincode not serviceable." and offers
+   no shipping. GoKwik orders are created through the Admin API, so Shopify-side rules never
+   see them - this is the only server-side guard for GoKwik.
+3. **Shopify Checkout Blocks** - Order value limits rule, minimum ₹99, for native / Shop Pay
+   checkout. It checks the subtotal **before** discount codes (accepted limitation).
+
+Checkout is drawer-only and GoKwik-only: never link customers to `/cart`, keep the checkout
+buttons `type="button"`, and don't add a native `/checkout` fallback.
+
+**Discount rule:** every discount must preserve a minimum post-discount merchandise value of
+₹99. Percentage: `minimum eligible cart = CEILING(₹99 / (1 - discount %))` (10% → ₹110).
+Fixed: `minimum eligible cart = ₹99 + discount amount`. VISHESH10 has a ₹110 minimum for this
+reason. GoKwik's prepaid "5% off" offer can't be held to this rule (its Lower Order Limit appears to
+include shipping), so Tiered Prepaid Discounts is switched **off** (rule kept, limit 0.01)
+until GoKwik support answers - don't re-enable it without solving that, and don't tie
+discount eligibility to shipping as a workaround. See VISHESH-MASALA-MINIMUM-ORDER-99.md.
