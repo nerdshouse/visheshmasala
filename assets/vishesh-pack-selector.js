@@ -6,20 +6,30 @@
  * uses) and, when a cart-drawer is present, asks it to re-render itself
  * and open - same mechanism as the PDP form, just triggered from the
  * card instead of a full page. No PDP navigation either way.
+ *
+ * Both listeners are delegated from document, so cards inserted after load
+ * (PDP "You May Also Like" recommendations, Swiper slides, cart-drawer and
+ * section re-renders) work without being wired one by one, and a re-render
+ * can never stack a second listener on a button.
  */
 (function () {
+  // One set of listeners per page, even if this file is loaded twice.
+  if (window.VisheshPackSelector) return;
+  window.VisheshPackSelector = true;
+
   function findPriceEl(wrap) {
     var card = wrap.closest('.card-information') || wrap.closest('.card-wrapper') || wrap.parentElement;
     if (!card) return null;
     return card.querySelector('.price-item--regular') || card.querySelector('.price-item--sale');
   }
 
-  function onSelectChange(event) {
-    var select = event.currentTarget;
+  // Point the card's price and Add to Cart button at the selected pack.
+  function applySelection(select) {
     var wrap = select.closest('[data-vishesh-pack-select-wrap]');
     if (!wrap) return;
 
     var option = select.options[select.selectedIndex];
+    if (!option) return;
     var button = wrap.querySelector('[data-vishesh-pack-add]');
     if (button) button.dataset.variantId = option.value;
 
@@ -48,11 +58,21 @@
     p.textContent = text || 'Could not add to cart. Please try again.';
   }
 
-  function onAddClick(event) {
-    var button = event.currentTarget;
+  // The select is the source of truth for the pack: after Back/Forward the
+  // browser can restore its value without firing change, leaving the
+  // button's data-variant-id on the default pack.
+  function selectedVariantId(button) {
+    var wrap = button.closest('[data-vishesh-pack-select-wrap]');
+    var select = wrap && wrap.querySelector('[data-vishesh-pack-select]');
+    if (select && select.value) return select.value;
+    return button.dataset.variantId;
+  }
+
+  function addToCart(button) {
+    // aria-disabled is set while an add is in flight - repeat taps are ignored.
     if (button.hasAttribute('disabled') || button.getAttribute('aria-disabled') === 'true') return;
 
-    var variantId = button.dataset.variantId;
+    var variantId = selectedVariantId(button);
     if (!variantId) return;
 
     var cart = document.querySelector('cart-drawer') || document.querySelector('cart-notification');
@@ -104,29 +124,24 @@
       });
   }
 
-  function init() {
+  document.addEventListener('change', function (event) {
+    var select = event.target.closest && event.target.closest('[data-vishesh-pack-select]');
+    if (select) applySelection(select);
+  });
+
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest && event.target.closest('[data-vishesh-pack-add]');
+    if (button) addToCart(button);
+  });
+
+  // Bring price and button in step with any pack the browser restored.
+  // Cards still on their rendered pack are left alone.
+  function syncAll() {
     document.querySelectorAll('[data-vishesh-pack-select]').forEach(function (select) {
-      if (select.dataset.vpsWired) return;
-      select.dataset.vpsWired = 'true';
-      select.addEventListener('change', onSelectChange);
-    });
-    document.querySelectorAll('[data-vishesh-pack-add]').forEach(function (button) {
-      if (button.dataset.vpsWired) return;
-      button.dataset.vpsWired = 'true';
-      button.addEventListener('click', onAddClick);
+      var wrap = select.closest('[data-vishesh-pack-select-wrap]');
+      var button = wrap && wrap.querySelector('[data-vishesh-pack-add]');
+      if (button && select.value && select.value !== button.dataset.variantId) applySelection(select);
     });
   }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
-
-  // Carousels (Swiper) and cart-drawer re-renders both add new cards to
-  // the DOM after this script's initial run - re-scan on a couple of
-  // predictable triggers rather than requiring every caller to know to
-  // call init() itself.
-  document.addEventListener('shopify:section:load', init);
-  window.addEventListener('load', init);
+  window.addEventListener('pageshow', syncAll);
 })();
