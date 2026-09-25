@@ -1,0 +1,175 @@
+/* Minimum order value - see snippets/vm-min-order.liquid */
+
+.vm-min-order {
+  margin: 1.2rem 0 0;
+  padding: 1.2rem 1.4rem;
+  border-radius: 1rem;
+  background: rgba(var(--color-foreground), 0.04);
+  text-align: left;
+}
+
+.vm-min-order--drawer {
+  margin: 1.2rem 1.5rem 1.6rem;
+}
+
+.vm-min-order--page {
+  margin-top: 1.6rem;
+}
+
+.vm-min-order__message {
+  margin: 0 0 0.8rem;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.vm-min-order__bar {
+  height: 0.6rem;
+  border-radius: 99rem;
+  background: rgba(var(--color-foreground), 0.1);
+  overflow: hidden;
+}
+
+.vm-min-order__bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.vm-min-order:not(.vm-min-order--below) .vm-min-order__bar > span {
+  background: var(--color-sage);
+}
+
+.vm-min-order__caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin: 0.6rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.vm-min-order__suggest {
+  margin-top: 1.4rem;
+}
+
+.vm-min-order__suggest[hidden] {
+  display: none;
+}
+
+.vm-min-order__suggest-title {
+  margin: 0 0 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+}
+
+.vm-min-order__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.vm-min-order__item {
+  display: grid;
+  grid-template-columns: 5.6rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem;
+  border-radius: 0.8rem;
+  background: rgb(var(--color-background));
+}
+
+.vm-min-order__img {
+  width: 5.6rem;
+  height: 5.6rem;
+  object-fit: contain;
+  border-radius: 0.6rem;
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.vm-min-order__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.vm-min-order__name {
+  font-size: 1.3rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  /* two lines, so names like "Coriander Powder" stay readable at 360px */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.vm-min-order__meta {
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+/* 44px-tall tap target on phones */
+.vm-min-order__add {
+  min-width: 6.4rem;
+  min-height: 4.4rem;
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: 99rem;
+  background: var(--color-primary);
+  color: #fff;
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vm-min-order__add:hover {
+  filter: brightness(0.92);
+}
+
+.vm-min-order__add:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.vm-min-order__add[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* One-line reminder above the drawer's checkout button */
+.vm-min-order__reminder {
+  margin: 0 0 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-dark);
+}
+
+/* Shown by the checkout guard next to a button it had to stop */
+.vm-min-order__notice {
+  margin: 0.8rem 0 0;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+/* Make the blocked checkout unmistakably unavailable, GoKwik clone included */
+.cart__checkout-button[data-vm-blocked='true'],
+.cart__checkout-button[data-vm-blocked='true'].gokwik-marge {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}

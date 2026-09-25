@@ -1,0 +1,321 @@
+{%- comment -%}
+  Minimum order value - checkout guard.
+
+  Must render in layout/theme.liquid BEFORE the GoKwik theme code block.
+  GoKwik claims checkout and Buy It Now clicks with a window-level
+  capture-phase listener (snippets/gokwik.liquid, gokwikClickCapture).
+  Listeners on the same target run in registration order, so this one
+  gets the first look and can stop a below-minimum click before GoKwik,
+  its analytics, or a native /checkout form submit ever see it. When the
+  cart qualifies this does nothing at all and GoKwik runs exactly as
+  before.
+
+  Normally the checkout buttons are already disabled (the drawer and cart
+  page render them that way, and assets/vm-min-order.js keeps them in
+  step), and a disabled button dispatches no click. This guard covers the
+  rest: Buy It Now, clicks racing a cart update, stale markup after
+  Back/Forward, and anything that reaches /checkout another way.
+
+  It also keeps checkout drawer-only and GoKwik-only, whatever the minimum:
+  - The drawer and cart-page checkout buttons render as type="button" and
+    GoKwik swaps each for a claimed clone a moment later (on its 500ms
+    sweep or a DOM change). A click in that gap is held here and replayed
+    on the clone once it exists, so it opens GoKwik instead of doing
+    nothing - and never submits natively to /checkout.
+  - Enter in a drawer quantity field would submit the drawer form to
+    /cart; that submit is dropped and the quantity applied in place.
+  - The header cart icon opens the drawer even before cart-drawer.js has
+    loaded, instead of navigating to /cart.
+{%- endcomment -%}
+{%- assign vm_min_order_cents = settings.vm_min_order_value | default: 0 | times: 100 -%}
+<script>
+  (function () {
+    var VM = (window.VMMinOrder = window.VMMinOrder || {});
+    VM.min = {{ vm_min_order_cents | json }};
+    VM.initialTotal = {{ cart.total_price | json }};
+    var hasMin = VM.min > 0;
+
+    var BUYNOW = '[data-gokwik-function="buyNow"], #gokwik-buy-now, shopify-accelerated-checkout';
+    var CHECKOUT =
+      'button[name="checkout"], input[name="checkout"], a[href*="/checkout"], [data-gokwik-function="checkout"],' +
+      ' .cart__checkout-button, .additional-checkout-buttons, shopify-accelerated-checkout-cart';
+
+    function rupees(paise) {
+      var r = paise / 100;
+      return '₹' + (r % 1 === 0 ? r.toFixed(0) : r.toFixed(2));
+    }
+
+    function message(total) {
+      return (
+        'Minimum order value is ' + rupees(VM.min) + '. Add ' + rupees(VM.min - total) + ' more to checkout.'
+      );
+    }
+
+    // The freshest rendered cart figure. vm-min-order.js stamps each
+    // [data-vm-min-order] block with an increasing sequence number as it
+    // appears, so after a drawer or cart-page re-render the newest one
+    // wins. Without stamps (JS not loaded yet) fall back to the lowest
+    // total on the page - wrongly blocking is recoverable, wrongly
+    // allowing is not.
+    function cartTotal() {
+      var blocks = document.querySelectorAll('[data-vm-min-order]');
+      var best = null;
+      var lowest = null;
+      for (var i = 0; i < blocks.length; i++) {
+        var b = blocks[i];
+        var t = parseInt(b.getAttribute('data-total'), 10);
+        if (isNaN(t)) continue;
+        if (lowest === null || t < lowest) lowest = t;
+        var seen = parseInt(b.getAttribute('data-vm-seen'), 10);
+        if (!isNaN(seen) && (best === null || seen > best.seen)) best = { seen: seen, total: t };
+      }
+      if (best) return best.total;
+      if (lowest !== null) return lowest;
+      return typeof VM.lastTotal === 'number' ? VM.lastTotal : VM.initialTotal;
+    }
+
+    // Dawn marks the items list while it applies a quantity change;
+    // vm-min-order.js sets VM.busy while a suggestion is being added.
+    function cartUpdating() {
+      return !!VM.busy || !!document.querySelector('.cart__items--disabled');
+    }
+
+    // GoKwik's Buy It Now empties the cart, adds only this product and
+    // opens checkout (then restores the cart afterwards), so the order
+    // value it would start is this variant's price times the quantity.
+    function buyNowTotal(el) {
+      var root = (el.closest && (el.closest('product-info') || el.closest('.product'))) || document;
+      var form = el.closest && el.closest('form');
+      if (!form || !form.querySelector('[name="id"]')) {
+        form = root.querySelector('form[action*="/cart/add"]');
+      }
+      var idInput = form && form.querySelector('[name="id"]');
+      var variantId = idInput ? String(idInput.value) : null;
+      var price = null;
+      var scripts = root.querySelectorAll('script[data-selected-variant]');
+      for (var i = 0; i < scripts.length; i++) {
+        try {
+          var v = JSON.parse(scripts[i].textContent);
+          if (v && (!variantId || String(v.id) === variantId)) price = v.price;
+        } catch (e) {}
+      }
+      if (typeof price !== 'number') return null;
+      var qty =
+        (form && form.querySelector('[name="quantity"]')) ||
+        (form && form.id && document.querySelector('[name="quantity"][form="' + form.id + '"]')) ||
+        root.querySelector('input[name="quantity"]');
+      var q = Math.max(1, parseInt(qty && qty.value, 10) || 1);
+      return price * q;
+    }
+
+    // kind 'handoff' marks the GoKwik hand-off messages, which
+    // vm-min-order.js must not clear when the cart is above the minimum.
+    function notice(el, text, kind) {
+      var anchor = (el.closest && el.closest('.gk-btn-wrap')) || el;
+      var p = anchor.nextElementSibling;
+      if (!p || !p.hasAttribute || !p.hasAttribute('data-vm-min-order-notice')) {
+        p = document.createElement('p');
+        p.className = 'vm-min-order__notice';
+        p.setAttribute('role', 'alert');
+        if (anchor.parentNode) anchor.parentNode.insertBefore(p, anchor.nextSibling);
+      }
+      p.setAttribute('data-vm-min-order-notice', kind || '');
+      p.textContent = text;
+    }
+
+    function clearNotice(el) {
+      var anchor = (el.closest && el.closest('.gk-btn-wrap')) || el;
+      var p = anchor.nextElementSibling;
+      if (p && p.hasAttribute && p.hasAttribute('data-vm-min-order-notice')) p.remove();
+    }
+
+    function match(e) {
+      var path = (e.composedPath && e.composedPath()) || [];
+      for (var i = 0; i < path.length; i++) {
+        var n = path[i];
+        if (!n || n.nodeType !== 1 || !n.matches) continue;
+        if (n.matches(BUYNOW)) return { el: n, kind: 'buyNow' };
+        if (n.matches(CHECKOUT)) return { el: n, kind: 'checkout' };
+      }
+      return null;
+    }
+
+    // Returns the reason to block, or null to let the checkout through.
+    function verdict(hit) {
+      if (!hasMin) return null;
+      if (hit.kind === 'buyNow') {
+        var bt = buyNowTotal(hit.el);
+        if (bt === null || bt >= VM.min) return null;
+        return message(bt);
+      }
+      if (cartUpdating()) return 'Updating your cart - please try again in a moment.';
+      var ct = cartTotal();
+      if (ct >= VM.min) return null;
+      return message(ct);
+    }
+
+    function stop(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+    }
+
+    // --- GoKwik hand-off ------------------------------------------------------
+
+    var OWN_CHECKOUT = '#CartDrawer-Checkout, #checkout';
+    var HANDOFF_LIMIT = 10000;
+    var handoff = null;
+
+    function claimed(el) {
+      return el.classList.contains('gokwik-marge') && !!el.getAttribute('data-gokwik-function');
+    }
+
+    function visible(el) {
+      var r = el.getBoundingClientRect();
+      if (!r.width && !r.height) return false;
+      var cs = getComputedStyle(el);
+      return cs.visibility !== 'hidden' && cs.display !== 'none';
+    }
+
+    function endHandoff() {
+      if (!handoff) return;
+      clearInterval(handoff.timer);
+      var btn = document.getElementById(handoff.id);
+      if (btn) btn.removeAttribute('aria-busy');
+      handoff = null;
+    }
+
+    // Wait for GoKwik to replace the button with its claimed clone, then
+    // click the clone. The replayed click comes back through the listener
+    // below, so the minimum is checked again against the cart at that moment.
+    function handOff(el) {
+      if (handoff) return; // one pending hand-off; repeat taps are absorbed
+      handoff = { id: el.id, started: Date.now() };
+      el.setAttribute('aria-busy', 'true');
+      notice(el, 'Opening secure checkout…', 'handoff');
+      handoff.timer = setInterval(function () {
+        var btn = document.getElementById(handoff.id);
+        // Drawer closed or re-rendered below the minimum - stand down.
+        if (!btn || btn.disabled || !visible(btn)) {
+          if (btn) clearNotice(btn);
+          endHandoff();
+          return;
+        }
+        if (claimed(btn)) {
+          clearNotice(btn);
+          endHandoff();
+          btn.click();
+          return;
+        }
+        if (Date.now() - handoff.started > HANDOFF_LIMIT) {
+          notice(
+            btn,
+            'Checkout is taking longer than usual to load. Please check your connection and tap Check out again.',
+            'handoff'
+          );
+          endHandoff();
+        }
+      }, 100);
+    }
+
+    window.addEventListener(
+      'click',
+      function (e) {
+        var hit = match(e);
+        if (!hit) return;
+        var reason = verdict(hit);
+        if (reason) {
+          stop(e);
+          notice(hit.el, reason);
+          // Re-apply the disabled state in case markup went stale - but not
+          // mid-update, when the rendered total is still the old figure.
+          if (!cartUpdating() && typeof VM.sync === 'function') VM.sync();
+          return;
+        }
+        if (hit.kind === 'checkout' && hit.el.matches(OWN_CHECKOUT) && !claimed(hit.el)) {
+          stop(e);
+          handOff(hit.el);
+          return;
+        }
+        // A tap on the freshly claimed clone beats the pending replay to it -
+        // let this one through and drop the replay, so GoKwik opens once.
+        if (handoff && hit.el.id === handoff.id) endHandoff();
+        clearNotice(hit.el);
+      },
+      true
+    );
+
+    // Keyboard / programmatic submits of the cart forms with the
+    // checkout submitter (Enter on a focused checkout button is a click
+    // and is handled above).
+    window.addEventListener(
+      'submit',
+      function (e) {
+        var form = e.target;
+        var submitter = e.submitter;
+        var toCheckout =
+          (submitter && submitter.getAttribute && submitter.getAttribute('name') === 'checkout') ||
+          /\/checkout/.test((form && form.getAttribute && form.getAttribute('action')) || '');
+        // The drawer form only exists to group the quantity inputs. Enter in
+        // one of them would post it to /cart - drop that and hand the new
+        // quantity to Dawn's change handler (debounced, so the change a blur
+        // may also fire doesn't update twice).
+        if (form && form.id === 'CartDrawer-Form' && !toCheckout) {
+          stop(e);
+          var active = document.activeElement;
+          if (active && active.form === form) {
+            if (active.value !== active.defaultValue) {
+              active.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            active.blur();
+          }
+          return;
+        }
+        if (!toCheckout) return;
+        var reason = verdict({ el: submitter || form, kind: 'checkout' });
+        if (!reason) return;
+        stop(e);
+        notice(submitter || form, reason);
+      },
+      true
+    );
+
+    // The header cart icon is a plain /cart link until cart-drawer.js loads
+    // and takes it over. A tap in that window waits for the drawer instead;
+    // /cart is only the fallback if the drawer never arrives.
+    document.addEventListener(
+      'click',
+      function (e) {
+        var link = e.target.closest && e.target.closest('#cart-icon-bubble');
+        if (!link || !window.customElements || customElements.get('cart-drawer')) return;
+        if (!document.querySelector('cart-drawer')) return;
+        e.preventDefault();
+        var done = false;
+        customElements.whenDefined('cart-drawer').then(function () {
+          if (done) return;
+          done = true;
+          var drawer = document.querySelector('cart-drawer');
+          if (drawer && drawer.open) drawer.open(link);
+        });
+        setTimeout(function () {
+          if (done) return;
+          done = true;
+          window.location.href = link.getAttribute('href');
+        }, 4000);
+      },
+      true
+    );
+
+    // A Buy It Now notice is about the quantity/pack chosen when it was
+    // shown - drop it as soon as either changes so it never goes stale.
+    document.addEventListener('change', function (e) {
+      var t = e.target;
+      if (!t || !t.closest || !t.closest('product-info, product-form, form[action*="/cart/add"]')) return;
+      var root = t.closest('product-info') || document;
+      var notices = root.querySelectorAll('[data-vm-min-order-notice]');
+      for (var i = 0; i < notices.length; i++) notices[i].remove();
+    });
+
+    VM.cartTotal = cartTotal;
+  })();
+</script>
