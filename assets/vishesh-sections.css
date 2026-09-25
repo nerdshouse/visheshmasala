@@ -3559,6 +3559,15 @@
   gap: 0.6rem;
 }
 
+/* Add-to-cart failure on a card (assets/vishesh-pack-selector.js) */
+.vishesh-pack__error {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
 .vishesh-pack-select__label {
   font-size: 1.2rem;
   font-weight: 500;

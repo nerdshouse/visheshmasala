@@ -1,0 +1,82 @@
+{%- comment -%}
+  Minimum order value - message, progress and top-up suggestions.
+
+  Accepts:
+  - context: {String} 'drawer' (full block in the drawer's scrolling
+    list), 'drawer-footer' (one-line reminder above the drawer's checkout
+    button) or 'page' (full block on the cart page).
+
+  The threshold comes only from settings.vm_min_order_value. Every amount
+  here is in paise, like cart.total_price. cart.total_price is already
+  after discounts and excludes shipping, which is exactly the figure the
+  rule is defined on.
+
+  The outer element carries the numbers assets/vm-min-order.js and the
+  checkout guard (snippets/vm-min-order-guard.liquid) read, so this markup
+  is the single rendered source of truth for the current cart. It
+  re-renders with every cart section refresh, which is what keeps the
+  message live without extra requests.
+{%- endcomment -%}
+{%- liquid
+  assign vm_min = settings.vm_min_order_value | default: 0 | times: 100
+  assign vm_total = cart.total_price
+  assign vm_gap = vm_min | minus: vm_total | at_least: 0
+  assign vm_below = false
+  if vm_gap > 0
+    assign vm_below = true
+  endif
+  assign vm_pct = vm_total | times: 100 | divided_by: vm_min | at_most: 100
+  assign vm_min_label = vm_min | money_without_currency | remove: '.00'
+  assign vm_gap_label = vm_gap | money_without_currency | remove: '.00'
+  assign vm_total_label = vm_total | money_without_currency | remove: '.00'
+-%}
+{%- if vm_min > 0 and cart.item_count > 0 -%}
+  {%- if context == 'drawer-footer' -%}
+    {%- if vm_below -%}
+      <p class="vm-min-order__reminder" data-vm-min-order-reminder>Add ₹{{ vm_gap_label }} more to checkout</p>
+    {%- endif -%}
+  {%- else -%}
+    <div
+      class="vm-min-order vm-min-order--{{ context }}{% if vm_below %} vm-min-order--below{% endif %}"
+      data-vm-min-order
+      data-min="{{ vm_min }}"
+      data-total="{{ vm_total }}"
+      data-gap="{{ vm_gap }}"
+      data-below="{{ vm_below }}"
+      data-cart-products="{{ cart.items | map: 'product_id' | uniq | join: ',' }}"
+    >
+      {%- if vm_below -%}
+        <p class="vm-min-order__message" role="status">
+          Minimum order value is ₹{{ vm_min_label }}. Add ₹{{ vm_gap_label }} more to checkout.
+        </p>
+      {%- endif -%}
+
+      <div
+        class="vm-min-order__bar"
+        role="progressbar"
+        aria-label="Progress towards the minimum order"
+        aria-valuemin="0"
+        aria-valuemax="{{ vm_min }}"
+        aria-valuenow="{{ vm_total | at_most: vm_min }}"
+      >
+        <span style="width: {{ vm_pct }}%"></span>
+      </div>
+
+      <p class="vm-min-order__caption">
+        {%- if vm_below -%}
+          <span>₹{{ vm_gap_label }} away from checkout</span>
+          <span>₹{{ vm_total_label }} / ₹{{ vm_min_label }}</span>
+        {%- else -%}
+          <span>Minimum order reached ✓</span>
+        {%- endif -%}
+      </p>
+
+      {%- if vm_below -%}
+        <div class="vm-min-order__suggest" data-vm-suggest hidden>
+          <p class="vm-min-order__suggest-title">Add something to continue</p>
+          <ul class="vm-min-order__list" role="list" data-vm-suggest-list></ul>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{%- endif -%}

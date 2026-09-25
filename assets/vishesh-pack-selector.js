@@ -35,6 +35,19 @@
     if (spinner) spinner.classList.toggle('hidden', !loading);
   }
 
+  function showError(button, text) {
+    var wrap = button.closest('[data-vishesh-pack-select-wrap]') || button.parentElement;
+    var p = wrap.querySelector('[data-vishesh-pack-error]');
+    if (!p) {
+      p = document.createElement('p');
+      p.className = 'vishesh-pack__error';
+      p.setAttribute('data-vishesh-pack-error', '');
+      p.setAttribute('role', 'alert');
+      wrap.appendChild(p);
+    }
+    p.textContent = text || 'Could not add to cart. Please try again.';
+  }
+
   function onAddClick(event) {
     var button = event.currentTarget;
     if (button.hasAttribute('disabled') || button.getAttribute('aria-disabled') === 'true') return;
@@ -43,6 +56,9 @@
     if (!variantId) return;
 
     var cart = document.querySelector('cart-drawer') || document.querySelector('cart-notification');
+
+    var oldError = (button.closest('[data-vishesh-pack-select-wrap]') || button.parentElement).querySelector('[data-vishesh-pack-error]');
+    if (oldError) oldError.remove();
 
     setLoading(button, true);
     button.setAttribute('aria-disabled', 'true');
@@ -66,20 +82,21 @@
       })
       .then(function (data) {
         if (data.status) {
-          // Variant unavailable / error from Shopify - fall back to a
-          // full cart-page navigation so the visitor isn't left with a
-          // silently-failed click.
-          window.location.href = '/cart';
+          // Sold out / quantity limit etc. Say so on the card - checkout is
+          // drawer-only, so never fall back to the /cart page.
+          showError(button, data.description || data.message);
           return;
         }
         if (cart && typeof cart.renderContents === 'function') {
           cart.renderContents(data);
         } else {
+          // Only reachable if the theme's cart type is switched away from
+          // the drawer, when the cart page is the only cart there is.
           window.location.href = '/cart';
         }
       })
       .catch(function () {
-        window.location.href = '/cart';
+        showError(button);
       })
       .finally(function () {
         setLoading(button, false);
