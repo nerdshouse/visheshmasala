@@ -37,7 +37,11 @@
 {%- endif -%}
 
 {%- if request.page_type == 'product' -%}
-  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  {%- comment -%}
+    The price of the pack this URL shows (?variant=), not the product's lowest
+    price - Google compares it with the feed price for that exact variant.
+  {%- endcomment -%}
+  <meta property="og:price:amount" content="{{ product.selected_or_first_available_variant.price | money_without_currency | strip_html | remove: ',' }}">
   <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
 {%- endif -%}
 
