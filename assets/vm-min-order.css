@@ -154,9 +154,22 @@
    content, so the wrapper takes no width of its own (width 0) and fills
    the block instead (min-width 100%) - otherwise the cards would widen
    the whole drawer rather than scroll. */
-.vm-min-order__suggest--free {
+.vm-min-order__suggest--row {
   width: 0;
   min-width: 100%;
+}
+
+/* Sachet Deal nudge - sits above the bar, its row directly under it */
+.vm-min-order__deal {
+  margin: 0 0 0.8rem;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.vm-min-order__suggest--sachet {
+  margin: 0 0 1.4rem;
 }
 
 .vm-min-order__list--row {

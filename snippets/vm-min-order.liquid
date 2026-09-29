@@ -19,9 +19,18 @@
 
   Once the minimum is met, the same bar tracks free delivery instead, and
   a row of quick-add products (filled by assets/vm-min-order.js) helps
-  close the gap. settings.vm_free_shipping_min must match the shipping rule
-  set in GoKwik (methods #4 and #716, "Discounted Price" basis) and
-  Shopify's Standard rate: ₹79 below ₹299, free from ₹299.
+  close the gap. settings.vm_free_shipping_min must match the free-delivery
+  threshold set in GoKwik (methods #4 and #716, "Discounted Price" basis)
+  and in Shopify shipping (Standard: ₹49 below ₹299, free from ₹299). The
+  delivery charge itself lives there, not here.
+
+  Sachet Deal: a Shopify automatic discount gives 17.5% off the ₹20
+  sachets once the cart holds 6 or more (6 for ₹99). With 1-5 sachets in
+  the cart, a nudge and a row of sachets not yet in the cart replace the
+  other suggestion row; with 6+ and the discount applied, one line says so.
+  Sachets are recognised by their ₹20 list price (vm_sachet_price) - the
+  16 discounted variants are exactly the store's ₹20 variants, while the
+  "Sachet" tag misses four of them and is per product, not per pack.
 {%- endcomment -%}
 {%- liquid
   assign vm_min = settings.vm_min_order_value | default: 0 | times: 100
@@ -62,6 +71,26 @@
   endfor
   assign vm_pct_off = vm_pct_off | at_most: 100
 
+  assign vm_sachet_price = 2000
+  assign vm_sachet_deal_qty = 6
+  assign vm_sachet_qty = 0
+  for vm_item in cart.items
+    if vm_item.variant.price == vm_sachet_price
+      assign vm_sachet_qty = vm_sachet_qty | plus: vm_item.quantity
+    endif
+  endfor
+  assign vm_sachet_need = vm_sachet_deal_qty | minus: vm_sachet_qty
+  assign vm_sachet_applied = false
+  for vm_discount in cart.discount_applications
+    if vm_discount.title contains 'Sachet Deal'
+      assign vm_sachet_applied = true
+    endif
+  endfor
+  assign vm_sachet_nudge = false
+  if vm_sachet_qty > 0 and vm_sachet_need > 0
+    assign vm_sachet_nudge = true
+  endif
+
   assign vm_upsell_ids = ''
   if vm_free_gap > 0 and vm_below == false
     if settings.vm_upsell_products != blank
@@ -100,6 +129,28 @@
       data-discount-pct="{{ vm_pct_off }}"
       data-cart-products="{{ cart.items | map: 'product_id' | uniq | join: ',' }}"
     >
+      {%- if vm_sachet_nudge -%}
+        <p class="vm-min-order__deal" role="status">
+          Add {{ vm_sachet_need }} more sachet{% if vm_sachet_need > 1 %}s{% endif %} → get 6 for ₹99 🎁
+        </p>
+        {%- comment -%} Not hidden, so the drawer doesn't jump while it fills. {%- endcomment -%}
+        <div
+          class="vm-min-order__suggest vm-min-order__suggest--row vm-min-order__suggest--sachet"
+          data-vm-suggest
+          data-vm-mode="sachet"
+          data-sachet-price="{{ vm_sachet_price }}"
+        >
+          <ul
+            class="vm-min-order__list vm-min-order__list--row"
+            role="list"
+            aria-label="Sachets to add"
+            data-vm-suggest-list
+          ></ul>
+        </div>
+      {%- elsif vm_sachet_applied -%}
+        <p class="vm-min-order__deal vm-min-order__deal--done" role="status">Sachet Deal applied ✓</p>
+      {%- endif -%}
+
       {%- if vm_below -%}
         <p class="vm-min-order__message" role="status">
           Minimum order value is ₹{{ vm_min_label }}. Add ₹{{ vm_gap_label }} more to checkout.
@@ -140,7 +191,9 @@
         {%- endif -%}
       </p>
 
-      {%- if vm_below -%}
+      {%- if vm_sachet_nudge -%}
+        {%- comment -%} The sachet row above is the one suggestion row. {%- endcomment -%}
+      {%- elsif vm_below -%}
         <div class="vm-min-order__suggest" data-vm-suggest hidden>
           <p class="vm-min-order__suggest-title">Add something to continue</p>
           <ul class="vm-min-order__list" role="list" data-vm-suggest-list></ul>
@@ -151,7 +204,7 @@
           the drawer doesn't jump. The script hides it only if nothing fits.
         {%- endcomment -%}
         <div
-          class="vm-min-order__suggest vm-min-order__suggest--free"
+          class="vm-min-order__suggest vm-min-order__suggest--row vm-min-order__suggest--free"
           data-vm-suggest
           data-vm-mode="free"
           data-upsell="{{ vm_upsell_ids }}"
