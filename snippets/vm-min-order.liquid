@@ -16,19 +16,32 @@
   is the single rendered source of truth for the current cart. It
   re-renders with every cart section refresh, which is what keeps the
   message live without extra requests.
+
+  Once the minimum is met, the same bar tracks free delivery instead.
+  vm_free must match the shipping rule set in GoKwik (methods #4 and #716,
+  "Discounted Price" basis) and Shopify's Standard rate: ₹79 below ₹299,
+  free from ₹299.
 {%- endcomment -%}
 {%- liquid
   assign vm_min = settings.vm_min_order_value | default: 0 | times: 100
+  assign vm_free = 29900
   assign vm_total = cart.total_price
   assign vm_gap = vm_min | minus: vm_total | at_least: 0
   assign vm_below = false
   if vm_gap > 0
     assign vm_below = true
   endif
-  assign vm_pct = vm_total | times: 100 | divided_by: vm_min | at_most: 100
+  assign vm_free_gap = vm_free | minus: vm_total | at_least: 0
+  if vm_below
+    assign vm_pct = vm_total | times: 100 | divided_by: vm_min | at_most: 100
+  else
+    assign vm_pct = vm_total | times: 100 | divided_by: vm_free | at_most: 100
+  endif
   assign vm_min_label = vm_min | money_without_currency | remove: '.00'
   assign vm_gap_label = vm_gap | money_without_currency | remove: '.00'
   assign vm_total_label = vm_total | money_without_currency | remove: '.00'
+  assign vm_free_label = vm_free | money_without_currency | remove: '.00'
+  assign vm_free_gap_label = vm_free_gap | money_without_currency | remove: '.00'
 -%}
 {%- if vm_min > 0 and cart.item_count > 0 -%}
   {%- if context == 'drawer-footer' -%}
@@ -49,15 +62,26 @@
         <p class="vm-min-order__message" role="status">
           Minimum order value is ₹{{ vm_min_label }}. Add ₹{{ vm_gap_label }} more to checkout.
         </p>
+      {%- elsif vm_free_gap > 0 -%}
+        <p class="vm-min-order__message" role="status">Add ₹{{ vm_free_gap_label }} more for FREE delivery</p>
+      {%- else -%}
+        <p class="vm-min-order__message" role="status">🎉 You’ve unlocked FREE delivery</p>
       {%- endif -%}
 
       <div
         class="vm-min-order__bar"
         role="progressbar"
-        aria-label="Progress towards the minimum order"
-        aria-valuemin="0"
-        aria-valuemax="{{ vm_min }}"
-        aria-valuenow="{{ vm_total | at_most: vm_min }}"
+        {% if vm_below -%}
+          aria-label="Progress towards the minimum order"
+          aria-valuemin="0"
+          aria-valuemax="{{ vm_min }}"
+          aria-valuenow="{{ vm_total | at_most: vm_min }}"
+        {%- else -%}
+          aria-label="Progress towards free delivery"
+          aria-valuemin="0"
+          aria-valuemax="{{ vm_free }}"
+          aria-valuenow="{{ vm_total | at_most: vm_free }}"
+        {%- endif %}
       >
         <span style="width: {{ vm_pct }}%"></span>
       </div>
@@ -66,6 +90,9 @@
         {%- if vm_below -%}
           <span>₹{{ vm_gap_label }} away from checkout</span>
           <span>₹{{ vm_total_label }} / ₹{{ vm_min_label }}</span>
+        {%- elsif vm_free_gap > 0 -%}
+          <span>Minimum order reached ✓</span>
+          <span>₹{{ vm_total_label }} / ₹{{ vm_free_label }}</span>
         {%- else -%}
           <span>Minimum order reached ✓</span>
         {%- endif -%}
