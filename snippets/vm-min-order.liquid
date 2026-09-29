@@ -44,6 +44,20 @@
     theme setting, or the three combos if it's empty. IDs only - the
     script looks up price and stock in the storefront catalogue.
   endcomment
+  comment
+    Percentage codes applied to the whole cart (VISHESH10 = 10) also cut
+    whatever gets added, so the script can't count a ₹299 product as ₹299
+    towards free delivery. Fixed-amount codes don't change what an added
+    item is worth, so they're left out.
+  endcomment
+  assign vm_pct_off = 0
+  for vm_discount in cart.cart_level_discount_applications
+    if vm_discount.value_type == 'percentage'
+      assign vm_pct_off = vm_pct_off | plus: vm_discount.value
+    endif
+  endfor
+  assign vm_pct_off = vm_pct_off | at_most: 100
+
   assign vm_upsell_ids = ''
   if vm_free_gap > 0 and vm_below == false
     if settings.vm_upsell_products != blank
@@ -79,6 +93,7 @@
       data-gap="{{ vm_gap }}"
       data-below="{{ vm_below }}"
       data-free-gap="{{ vm_free_gap }}"
+      data-discount-pct="{{ vm_pct_off }}"
       data-cart-products="{{ cart.items | map: 'product_id' | uniq | join: ',' }}"
     >
       {%- if vm_below -%}

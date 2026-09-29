@@ -190,46 +190,72 @@
     return candidates.slice(0, 3);
   }
 
-  // Free-delivery row: the pinned products in their given order, then
-  // single products (not combos) whose cheapest in-stock variant covers the
-  // gap on its own, cheapest first - so one tap usually unlocks free
-  // delivery. Nothing already in the cart, nothing out of stock; 3 at most.
-  function pickFree(products, gap, inCart, pinnedIds) {
-    var byId = {};
-    products.forEach(function (p) {
-      byId[p.id] = p;
+  // Free-delivery row. gap is what the cart still needs, measured on the
+  // discounted cart.total_price; pct is the cart-wide percentage discount
+  // (VISHESH10 = 10), which also cuts anything added - so a ₹299 product
+  // only adds ₹269.10 while VISHESH10 is on. A candidate "unlocks" free
+  // delivery when its discounted price covers the gap on its own.
+  //
+  // Candidates: the pinned products (theme setting / combos) and single
+  // products (not combos), minus anything in the cart or out of stock. Per
+  // product the cheapest variant that unlocks, else its priciest in-stock
+  // variant. Order: unlockers first - pinned in their given order, then
+  // the rest cheapest first; if nothing unlocks, the candidates that get
+  // closest (largest discounted step). 3 at most.
+  function pickFree(products, gap, inCart, pinnedIds, pct) {
+    var keep = (100 - Math.min(Math.max(pct || 0, 0), 100)) / 100;
+    function adds(v) {
+      return Math.round(v.price * keep);
+    }
+    var pinnedRank = {};
+    pinnedIds.forEach(function (id, i) {
+      if (!(id in pinnedRank)) pinnedRank[id] = i;
     });
-    var chosen = [];
-    var taken = {};
-    function cheapest(p, minPrice) {
-      return p.variants
+    var candidates = [];
+    products.forEach(function (p) {
+      var pinned = p.id in pinnedRank;
+      if (inCart[p.id] || (!pinned && /combo/i.test(p.type))) return;
+      var inStock = p.variants.filter(function (v) {
+        return v.available && v.price > 0;
+      });
+      if (!inStock.length) return;
+      var unlocking = inStock
         .filter(function (v) {
-          return v.available && v.price > 0 && v.price >= minPrice;
+          return adds(v) >= gap;
         })
         .sort(function (a, b) {
           return a.price - b.price;
+        });
+      var variant =
+        unlocking[0] ||
+        inStock.slice().sort(function (a, b) {
+          return b.price - a.price;
         })[0];
-    }
-    pinnedIds.forEach(function (id) {
-      var p = byId[id];
-      if (!p || inCart[id] || taken[id] || chosen.length >= 3) return;
-      var v = cheapest(p, 0);
-      if (!v) return;
-      taken[id] = true;
-      chosen.push({ product: p, variant: v, single: p.variants.length === 1 });
+      candidates.push({
+        product: p,
+        variant: variant,
+        unlocks: !!unlocking[0],
+        pinned: pinned,
+        single: p.variants.length === 1,
+      });
     });
-    if (chosen.length >= 3) return chosen;
-    var fill = [];
-    products.forEach(function (p) {
-      if (inCart[p.id] || taken[p.id] || /combo/i.test(p.type)) return;
-      var v = cheapest(p, gap);
-      if (v) fill.push({ product: p, variant: v, single: p.variants.length === 1 });
-    });
-    fill.sort(function (a, b) {
-      return a.variant.price - b.variant.price || a.product.index - b.product.index;
-    });
-    return chosen.concat(fill).slice(0, 3);
+    var winners = candidates
+      .filter(function (c) {
+        return c.unlocks;
+      })
+      .sort(function (a, b) {
+        if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+        if (a.pinned) return pinnedRank[a.product.id] - pinnedRank[b.product.id];
+        return a.variant.price - b.variant.price || a.product.index - b.product.index;
+      });
+    if (winners.length) return winners.slice(0, 3);
+    return candidates
+      .sort(function (a, b) {
+        return adds(b.variant) - adds(a.variant) || (a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1);
+      })
+      .slice(0, 3);
   }
+  VM.pickFree = pickFree; // exposed for testing
 
   function imageUrl(src, width) {
     if (!src) return '';
@@ -284,7 +310,8 @@
     var gap = parseInt(b.getAttribute(free ? 'data-free-gap' : 'data-gap'), 10);
     var inCartIds = (b.getAttribute('data-cart-products') || '').split(',');
     var pinned = (wrap.getAttribute('data-upsell') || '').split(',').filter(Boolean);
-    var key = (free ? 'free|' + pinned.join(',') + '|' : '') + gap + '|' + inCartIds.join(',');
+    var pct = parseFloat(b.getAttribute('data-discount-pct')) || 0;
+    var key = (free ? 'free|' + pct + '|' + pinned.join(',') + '|' : '') + gap + '|' + inCartIds.join(',');
     if (list.getAttribute('data-vm-for') === key) return;
     list.setAttribute('data-vm-for', key);
     var inCart = {};
@@ -294,7 +321,7 @@
 
     loadCatalog().then(function (products) {
       if (!list.isConnected) return;
-      var picks = free ? pickFree(products, gap, inCart, pinned) : pick(products, gap, inCart);
+      var picks = free ? pickFree(products, gap, inCart, pinned, pct) : pick(products, gap, inCart);
       if (!picks.length) {
         wrap.hidden = true;
         return;
