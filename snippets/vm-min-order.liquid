@@ -45,13 +45,17 @@
     script looks up price and stock in the storefront catalogue.
   endcomment
   comment
-    Percentage codes applied to the whole cart (VISHESH10 = 10) also cut
+    A percentage discount on the cart (VISHESH10 = 10) may also cut
     whatever gets added, so the script can't count a ₹299 product as ₹299
-    towards free delivery. Fixed-amount codes don't change what an added
-    item is worth, so they're left out.
+    towards free delivery. VISHESH10 is a line-item discount limited to
+    certain collections, and the storefront can't tell which products a
+    code covers - so every percentage discount is assumed to apply to the
+    added product. That can under-count a product the code excludes, but
+    never claims free delivery for a product that won't reach it.
+    Fixed-amount codes don't change what an added item is worth.
   endcomment
   assign vm_pct_off = 0
-  for vm_discount in cart.cart_level_discount_applications
+  for vm_discount in cart.discount_applications
     if vm_discount.value_type == 'percentage'
       assign vm_pct_off = vm_pct_off | plus: vm_discount.value
     endif

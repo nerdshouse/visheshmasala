@@ -191,10 +191,11 @@
   }
 
   // Free-delivery row. gap is what the cart still needs, measured on the
-  // discounted cart.total_price; pct is the cart-wide percentage discount
-  // (VISHESH10 = 10), which also cuts anything added - so a ₹299 product
-  // only adds ₹269.10 while VISHESH10 is on. A candidate "unlocks" free
-  // delivery when its discounted price covers the gap on its own.
+  // discounted cart.total_price; pct is the percentage discount on the
+  // cart (VISHESH10 = 10), assumed to cut anything added too - so a ₹299
+  // product counts as ₹269.10 while VISHESH10 is on (see the Liquid for
+  // why that's the safe assumption). A candidate "unlocks" free delivery
+  // when its discounted price covers the gap on its own.
   //
   // Candidates: the pinned products (theme setting / combos) and single
   // products (not combos), minus anything in the cart or out of stock. Per
