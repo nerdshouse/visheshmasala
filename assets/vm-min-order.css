@@ -149,7 +149,16 @@
 }
 
 /* Free-delivery row: cards that scroll sideways inside the block (never
-   the page). min-height holds the space while the script fills it. */
+   the page). min-height holds the space while the script fills it.
+   The drawer's .drawer__contents is a flex item that grows to its widest
+   content, so the wrapper takes no width of its own (width 0) and fills
+   the block instead (min-width 100%) - otherwise the cards would widen
+   the whole drawer rather than scroll. */
+.vm-min-order__suggest--free {
+  width: 0;
+  min-width: 100%;
+}
+
 .vm-min-order__list--row {
   display: flex;
   gap: 0.8rem;
