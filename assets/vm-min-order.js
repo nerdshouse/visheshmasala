@@ -16,6 +16,8 @@
  *    the minimum is met but free delivery isn't, the same catalogue fills
  *    a row of cards instead: the pinned products first (theme setting, or
  *    the combos), then single products that cover the free-delivery gap.
+ *    With 1-5 sachets in the cart it fills a row of sachets instead, for
+ *    the Sachet Deal (6 for ₹99).
  * 3. Quick-adds a suggestion the same way vishesh-pack-selector.js does
  *    (POST /cart/add.js with the drawer's sections, then renderContents),
  *    so the drawer stays open and the checkout unlocks without a reload.
@@ -258,6 +260,20 @@
   }
   VM.pickFree = pickFree; // exposed for testing
 
+  // Sachet row: in-stock sachets (the ₹20 variants) of products not yet in
+  // the cart, in storefront order, up to 6.
+  function pickSachets(products, inCart, sachetPrice) {
+    var picks = [];
+    products.forEach(function (p) {
+      if (picks.length >= 6 || inCart[p.id]) return;
+      var v = p.variants.filter(function (x) {
+        return x.available && x.price === sachetPrice;
+      })[0];
+      if (v) picks.push({ product: p, variant: v, single: p.variants.length === 1 });
+    });
+    return picks;
+  }
+
   function imageUrl(src, width) {
     if (!src) return '';
     return src + (src.indexOf('?') === -1 ? '?' : '&') + 'width=' + (width || 120);
@@ -307,12 +323,14 @@
     var wrap = b.querySelector('[data-vm-suggest]');
     var list = b.querySelector('[data-vm-suggest-list]');
     if (!wrap || !list) return;
-    var free = wrap.getAttribute('data-vm-mode') === 'free';
+    var mode = wrap.getAttribute('data-vm-mode');
+    var free = mode === 'free';
+    var sachet = mode === 'sachet';
     var gap = parseInt(b.getAttribute(free ? 'data-free-gap' : 'data-gap'), 10);
     var inCartIds = (b.getAttribute('data-cart-products') || '').split(',');
     var pinned = (wrap.getAttribute('data-upsell') || '').split(',').filter(Boolean);
     var pct = parseFloat(b.getAttribute('data-discount-pct')) || 0;
-    var key = (free ? 'free|' + pct + '|' + pinned.join(',') + '|' : '') + gap + '|' + inCartIds.join(',');
+    var key = (sachet ? 'sachet|' : free ? 'free|' + pct + '|' + pinned.join(',') + '|' : '') + gap + '|' + inCartIds.join(',');
     if (list.getAttribute('data-vm-for') === key) return;
     list.setAttribute('data-vm-for', key);
     var inCart = {};
@@ -322,12 +340,16 @@
 
     loadCatalog().then(function (products) {
       if (!list.isConnected) return;
-      var picks = free ? pickFree(products, gap, inCart, pinned, pct) : pick(products, gap, inCart);
+      var picks = sachet
+        ? pickSachets(products, inCart, parseInt(wrap.getAttribute('data-sachet-price'), 10))
+        : free
+        ? pickFree(products, gap, inCart, pinned, pct)
+        : pick(products, gap, inCart);
       if (!picks.length) {
         wrap.hidden = true;
         return;
       }
-      if (free) {
+      if (free || sachet) {
         list.innerHTML = picks.map(cardHtml).join('');
         wrap.hidden = false;
         return;
