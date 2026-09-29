@@ -1531,6 +1531,24 @@
         "label": "Minimum order value (₹)",
         "default": 99,
         "info": "Checkout stays blocked until the cart total - after discounts, before shipping - reaches this amount. Applies to the cart drawer, the cart page and Buy It Now. Set to 0 to turn it off."
+      },
+      {
+        "type": "header",
+        "content": "Free delivery"
+      },
+      {
+        "type": "number",
+        "id": "vm_free_shipping_min",
+        "label": "Free delivery from (₹)",
+        "default": 299,
+        "info": "Only changes what the cart says. The delivery charge itself is set in GoKwik (Checkout Settings > Shipping) and in Shopify shipping - keep all three the same."
+      },
+      {
+        "type": "product_list",
+        "id": "vm_upsell_products",
+        "label": "Free delivery suggestions",
+        "limit": 6,
+        "info": "Shown first in the cart when the minimum is met but free delivery isn't. Leave empty to use the three combos. The row then fills up with the cheapest products that cover the gap on their own."
       }
     ]
   },

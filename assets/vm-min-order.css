@@ -148,6 +148,60 @@
   cursor: progress;
 }
 
+/* Free-delivery row: cards that scroll sideways inside the block (never
+   the page). min-height holds the space while the script fills it. */
+.vm-min-order__list--row {
+  display: flex;
+  gap: 0.8rem;
+  min-height: 23.4rem;
+  margin: 0 -1.4rem;
+  padding: 0 1.4rem 0.4rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.4rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.vm-min-order__card {
+  flex: 0 0 13.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  background: rgb(var(--color-background));
+  scroll-snap-align: start;
+}
+
+.vm-min-order__card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 0.6rem;
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.vm-min-order__card .vm-min-order__name {
+  min-height: 3.4rem;
+}
+
+.vm-min-order__add--card {
+  width: 100%;
+  margin-top: auto;
+}
+
+.vm-min-order__error {
+  margin: 0.8rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
 /* One-line reminder above the drawer's checkout button */
 .vm-min-order__reminder {
   margin: 0 0 0.8rem;
