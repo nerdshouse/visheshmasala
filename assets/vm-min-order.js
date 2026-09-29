@@ -12,7 +12,10 @@
  *    GoKwik swaps the button for a clone at runtime - so the state is
  *    re-applied whenever any of that markup changes.
  * 2. Fills the suggestion list with up to 3 products that close the gap
- *    with the least overshoot, from the storefront /products.json.
+ *    with the least overshoot, from the storefront /products.json. Once
+ *    the minimum is met but free delivery isn't, the same catalogue fills
+ *    a row of cards instead: the pinned products first (theme setting, or
+ *    the combos), then single products that cover the free-delivery gap.
  * 3. Quick-adds a suggestion the same way vishesh-pack-selector.js does
  *    (POST /cart/add.js with the drawer's sections, then renderContents),
  *    so the drawer stays open and the checkout unlocks without a reload.
@@ -28,7 +31,7 @@
   var VM = (window.VMMinOrder = window.VMMinOrder || {});
   var seq = 0;
   var adding = false;
-  var CATALOG_KEY = 'vmMinOrderCatalog';
+  var CATALOG_KEY = 'vmMinOrderCatalog2';
   var CATALOG_TTL = 10 * 60 * 1000;
   var catalogPromise = null;
 
@@ -127,6 +130,7 @@
             index: index,
             title: p.title,
             handle: p.handle,
+            type: p.product_type || '',
             variants: (p.variants || []).map(function (v) {
               return {
                 id: String(v.id),
@@ -186,9 +190,111 @@
     return candidates.slice(0, 3);
   }
 
-  function imageUrl(src) {
+  // Free-delivery row. gap is what the cart still needs, measured on the
+  // discounted cart.total_price; pct is the percentage discount on the
+  // cart (VISHESH10 = 10), assumed to cut anything added too - so a ₹299
+  // product counts as ₹269.10 while VISHESH10 is on (see the Liquid for
+  // why that's the safe assumption). A candidate "unlocks" free delivery
+  // when its discounted price covers the gap on its own.
+  //
+  // Candidates: the pinned products (theme setting / combos) and single
+  // products (not combos), minus anything in the cart or out of stock. Per
+  // product the cheapest variant that unlocks, else its priciest in-stock
+  // variant. Order: unlockers first - pinned in their given order, then
+  // the rest cheapest first; if nothing unlocks, the candidates that get
+  // closest (largest discounted step). 3 at most.
+  function pickFree(products, gap, inCart, pinnedIds, pct) {
+    var keep = (100 - Math.min(Math.max(pct || 0, 0), 100)) / 100;
+    function adds(v) {
+      return Math.round(v.price * keep);
+    }
+    var pinnedRank = {};
+    pinnedIds.forEach(function (id, i) {
+      if (!(id in pinnedRank)) pinnedRank[id] = i;
+    });
+    var candidates = [];
+    products.forEach(function (p) {
+      var pinned = p.id in pinnedRank;
+      if (inCart[p.id] || (!pinned && /combo/i.test(p.type))) return;
+      var inStock = p.variants.filter(function (v) {
+        return v.available && v.price > 0;
+      });
+      if (!inStock.length) return;
+      var unlocking = inStock
+        .filter(function (v) {
+          return adds(v) >= gap;
+        })
+        .sort(function (a, b) {
+          return a.price - b.price;
+        });
+      var variant =
+        unlocking[0] ||
+        inStock.slice().sort(function (a, b) {
+          return b.price - a.price;
+        })[0];
+      candidates.push({
+        product: p,
+        variant: variant,
+        unlocks: !!unlocking[0],
+        pinned: pinned,
+        single: p.variants.length === 1,
+      });
+    });
+    var winners = candidates
+      .filter(function (c) {
+        return c.unlocks;
+      })
+      .sort(function (a, b) {
+        if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+        if (a.pinned) return pinnedRank[a.product.id] - pinnedRank[b.product.id];
+        return a.variant.price - b.variant.price || a.product.index - b.product.index;
+      });
+    if (winners.length) return winners.slice(0, 3);
+    return candidates
+      .sort(function (a, b) {
+        return adds(b.variant) - adds(a.variant) || (a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1);
+      })
+      .slice(0, 3);
+  }
+  VM.pickFree = pickFree; // exposed for testing
+
+  function imageUrl(src, width) {
     if (!src) return '';
-    return src + (src.indexOf('?') === -1 ? '?' : '&') + 'width=120';
+    return src + (src.indexOf('?') === -1 ? '?' : '&') + 'width=' + (width || 120);
+  }
+
+  // "Everyday Masala Combo - Haldi, Mirchi & Dhaniya (200g each)" -> "Everyday Masala Combo"
+  function shortTitle(title) {
+    return String(title).split(' - ')[0];
+  }
+
+  function cardHtml(c) {
+    var p = c.product;
+    var v = c.variant;
+    var size = c.single || v.title === 'Default Title' ? '' : ' · ' + escapeHtml(v.title);
+    return (
+      '<li class="vm-min-order__card">' +
+      (v.image
+        ? '<img class="vm-min-order__card-img" src="' +
+          escapeHtml(imageUrl(v.image, 240)) +
+          '" alt="" width="120" height="120" loading="lazy">'
+        : '<span class="vm-min-order__card-img" aria-hidden="true"></span>') +
+      '<a class="vm-min-order__name" href="/products/' +
+      encodeURIComponent(p.handle) +
+      '">' +
+      escapeHtml(shortTitle(p.title)) +
+      '</a>' +
+      '<span class="vm-min-order__meta">' +
+      rupees(v.price) +
+      size +
+      '</span>' +
+      '<button type="button" class="vm-min-order__add vm-min-order__add--card" data-vm-add="' +
+      escapeHtml(v.id) +
+      '" aria-label="Add ' +
+      escapeHtml(p.title) +
+      ' to cart">+ Add</button>' +
+      '</li>'
+    );
   }
 
   function escapeHtml(s) {
@@ -201,9 +307,12 @@
     var wrap = b.querySelector('[data-vm-suggest]');
     var list = b.querySelector('[data-vm-suggest-list]');
     if (!wrap || !list) return;
-    var gap = parseInt(b.getAttribute('data-gap'), 10);
+    var free = wrap.getAttribute('data-vm-mode') === 'free';
+    var gap = parseInt(b.getAttribute(free ? 'data-free-gap' : 'data-gap'), 10);
     var inCartIds = (b.getAttribute('data-cart-products') || '').split(',');
-    var key = gap + '|' + inCartIds.join(',');
+    var pinned = (wrap.getAttribute('data-upsell') || '').split(',').filter(Boolean);
+    var pct = parseFloat(b.getAttribute('data-discount-pct')) || 0;
+    var key = (free ? 'free|' + pct + '|' + pinned.join(',') + '|' : '') + gap + '|' + inCartIds.join(',');
     if (list.getAttribute('data-vm-for') === key) return;
     list.setAttribute('data-vm-for', key);
     var inCart = {};
@@ -213,9 +322,14 @@
 
     loadCatalog().then(function (products) {
       if (!list.isConnected) return;
-      var picks = pick(products, gap, inCart);
+      var picks = free ? pickFree(products, gap, inCart, pinned, pct) : pick(products, gap, inCart);
       if (!picks.length) {
         wrap.hidden = true;
+        return;
+      }
+      if (free) {
+        list.innerHTML = picks.map(cardHtml).join('');
+        wrap.hidden = false;
         return;
       }
       list.innerHTML = picks
@@ -293,6 +407,25 @@
     }
   }
 
+  // Shown under the suggestions when an add fails; cleared on the next try.
+  function addError(button, text) {
+    var wrap = button.closest('[data-vm-suggest]');
+    if (!wrap) return;
+    var p = wrap.querySelector('[data-vm-add-error]');
+    if (!text) {
+      if (p) p.remove();
+      return;
+    }
+    if (!p) {
+      p = document.createElement('p');
+      p.className = 'vm-min-order__error';
+      p.setAttribute('role', 'alert');
+      p.setAttribute('data-vm-add-error', '');
+      wrap.appendChild(p);
+    }
+    p.textContent = text;
+  }
+
   function onAddClick(event) {
     var button = event.target.closest && event.target.closest('[data-vm-add]');
     if (!button) return;
@@ -307,6 +440,7 @@
     button.disabled = true;
     button.setAttribute('aria-busy', 'true');
     button.textContent = 'Adding…';
+    addError(button, null);
 
     var body = new FormData();
     body.append('id', button.getAttribute('data-vm-add'));
@@ -328,6 +462,7 @@
       .then(function (data) {
         if (data.status) {
           button.textContent = 'Unavailable';
+          addError(button, data.description || 'This item can’t be added right now.');
           return;
         }
         if (drawer && typeof drawer.renderContents === 'function') {
@@ -340,6 +475,7 @@
       .catch(function () {
         button.textContent = 'Try again';
         button.disabled = false;
+        addError(button, 'Couldn’t add that - check your connection and try again.');
       })
       .finally(function () {
         adding = false;

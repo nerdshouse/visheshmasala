@@ -17,14 +17,15 @@
   re-renders with every cart section refresh, which is what keeps the
   message live without extra requests.
 
-  Once the minimum is met, the same bar tracks free delivery instead.
-  vm_free must match the shipping rule set in GoKwik (methods #4 and #716,
-  "Discounted Price" basis) and Shopify's Standard rate: ₹79 below ₹299,
-  free from ₹299.
+  Once the minimum is met, the same bar tracks free delivery instead, and
+  a row of quick-add products (filled by assets/vm-min-order.js) helps
+  close the gap. settings.vm_free_shipping_min must match the shipping rule
+  set in GoKwik (methods #4 and #716, "Discounted Price" basis) and
+  Shopify's Standard rate: ₹79 below ₹299, free from ₹299.
 {%- endcomment -%}
 {%- liquid
   assign vm_min = settings.vm_min_order_value | default: 0 | times: 100
-  assign vm_free = 29900
+  assign vm_free = settings.vm_free_shipping_min | default: 299 | times: 100
   assign vm_total = cart.total_price
   assign vm_gap = vm_min | minus: vm_total | at_least: 0
   assign vm_below = false
@@ -35,7 +36,46 @@
   if vm_below
     assign vm_pct = vm_total | times: 100 | divided_by: vm_min | at_most: 100
   else
-    assign vm_pct = vm_total | times: 100 | divided_by: vm_free | at_most: 100
+    assign vm_pct = vm_total | times: 100 | divided_by: vm_free | at_least: 1 | at_most: 100
+  endif
+
+  comment
+    Products offered first while free delivery is still out of reach: the
+    theme setting, or the three combos if it's empty. IDs only - the
+    script looks up price and stock in the storefront catalogue.
+  endcomment
+  comment
+    A percentage discount on the cart (VISHESH10 = 10) may also cut
+    whatever gets added, so the script can't count a ₹299 product as ₹299
+    towards free delivery. VISHESH10 is a line-item discount limited to
+    certain collections, and the storefront can't tell which products a
+    code covers - so every percentage discount is assumed to apply to the
+    added product. That can under-count a product the code excludes, but
+    never claims free delivery for a product that won't reach it.
+    Fixed-amount codes don't change what an added item is worth.
+  endcomment
+  assign vm_pct_off = 0
+  for vm_discount in cart.discount_applications
+    if vm_discount.value_type == 'percentage'
+      assign vm_pct_off = vm_pct_off | plus: vm_discount.value
+    endif
+  endfor
+  assign vm_pct_off = vm_pct_off | at_most: 100
+
+  assign vm_upsell_ids = ''
+  if vm_free_gap > 0 and vm_below == false
+    if settings.vm_upsell_products != blank
+      assign vm_upsell_ids = settings.vm_upsell_products | map: 'id' | join: ','
+    else
+      assign vm_upsell_handles = 'gujarati-kitchen-combo,starter-spice-combo,everyday-masala-combo' | split: ','
+      for vm_handle in vm_upsell_handles
+        assign vm_upsell = all_products[vm_handle]
+        if vm_upsell.id
+          assign vm_upsell_ids = vm_upsell_ids | append: ',' | append: vm_upsell.id
+        endif
+      endfor
+      assign vm_upsell_ids = vm_upsell_ids | remove_first: ','
+    endif
   endif
   assign vm_min_label = vm_min | money_without_currency | remove: '.00'
   assign vm_gap_label = vm_gap | money_without_currency | remove: '.00'
@@ -56,6 +96,8 @@
       data-total="{{ vm_total }}"
       data-gap="{{ vm_gap }}"
       data-below="{{ vm_below }}"
+      data-free-gap="{{ vm_free_gap }}"
+      data-discount-pct="{{ vm_pct_off }}"
       data-cart-products="{{ cart.items | map: 'product_id' | uniq | join: ',' }}"
     >
       {%- if vm_below -%}
@@ -63,7 +105,7 @@
           Minimum order value is ₹{{ vm_min_label }}. Add ₹{{ vm_gap_label }} more to checkout.
         </p>
       {%- elsif vm_free_gap > 0 -%}
-        <p class="vm-min-order__message" role="status">Add ₹{{ vm_free_gap_label }} more for FREE delivery</p>
+        <p class="vm-min-order__message" role="status">Add ₹{{ vm_free_gap_label }} more for FREE delivery 🚚</p>
       {%- else -%}
         <p class="vm-min-order__message" role="status">🎉 You’ve unlocked FREE delivery</p>
       {%- endif -%}
@@ -102,6 +144,24 @@
         <div class="vm-min-order__suggest" data-vm-suggest hidden>
           <p class="vm-min-order__suggest-title">Add something to continue</p>
           <ul class="vm-min-order__list" role="list" data-vm-suggest-list></ul>
+        </div>
+      {%- elsif vm_free_gap > 0 -%}
+        {%- comment -%}
+          Not hidden: the row keeps its height while the script fills it, so
+          the drawer doesn't jump. The script hides it only if nothing fits.
+        {%- endcomment -%}
+        <div
+          class="vm-min-order__suggest vm-min-order__suggest--free"
+          data-vm-suggest
+          data-vm-mode="free"
+          data-upsell="{{ vm_upsell_ids }}"
+        >
+          <ul
+            class="vm-min-order__list vm-min-order__list--row"
+            role="list"
+            aria-label="Add one of these for FREE delivery"
+            data-vm-suggest-list
+          ></ul>
         </div>
       {%- endif -%}
     </div>
