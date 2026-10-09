@@ -1,0 +1,56 @@
+{%- comment -%}
+  Price per 100 g for one variant, or nothing.
+
+  1. If the variant has Shopify's own unit price (Admin > product >
+     variant > "Unit price"), that is used as-is.
+  2. Otherwise it is worked out from the pack size, but only when the
+     size is unambiguous and confirmed by a second field: the variant
+     title must start with a weight ("100g Box", "1kg", "17g Sachet")
+     and that weight must equal the variant's recorded weight. Combos
+     (no pack size, packaging-inclusive weight) and any variant whose
+     two figures disagree show nothing.
+
+  Accepts:
+  - variant: {Object}
+  - product: {Object} its product (only single-option "Pack Size"
+    products are worked out)
+  - class: {String} optional extra class
+{%- endcomment -%}
+{%- liquid
+  assign vm_up = ''
+  if settings.vm_unit_price_enable and variant != blank
+    if variant.unit_price_measurement
+      assign vm_up_ref = variant.unit_price_measurement.reference_value
+      assign vm_up_unit = variant.unit_price_measurement.reference_unit
+      assign vm_up = variant.unit_price | money_without_trailing_zeros | append: ' / '
+      if vm_up_ref != 1
+        assign vm_up = vm_up | append: vm_up_ref | append: ' '
+      endif
+      assign vm_up = vm_up | append: vm_up_unit
+    elsif product.options.size == 1 and product.options.first == 'Pack Size'
+      assign vm_up_token = variant.title | split: ' ' | first | downcase
+      assign vm_up_grams = 0
+      if vm_up_token contains 'kg'
+        assign vm_up_num = vm_up_token | remove: 'kg'
+        assign vm_up_grams = vm_up_num | times: 1000
+      elsif vm_up_token contains 'g'
+        assign vm_up_num = vm_up_token | remove: 'g'
+        assign vm_up_grams = vm_up_num | times: 1
+      endif
+      comment
+        "| times: 1" turns a non-number into 0, and the string round trip
+        rejects anything like "2x50" that parsed partly.
+      endcomment
+      assign vm_up_check = vm_up_num | times: 1 | append: ''
+      if vm_up_grams > 0 and vm_up_check == vm_up_num and variant.weight == vm_up_grams
+        assign vm_up_per100 = variant.price | times: 100.0 | divided_by: vm_up_grams | round
+        assign vm_up = vm_up_per100 | money_without_trailing_zeros | append: ' / 100 g'
+      endif
+    endif
+  endif
+-%}
+{%- if vm_up != blank -%}
+  <span class="vm-unit-price{% if class %} {{ class }}{% endif %}">
+    <span class="visually-hidden">Unit price </span>{{- vm_up -}}
+  </span>
+{%- endif -%}

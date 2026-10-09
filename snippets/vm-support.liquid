@@ -1,0 +1,93 @@
+{%- comment -%}
+  Customer support details, from Theme settings > Vishesh Masala >
+  Customer support - one place to change them.
+
+  - Email: vm_support_email.
+  - WhatsApp: the existing floating-button number (whatsapp_number), when
+    vm_support_whatsapp is on.
+  - Phone: vm_support_phone, empty by default. Shopify's contact-information
+    policy lists +91 90044 03946 while the business brief gives
+    +91 94995 43431, so no phone is shown until the official number is
+    confirmed and entered.
+  - Hours: vm_support_hours, shown only when filled in. No response-time
+    promise is made anywhere.
+
+  Numbers and the address are visible text as well as links, so they can
+  be read or copied where tel:/mailto: does nothing.
+
+  Accepts:
+  - layout: {String} 'full' (contact page) or 'compact' (footer)
+{%- endcomment -%}
+{%- liquid
+  assign vm_email = settings.vm_support_email | strip
+  assign vm_phone = settings.vm_support_phone | strip
+  assign vm_phone_digits = vm_phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+  assign vm_wa = ''
+  if settings.vm_support_whatsapp and settings.whatsapp_number != blank
+    assign vm_wa = settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-'
+  endif
+  assign vm_hours = settings.vm_support_hours | strip
+  assign vm_layout = layout | default: 'full'
+-%}
+{%- if vm_email != blank or vm_phone != blank or vm_wa != blank -%}
+  <ul class="vm-support vm-support--{{ vm_layout }}" role="list">
+    {%- if vm_wa != blank -%}
+      {%- liquid
+        comment
+          919499543431 is shown as +91 94995 43431. Anything that isn't a
+          12-digit +91 number is shown as stored, with a leading +.
+        endcomment
+        assign vm_wa_cc = vm_wa | slice: 0, 2
+        if vm_wa.size == 12 and vm_wa_cc == '91'
+          assign vm_wa_a = vm_wa | slice: 2, 5
+          assign vm_wa_b = vm_wa | slice: 7, 5
+          assign vm_wa_display = '+91 ' | append: vm_wa_a | append: ' ' | append: vm_wa_b
+        else
+          assign vm_wa_display = '+' | append: vm_wa
+        endif
+      -%}
+      <li class="vm-support__item">
+        <span class="vm-support__icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" focusable="false"><path d="M16 3.2a12.8 12.8 0 0 0-11.1 19.2L3.2 28.8l6.6-1.7A12.8 12.8 0 1 0 16 3.2zm0 23.4c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4 1 1.1-3.9-.3-.4A10.6 10.6 0 1 1 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-.9-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.3 3.3c.2.2 2.3 3.4 5.5 4.8 2.7 1.1 3.2.9 3.8.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4z"/></svg>
+        </span>
+        <span class="vm-support__text">
+          <span class="vm-support__label">WhatsApp</span>
+          <a class="vm-support__value" href="https://wa.me/{{ vm_wa }}" target="_blank" rel="noopener">
+            {{- vm_wa_display -}}
+            <span class="visually-hidden"> (opens WhatsApp in a new tab)</span>
+          </a>
+        </span>
+      </li>
+    {%- endif -%}
+    {%- if vm_phone != blank -%}
+      <li class="vm-support__item">
+        <span class="vm-support__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+        </span>
+        <span class="vm-support__text">
+          <span class="vm-support__label">Call</span>
+          <a class="vm-support__value" href="tel:{{ vm_phone_digits }}">{{ vm_phone | escape }}</a>
+        </span>
+      </li>
+    {%- endif -%}
+    {%- if vm_email != blank -%}
+      <li class="vm-support__item">
+        <span class="vm-support__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false"><path d="M3 5h18c.6 0 1 .4 1 1v12c0 .6-.4 1-1 1H3c-.6 0-1-.4-1-1V6c0-.6.4-1 1-1zm9 7.4L4 7.2V17h16V7.2l-8 5.2zM5.3 7l6.7 4.3L18.7 7H5.3z"/></svg>
+        </span>
+        <span class="vm-support__text">
+          <span class="vm-support__label">Email</span>
+          <a class="vm-support__value" href="mailto:{{ vm_email | escape }}">{{ vm_email | escape }}</a>
+        </span>
+      </li>
+    {%- endif -%}
+    {%- if vm_hours != blank -%}
+      <li class="vm-support__item vm-support__item--hours">
+        <span class="vm-support__text">
+          <span class="vm-support__label">Hours</span>
+          <span class="vm-support__value vm-support__value--plain">{{ vm_hours | escape }}</span>
+        </span>
+      </li>
+    {%- endif -%}
+  </ul>
+{%- endif -%}

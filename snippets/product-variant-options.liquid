@@ -95,8 +95,26 @@
       {% endif %}
       {{ input_dataset }}
     >
-    <label for="{{ input_id }}">
-      {{ value -}}
+    {%- liquid
+      comment
+        Single-option "Pack Size" products: each pill also shows that
+        pack's price and, where it can be worked out reliably, its price
+        per 100 g (snippets/vm-unit-price.liquid), so packs can be
+        compared without tapping each one. The input is unchanged.
+      endcomment
+      assign vm_pill_variant = nil
+      if product.options.size == 1 and option.name == 'Pack Size' and value.variant
+        assign vm_pill_variant = value.variant
+      endif
+    -%}
+    <label for="{{ input_id }}"{% if vm_pill_variant %} class="vm-pill"{% endif %}>
+      {%- if vm_pill_variant -%}
+        <span class="vm-pill__size">{{ value }}</span>
+        <span class="vm-pill__price">{{ vm_pill_variant.price | money_without_trailing_zeros }}</span>
+        {%- render 'vm-unit-price', variant: vm_pill_variant, product: product, class: 'vm-pill__unit' -%}
+      {%- else -%}
+        {{ value -}}
+      {%- endif -%}
       {{ label_unavailable }}
     </label>
   {%- elsif picker_type == 'dropdown' or picker_type == 'swatch_dropdown' -%}

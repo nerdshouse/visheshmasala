@@ -1549,6 +1549,52 @@
         "label": "Free delivery suggestions",
         "limit": 6,
         "info": "Shown first in the cart when the minimum is met but free delivery isn't. Leave empty to use the three combos. The row then fills up with the cheapest products that cover the gap on their own."
+      },
+      {
+        "type": "header",
+        "content": "Customer support"
+      },
+      {
+        "type": "text",
+        "id": "vm_support_email",
+        "label": "Support email",
+        "default": "info@visheshmasala.com",
+        "info": "Shown on the contact page and in the footer. Leave empty to hide."
+      },
+      {
+        "type": "text",
+        "id": "vm_support_phone",
+        "label": "Support phone",
+        "info": "With country code, e.g. +91 94995 43431. Leave empty until the official customer-support number is confirmed - Settings > Policies > Contact information currently lists a different number. The WhatsApp link uses the WhatsApp number above."
+      },
+      {
+        "type": "checkbox",
+        "id": "vm_support_whatsapp",
+        "label": "Show WhatsApp in the support block",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "vm_support_hours",
+        "label": "Support hours",
+        "info": "Optional, e.g. Mon-Sat, 10 am - 6 pm. Leave empty unless confirmed - nothing is shown when empty."
+      },
+      {
+        "type": "checkbox",
+        "id": "vm_support_in_footer",
+        "label": "Show the support block in the footer",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Unit pricing"
+      },
+      {
+        "type": "checkbox",
+        "id": "vm_unit_price_enable",
+        "label": "Show price per 100 g on product pages",
+        "default": true,
+        "info": "Uses Shopify's unit price when a variant has one. Otherwise it is worked out only when the pack size (e.g. \"100g Box\") and the variant's weight agree, so combos and packs without a matching weight show nothing."
       }
     ]
   },

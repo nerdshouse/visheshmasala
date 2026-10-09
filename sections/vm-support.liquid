@@ -1,0 +1,52 @@
+{{ 'vm-discovery.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Contact page support block. The details themselves live in Theme
+  settings > Vishesh Masala > Customer support (snippets/vm-support.liquid).
+{%- endcomment -%}
+<div class="vm-support-section color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width page-width--narrow vm-support-section__inner" data-animate="fade-up">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="h3 vm-support-section__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="vm-support-section__text rte">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- render 'vm-support', layout: 'full' -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Customer support",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Talk to us"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Questions about an order or a masala? Reach us on any of these.</p>"
+    },
+    {
+      "type": "paragraph",
+      "content": "Email, phone, WhatsApp and hours are set in Theme settings > Vishesh Masala > Customer support."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer support"
+    }
+  ]
+}
+{% endschema %}

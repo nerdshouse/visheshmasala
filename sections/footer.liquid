@@ -152,6 +152,28 @@
                 </div>
               </details>
             </div>
+            {%- comment -%}
+              Support details from Theme settings > Vishesh Masala > Customer
+              support (snippets/vm-support.liquid). Same accordion pattern as
+              the three columns above.
+            {%- endcomment -%}
+            {%- if settings.vm_support_in_footer -%}
+              {%- capture vm_footer_support -%}{%- render 'vm-support', layout: 'compact' -%}{%- endcapture -%}
+              {%- if vm_footer_support != blank -%}
+                {{ 'vm-discovery.css' | asset_url | stylesheet_tag }}
+                <div class="footer-block grid__item vishesh-footer-static" data-animate="fade-up">
+                  <details class="vishesh-footer-accordion" open>
+                    <summary class="footer-block__heading vishesh-footer-accordion__summary">
+                      Customer care
+                      <span class="vishesh-footer-accordion__icon">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+                    </summary>
+                    <div class="accordion__content">
+                      {{ vm_footer_support }}
+                    </div>
+                  </details>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
             {%- for block in section.blocks -%}
               <div
                 class="footer-block grid__item{% if block.type == 'link_list' %} footer-block--menu{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"

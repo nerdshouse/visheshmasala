@@ -10,6 +10,7 @@
   {% endif %}
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'vm-discovery.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -123,6 +124,15 @@
                         use_variant: true,
                         show_badges: true,
                         price_class: 'price--large'
+                      -%}
+                      {%- comment -%}
+                        Inside #price-… so product-info.js swaps it with the
+                        price when another pack is chosen.
+                      {%- endcomment -%}
+                      {%- render 'vm-unit-price',
+                        variant: product.selected_or_first_available_variant,
+                        product: product,
+                        class: 'vm-unit-price--pdp'
                       -%}
                     </div>
                   </div>

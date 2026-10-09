@@ -84,6 +84,14 @@
           "settings": {
             "share_label": "Share"
           }
+        },
+        "complementary": {
+          "type": "complementary",
+          "settings": {
+            "block_heading": "Pairs well with",
+            "product_list_limit": 4,
+            "products_per_page": 2
+          }
         }
       },
       "block_order": [
@@ -98,6 +106,7 @@
         "ingredients",
         "fssai",
         "how_to_use",
+        "complementary",
         "share"
       ],
       "settings": {
@@ -152,10 +161,18 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "combo-links": {
+      "type": "vm-combo-nudge",
+      "settings": {
+        "heading": "Also in a combo",
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
     "main",
+    "combo-links",
     "disclosures",
     "pdp-marquee",
     "related-products"
