@@ -10,11 +10,13 @@
   description (checked 9 Oct 2026).
 
   Prices are never stored here. "If bought separately" is the sum of the
-  listed packs' live prices, and it is only shown when every pack is
-  found - so it can't drift from the catalogue. A saving badge appears
-  only when that difference is at least min_saving_pct of the separate
-  total, so a ₹1 difference is stated plainly but not sold as a deal.
-  Nothing here mentions delivery charges.
+  listed packs' live prices, shown only when every pack is found and the
+  combo is at least 1% cheaper - a smaller difference (Starter Spice,
+  ₹299 against ₹300) is presented as a bundle, not a saving. A saving
+  badge needs min_saving_pct on top of that. Nothing here mentions
+  delivery charges or product claims (no preservatives, Jain-friendly
+  and so on) - those stay in the product descriptions for the business
+  to verify.
 
   Accepts:
   - mode: {String} 'cards' (home page) or 'product' (product page)
@@ -111,6 +113,18 @@
       assign vm_saving = vm_sum | minus: vm_combo_price
       assign vm_saving_pct = vm_saving | times: 100 | divided_by: vm_sum
     endif
+    comment
+      The separate total is compared only when the combo is at least 1%
+      cheaper. Below that (Starter Spice: ₹299 against ₹300) the combo is
+      shown as a bundle - its packs in one order - with no price comparison.
+    endcomment
+    assign vm_compare = false
+    if vm_saving > 0
+      assign vm_saving_x100 = vm_saving | times: 100
+      if vm_saving_x100 >= vm_sum
+        assign vm_compare = true
+      endif
+    endif
     assign vm_others = vm_others | remove_first: '|' | split: '|'
     assign vm_rendered = vm_rendered | plus: 1
   -%}
@@ -148,8 +162,10 @@
           {%- if vm_saving_pct >= vm_min_pct and vm_saving > 0 -%}
             <span class="vm-combo-price__save">{{ vm_saving | money_without_trailing_zeros }} less</span>
           {%- endif -%}
-          {%- if vm_complete and vm_sum > vm_combo_price -%}
+          {%- if vm_compare -%}
             <span class="vm-combo-price__separate">{{ vm_sum | money_without_trailing_zeros }} if bought separately</span>
+          {%- else -%}
+            <span class="vm-combo-price__separate">All {{ vm_parts.size }} packs in one order</span>
           {%- endif -%}
         </div>
         <product-form class="vm-combo-card__form" data-hide-errors="false">
@@ -188,10 +204,14 @@
       <ul class="vm-combo-list vm-combo-list--prices" role="list">
         {{ vm_rows }}
       </ul>
-      {%- if vm_complete and vm_sum > vm_combo_price -%}
+      {%- if vm_compare -%}
         <p class="vm-combo-inside__total">
           These packs cost <strong>{{ vm_sum | money_without_trailing_zeros }}</strong> if bought separately.
           This combo is <strong>{{ vm_combo_price | money_without_trailing_zeros }}</strong>.
+        </p>
+      {%- else -%}
+        <p class="vm-combo-inside__total">
+          All {{ vm_parts.size }} packs together in one order.
         </p>
       {%- endif -%}
     </div>
@@ -211,8 +231,10 @@
         </span>
         <span class="vm-combo-nudge__price">
           {{- vm_combo_price | money_without_trailing_zeros -}}
-          {%- if vm_complete and vm_sum > vm_combo_price -%}
+          {%- if vm_compare -%}
             <span class="vm-combo-nudge__separate">{{ vm_sum | money_without_trailing_zeros }} if bought separately</span>
+          {%- else -%}
+            <span class="vm-combo-nudge__separate">{{ vm_parts.size }} packs in one order</span>
           {%- endif -%}
         </span>
       </span>

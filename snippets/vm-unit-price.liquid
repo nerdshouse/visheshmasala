@@ -7,8 +7,9 @@
      size is unambiguous and confirmed by a second field: the variant
      title must start with a weight ("100g Box", "1kg", "17g Sachet")
      and that weight must equal the variant's recorded weight. Combos
-     (no pack size, packaging-inclusive weight) and any variant whose
-     two figures disagree show nothing.
+     are excluded outright (product type "Combo") - their recorded weight
+     includes packaging, so a net weight is never inferred from it - and
+     any variant whose two figures disagree shows nothing.
 
   Accepts:
   - variant: {Object}
@@ -27,7 +28,7 @@
         assign vm_up = vm_up | append: vm_up_ref | append: ' '
       endif
       assign vm_up = vm_up | append: vm_up_unit
-    elsif product.options.size == 1 and product.options.first == 'Pack Size'
+    elsif product.type != 'Combo' and product.options.size == 1 and product.options.first == 'Pack Size'
       assign vm_up_token = variant.title | split: ' ' | first | downcase
       assign vm_up_grams = 0
       if vm_up_token contains 'kg'

@@ -90,27 +90,45 @@
     var buyButtons = document.querySelector('.product-form__buttons');
     var realSubmit = document.querySelector('.product-form__submit');
 
-    if (stickyBar && buyButtons && realSubmit && 'IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(
-        function (entries) {
-          var visible = entries[0].isIntersecting;
-          var barShown = !visible;
-          stickyBar.classList.toggle('is-visible', barShown);
-          stickyBar.setAttribute('aria-hidden', barShown ? 'false' : 'true');
-          // The floating WhatsApp button shares the bottom of the screen
-          // with this bar and outranks it on z-index, so while the bar is
-          // up the button has to move or it sits on top of the sticky Add
-          // to Cart. Height is published rather than hardcoded so the
-          // offset stays right with the bar's safe-area padding.
-          document.body.classList.toggle('vm-sticky-atc-visible', barShown);
-          document.documentElement.style.setProperty(
-            '--vm-sticky-atc-h',
-            barShown ? stickyBar.offsetHeight + 'px' : '0px'
-          );
-        },
-        { rootMargin: '-80px 0px 0px 0px' }
-      );
-      observer.observe(buyButtons);
+    if (stickyBar && buyButtons && realSubmit) {
+      // The bar appears only once the real buy buttons have scrolled up
+      // past the top of the screen. It used to show whenever they were
+      // out of view - including while they were still below the fold, so
+      // on short phones (320x700) the bar was up from first paint and sat
+      // on top of the product title. A position check on scroll (one per
+      // frame) replaces the IntersectionObserver because an observer
+      // can't tell "not reached yet" from "scrolled past" after a long
+      // jump: both are just "not intersecting".
+      var barShown = null;
+      var updateBar = function () {
+        var shown = buyButtons.getBoundingClientRect().bottom < 80;
+        if (shown === barShown) return;
+        barShown = shown;
+        stickyBar.classList.toggle('is-visible', shown);
+        stickyBar.setAttribute('aria-hidden', shown ? 'false' : 'true');
+        // The floating WhatsApp button shares the bottom of the screen
+        // with this bar and outranks it on z-index, so while the bar is
+        // up the button has to move or it sits on top of the sticky Add
+        // to Cart. Height is published rather than hardcoded so the
+        // offset stays right with the bar's safe-area padding.
+        document.body.classList.toggle('vm-sticky-atc-visible', shown);
+        document.documentElement.style.setProperty(
+          '--vm-sticky-atc-h',
+          shown ? stickyBar.offsetHeight + 'px' : '0px'
+        );
+      };
+      var barQueued = false;
+      var queueBar = function () {
+        if (barQueued) return;
+        barQueued = true;
+        requestAnimationFrame(function () {
+          barQueued = false;
+          updateBar();
+        });
+      };
+      window.addEventListener('scroll', queueBar, { passive: true });
+      window.addEventListener('resize', queueBar, { passive: true });
+      updateBar();
 
       stickyBar.querySelector('[data-sticky-atc-button]').addEventListener('click', function () {
         realSubmit.click();

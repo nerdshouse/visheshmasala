@@ -22,6 +22,18 @@
   endif
 
   assign compare_at_price = target.compare_at_price
+  comment
+    Less than 1% off isn't presented as a sale: no Sale badge, no struck-
+    through price (e.g. Starter Spice Combo, ₹299 against a ₹300
+    compare-at). The compare-at value in Admin is unchanged. Same rule in
+    snippets/card-product.liquid.
+  endcomment
+  if compare_at_price > target.price
+    assign vm_sale_gap = compare_at_price | minus: target.price | times: 100
+    if vm_sale_gap < compare_at_price
+      assign compare_at_price = nil
+    endif
+  endif
   assign price = target.price | default: 1999
   assign price_min = product.price_min
   assign price_max = product.price_max
