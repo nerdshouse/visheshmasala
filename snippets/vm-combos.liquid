@@ -1,0 +1,244 @@
+{%- comment -%}
+  Combos - one definition, three views.
+
+  The combos below are the only place that says what is inside each combo.
+  The home page cards, the "Also in a combo" note on a component's page
+  and the "What's inside" list on a combo's own page all read it, so they
+  can't disagree. Each combo is "combo-handle=" followed by its packs as
+  "product-handle:Pack Size", where Pack Size is the variant title exactly
+  as it is in Admin. Matches the contents listed in each combo's own
+  description (checked 9 Oct 2026).
+
+  Prices are never stored here. "If bought separately" is the sum of the
+  listed packs' live prices, shown only when every pack is found and the
+  combo is at least 1% cheaper - a smaller difference (Starter Spice,
+  ₹299 against ₹300) is presented as a bundle, not a saving. A saving
+  badge needs min_saving_pct on top of that. Nothing here mentions
+  delivery charges or product claims (no preservatives, Jain-friendly
+  and so on) - those stay in the product descriptions for the business
+  to verify.
+
+  Accepts:
+  - mode: {String} 'cards' (home page) or 'product' (product page)
+  - product: {Object} the current product (mode 'product')
+  - min_saving_pct: {Number} badge threshold, default 5
+{%- endcomment -%}
+{%- liquid
+  assign vm_defs = 'starter-spice-combo=turmeric-powder:100g,chilli-powder:100g,coriander-powder:100g,rajwadi-garam-masala:100g|gujarati-kitchen-combo=rajwadi-garam-masala:100g,kashmiri-chilli-powder:100g Box,premium-compound-hing-powder:50g|everyday-masala-combo=turmeric-powder:200g,chilli-powder:200g,coriander-powder:200g' | split: '|'
+  assign vm_min_pct = min_saving_pct | default: 5
+  assign vm_rendered = 0
+-%}
+{%- for vm_def in vm_defs -%}
+  {%- liquid
+    assign vm_combo_handle = vm_def | split: '=' | first
+    assign vm_parts = vm_def | split: '=' | last | split: ','
+    assign vm_combo = all_products[vm_combo_handle]
+    if vm_combo.id == blank
+      continue
+    endif
+
+    assign vm_is_this_combo = false
+    assign vm_contains_this = false
+    assign vm_this_pack = ''
+    if mode == 'product'
+      if product.id == vm_combo.id
+        assign vm_is_this_combo = true
+      endif
+      for vm_part in vm_parts
+        assign vm_part_handle = vm_part | split: ':' | first
+        if vm_part_handle == product.handle
+          assign vm_contains_this = true
+          assign vm_this_pack = vm_part | split: ':' | last
+        endif
+      endfor
+      unless vm_is_this_combo or vm_contains_this
+        continue
+      endunless
+    endif
+
+    assign vm_combo_variant = vm_combo.selected_or_first_available_variant
+    assign vm_combo_price = vm_combo_variant.price
+    assign vm_name = vm_combo.title | split: ' - ' | first
+    assign vm_sum = 0
+    assign vm_complete = true
+    assign vm_others = ''
+    assign vm_form_id = 'VmComboForm-' | append: vm_combo.id
+  -%}
+  {%- capture vm_rows -%}
+    {%- for vm_part in vm_parts -%}
+      {%- liquid
+        assign vm_part_handle = vm_part | split: ':' | first
+        assign vm_part_pack = vm_part | split: ':' | last
+        assign vm_part_product = all_products[vm_part_handle]
+        assign vm_part_variant = nil
+        for vm_v in vm_part_product.variants
+          if vm_v.title == vm_part_pack
+            assign vm_part_variant = vm_v
+          endif
+        endfor
+        if vm_part_variant == nil
+          assign vm_complete = false
+        else
+          assign vm_sum = vm_sum | plus: vm_part_variant.price
+        endif
+        if vm_part_handle != product.handle
+          assign vm_others = vm_others | append: '|' | append: vm_part_product.title
+        endif
+        assign vm_part_image = vm_part_variant.featured_image | default: vm_part_product.featured_image
+      -%}
+      <li class="vm-combo-item">
+        <span class="vm-combo-item__katori" aria-hidden="true">
+          {%- if vm_part_image != blank -%}
+            {{- vm_part_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '', width: 60, height: 60 -}}
+          {%- endif -%}
+        </span>
+        <span class="vm-combo-item__text">
+          {%- if mode == 'product' and vm_part_product.url != blank -%}
+            <a class="vm-combo-item__name" href="{{ vm_part_product.url }}">{{ vm_part_product.title | escape }}</a>
+          {%- else -%}
+            <span class="vm-combo-item__name">{{ vm_part_product.title | escape }}</span>
+          {%- endif -%}
+          <span class="vm-combo-item__pack">{{ vm_part_pack | escape }}</span>
+        </span>
+        {%- if mode == 'product' and vm_is_this_combo and vm_part_variant -%}
+          <span class="vm-combo-item__price">{{ vm_part_variant.price | money_without_trailing_zeros }}</span>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- liquid
+    assign vm_saving = 0
+    assign vm_saving_pct = 0
+    if vm_complete and vm_sum > vm_combo_price
+      assign vm_saving = vm_sum | minus: vm_combo_price
+      assign vm_saving_pct = vm_saving | times: 100 | divided_by: vm_sum
+    endif
+    comment
+      The separate total is compared only when the combo is at least 1%
+      cheaper. Below that (Starter Spice: ₹299 against ₹300) the combo is
+      shown as a bundle - its packs in one order - with no price comparison.
+    endcomment
+    assign vm_compare = false
+    if vm_saving > 0
+      assign vm_saving_x100 = vm_saving | times: 100
+      if vm_saving_x100 >= vm_sum
+        assign vm_compare = true
+      endif
+    endif
+    assign vm_others = vm_others | remove_first: '|' | split: '|'
+    assign vm_rendered = vm_rendered | plus: 1
+  -%}
+
+  {%- if mode == 'cards' -%}
+    <li class="vm-combo-card">
+      <a class="vm-combo-card__media" href="{{ vm_combo.url }}" tabindex="-1" aria-hidden="true">
+        {%- if vm_combo.featured_image -%}
+          {{-
+            vm_combo.featured_image
+            | image_url: width: 720
+            | image_tag:
+              loading: 'lazy',
+              widths: '360, 540, 720',
+              sizes: '(min-width: 990px) 360px, (min-width: 750px) 45vw, 78vw',
+              alt: ''
+          -}}
+        {%- endif -%}
+      </a>
+      <div class="vm-combo-card__body">
+        <h3 class="vm-combo-card__title">
+          <a href="{{ vm_combo.url }}">{{ vm_name | escape }}</a>
+        </h3>
+        <p class="vm-combo-card__count">
+          {{ vm_parts.size }} packs inside
+        </p>
+        <ul class="vm-combo-list" role="list" aria-label="What's inside the {{ vm_name | escape }}">
+          {{ vm_rows }}
+        </ul>
+        <div class="vm-combo-price">
+          <span class="vm-combo-price__now">
+            <span class="visually-hidden">Combo price</span>
+            {{- vm_combo_price | money_without_trailing_zeros -}}
+          </span>
+          {%- if vm_saving_pct >= vm_min_pct and vm_saving > 0 -%}
+            <span class="vm-combo-price__save">{{ vm_saving | money_without_trailing_zeros }} less</span>
+          {%- endif -%}
+          {%- if vm_compare -%}
+            <span class="vm-combo-price__separate">{{ vm_sum | money_without_trailing_zeros }} if bought separately</span>
+          {%- else -%}
+            <span class="vm-combo-price__separate">All {{ vm_parts.size }} packs in one order</span>
+          {%- endif -%}
+        </div>
+        <product-form class="vm-combo-card__form" data-hide-errors="false">
+          {%- form 'product', vm_combo, id: vm_form_id, novalidate: 'novalidate' -%}
+            <input type="hidden" name="id" value="{{ vm_combo_variant.id }}" disabled>
+            <button
+              type="submit"
+              name="add"
+              class="button button--full-width vm-combo-card__add"
+              {% unless vm_combo_variant.available %}disabled{% endunless %}
+            >
+              <span>
+                {%- if vm_combo_variant.available -%}
+                  Add to cart
+                {%- else -%}
+                  {{ 'products.product.sold_out' | t }}
+                {%- endif -%}
+              </span>
+              <span class="visually-hidden"> - {{ vm_name | escape }}</span>
+              {%- render 'loading-spinner' -%}
+            </button>
+            <div class="product-form__error-message-wrapper vm-combo-card__error" role="alert" hidden>
+              <span class="product-form__error-message"></span>
+            </div>
+          {%- endform -%}
+        </product-form>
+        <a class="vm-combo-card__link link" href="{{ vm_combo.url }}">
+          View details<span class="visually-hidden"> of the {{ vm_name | escape }}</span>
+        </a>
+      </div>
+    </li>
+
+  {%- elsif vm_is_this_combo -%}
+    <div class="vm-combo-inside">
+      <h2 class="vm-combo-panel__heading h4">What's inside</h2>
+      <ul class="vm-combo-list vm-combo-list--prices" role="list">
+        {{ vm_rows }}
+      </ul>
+      {%- if vm_compare -%}
+        <p class="vm-combo-inside__total">
+          These packs cost <strong>{{ vm_sum | money_without_trailing_zeros }}</strong> if bought separately.
+          This combo is <strong>{{ vm_combo_price | money_without_trailing_zeros }}</strong>.
+        </p>
+      {%- else -%}
+        <p class="vm-combo-inside__total">
+          All {{ vm_parts.size }} packs together in one order.
+        </p>
+      {%- endif -%}
+    </div>
+
+  {%- else -%}
+    <a class="vm-combo-nudge" href="{{ vm_combo.url }}">
+      <span class="vm-combo-nudge__media" aria-hidden="true">
+        {%- if vm_combo.featured_image -%}
+          {{- vm_combo.featured_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '', width: 96, height: 96 -}}
+        {%- endif -%}
+      </span>
+      <span class="vm-combo-nudge__body">
+        <span class="vm-combo-nudge__name">{{ vm_name | escape }}</span>
+        <span class="vm-combo-nudge__text">
+          {{ vm_this_pack | escape }} {{ product.title | escape }}
+          {%- if vm_others.size > 0 %} with {{ vm_others | join: ', ' | escape }}{% endif -%}
+        </span>
+        <span class="vm-combo-nudge__price">
+          {{- vm_combo_price | money_without_trailing_zeros -}}
+          {%- if vm_compare -%}
+            <span class="vm-combo-nudge__separate">{{ vm_sum | money_without_trailing_zeros }} if bought separately</span>
+          {%- else -%}
+            <span class="vm-combo-nudge__separate">{{ vm_parts.size }} packs in one order</span>
+          {%- endif -%}
+        </span>
+      </span>
+      <span class="vm-combo-nudge__cta" aria-hidden="true">View</span>
+    </a>
+  {%- endif -%}
+{%- endfor -%}

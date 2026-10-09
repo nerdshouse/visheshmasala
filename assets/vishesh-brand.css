@@ -114,6 +114,20 @@ body.vm-sticky-atc-visible .vishesh-whatsapp {
         (var(--vm-sticky-atc-h, 0px) - env(safe-area-inset-bottom, 0px) - 4.8rem) / 2
     );
   }
+
+  /* Short phones, product page, bar down: steps aside while it would sit on
+     the title or price (set by vishesh-product.js). Opacity and visibility
+     only - no transform - so its position, and the overlap test, never
+     move. */
+  .vishesh-whatsapp {
+    transition: transform 0.2s ease, bottom 0.3s ease, opacity 0.2s ease, visibility 0.2s;
+  }
+
+  body.vm-wa-tucked .vishesh-whatsapp {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 
 .vishesh-whatsapp:hover {

@@ -364,6 +364,57 @@
       "settings": {
         "color_scheme": "scheme-1"
       }
+    },
+    "combos": {
+      "type": "vm-combos",
+      "settings": {
+        "eyebrow": "Combos",
+        "heading": "Everyday masalas, packed together",
+        "script_line": "Ek dabba, roz ka swaad",
+        "min_saving_pct": 5,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "registrations": {
+      "type": "vm-credentials",
+      "blocks": {
+        "fssai": {
+          "type": "registration",
+          "settings": {
+            "title": "FSSAI Central Licence",
+            "number": "10721015000212",
+            "note": "Food business licence issued by the Food Safety and Standards Authority of India.",
+            "validity": ""
+          }
+        },
+        "spices-board": {
+          "type": "registration",
+          "settings": {
+            "title": "Spices Board India",
+            "number": "CRES/SBCB/27155/2025-2026",
+            "note": "Certificate of Registration as Exporter of Spices (CRES).",
+            "validity": ""
+          }
+        },
+        "fda-pending": {
+          "type": "pending",
+          "settings": {
+            "title": "US FDA food facility registration",
+            "note": "Publication pending - confirm the 2026 renewal and whether the business wants the number published. Never use the FDA logo or say 'FDA approved'."
+          }
+        }
+      },
+      "block_order": [
+        "fssai",
+        "spices-board",
+        "fda-pending"
+      ],
+      "settings": {
+        "heading": "Licensed and registered",
+        "text": "",
+        "footnote": "These are registrations of our business, not certifications of individual products.",
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
@@ -371,12 +422,14 @@
     "trust",
     "marquee-1",
     "categories",
+    "combos",
     "divider-1",
     "purity",
     "bestsellers",
     "divider-2",
     "quote",
     "recipes",
+    "registrations",
     "marquee-2",
     "stockists"
   ]

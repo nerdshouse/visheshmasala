@@ -1,0 +1,51 @@
+{{ 'vm-discovery.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Product page: on a combo, lists what's inside with each pack's own
+  price; on a pack that belongs to a combo, links to that combo. Renders
+  nothing on any other product. Data: snippets/vm-combos.liquid.
+{%- endcomment -%}
+{%- capture vm_combo_out -%}
+  {%- render 'vm-combos', mode: 'product', product: product -%}
+{%- endcapture -%}
+
+{%- if vm_combo_out != blank -%}
+  <div class="vm-combo-panel color-{{ section.settings.color_scheme }} gradient">
+    <div class="page-width vm-combo-panel__inner" data-animate="fade-up">
+      {%- if vm_combo_out contains 'vm-combo-nudge' -%}
+        <h2 class="vm-combo-panel__heading h4">{{ section.settings.heading | escape }}</h2>
+        <div class="vm-combo-panel__nudges">{{ vm_combo_out }}</div>
+      {%- else -%}
+        {{ vm_combo_out }}
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Combo links",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading on a pack that is in a combo",
+      "default": "Also in a combo"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Combo links"
+    }
+  ]
+}
+{% endschema %}

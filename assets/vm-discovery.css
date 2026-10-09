@@ -1,0 +1,686 @@
+/* Phase 2 - combos, pack pills + unit price, support, registrations.
+   Built on the theme's own tokens (base.css :root): --color-primary (Vishesh
+   red), --color-accent (brand yellow), --color-cream, --color-dark, Poppins.
+   Motif: a masala dabba - each combo's packs sit in round "katori" wells. */
+
+.vm-combos,
+.vm-combo-panel,
+.vm-support-section,
+.vm-credentials {
+  --vm-ink: var(--color-dark);
+  --vm-muted: rgba(74, 52, 24, 0.68);
+  --vm-line: rgba(74, 52, 24, 0.14);
+  --vm-well: #fdf5ea;
+  --vm-card-shadow: 0 0.8rem 2.4rem rgba(74, 52, 24, 0.1);
+}
+
+.vm-eyebrow {
+  margin: 0 0 0.6rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* ---------- Home: combo cards ---------- */
+.vm-combos {
+  padding-block: 4.8rem 5.6rem;
+}
+
+.vm-combos__header {
+  text-align: center;
+  margin-bottom: 2.8rem;
+}
+
+.vm-combos__heading {
+  margin: 0;
+  color: var(--vm-ink);
+  text-wrap: balance;
+}
+
+.vm-combos__script {
+  margin: 0.6rem 0 0;
+}
+
+.vm-combos__track {
+  list-style: none;
+  margin: 0 -1.5rem;
+  padding: 0.4rem 1.5rem 1.6rem;
+  display: flex;
+  gap: 1.4rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+@media screen and (min-width: 990px) {
+  .vm-combos__track {
+    margin: 0;
+    padding: 0.4rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.4rem;
+    overflow: visible;
+  }
+}
+
+.vm-combo-card {
+  /* ~15% of the next card peeks in on phones */
+  flex: 0 0 min(82%, 34rem);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #ffffff;
+  border-radius: 2rem;
+  box-shadow: var(--vm-card-shadow);
+  overflow: hidden;
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .vm-combo-card {
+    flex-basis: 44%;
+  }
+}
+
+.vm-combo-card__media {
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--vm-well);
+}
+
+.vm-combo-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* pack shots carry a baked-in white ground - multiply drops it into the well */
+  mix-blend-mode: multiply;
+}
+
+.vm-combo-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  flex: 1;
+  padding: 1.8rem 1.8rem 1.4rem;
+}
+
+.vm-combo-card__title {
+  margin: 0;
+  font-size: 1.9rem;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.vm-combo-card__title a {
+  color: var(--vm-ink);
+  text-decoration: none;
+}
+
+.vm-combo-card__title a:hover {
+  color: var(--color-primary);
+}
+
+.vm-combo-card__count {
+  margin: -0.6rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vm-muted);
+}
+
+/* Contents: one row per pack, each pack in its katori */
+.vm-combo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.vm-combo-item {
+  display: grid;
+  grid-template-columns: 4.4rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vm-combo-item__katori {
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  background: var(--vm-well);
+  box-shadow: inset 0 0 0 0.2rem #ffffff, 0 0 0 0.1rem var(--vm-line);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.vm-combo-item__katori img {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.vm-combo-item__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.vm-combo-item__name {
+  font-size: 1.4rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--vm-ink);
+  text-decoration: none;
+}
+
+a.vm-combo-item__name {
+  text-decoration: underline;
+  text-decoration-color: var(--vm-line);
+  text-underline-offset: 0.3rem;
+}
+
+a.vm-combo-item__name:hover {
+  color: var(--color-primary);
+  text-decoration-color: currentColor;
+}
+
+.vm-combo-item__pack {
+  font-size: 1.2rem;
+  color: var(--vm-muted);
+}
+
+.vm-combo-item__price {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--vm-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.vm-combo-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  margin-top: auto;
+  padding-top: 1.2rem;
+  border-top: 0.1rem dashed var(--vm-line);
+}
+
+.vm-combo-price__now {
+  font-size: 2.6rem;
+  line-height: 1.1;
+  font-weight: 800;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.vm-combo-price__save {
+  padding: 0.3rem 1rem;
+  border-radius: 99rem;
+  background: var(--color-accent);
+  color: var(--vm-ink);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.vm-combo-price__separate {
+  flex-basis: 100%;
+  font-size: 1.25rem;
+  color: var(--vm-muted);
+}
+
+.vm-combo-card__add {
+  min-height: 4.4rem;
+  border-radius: 99rem;
+  font-weight: 700;
+}
+
+.vm-combo-card__error {
+  margin-top: 0.6rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--vm-ink);
+}
+
+.vm-combo-card__link {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
+  padding-inline: 1rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--vm-ink);
+}
+
+.vm-combo-card__title a:focus-visible,
+.vm-combo-card__link:focus-visible,
+a.vm-combo-item__name:focus-visible,
+.vm-combo-nudge:focus-visible,
+.vm-support__value:focus-visible {
+  outline: 0.2rem solid var(--vm-ink, var(--color-dark));
+  outline-offset: 0.3rem;
+  border-radius: 0.4rem;
+}
+
+/* ---------- Product page: combo links ---------- */
+.vm-combo-panel {
+  padding-block: 1.2rem 2.4rem;
+}
+
+.vm-combo-panel__inner {
+  max-width: 96rem;
+}
+
+.vm-combo-panel__heading {
+  margin: 0 0 1.2rem;
+  color: var(--vm-ink);
+}
+
+.vm-combo-panel__nudges {
+  display: grid;
+  gap: 1.2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .vm-combo-panel__nudges {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.vm-combo-nudge {
+  display: grid;
+  grid-template-columns: 7.2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.2rem;
+  min-height: 4.4rem;
+  padding: 1.2rem;
+  border-radius: 1.6rem;
+  background: #ffffff;
+  box-shadow: var(--vm-card-shadow);
+  color: var(--vm-ink);
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.vm-combo-nudge:hover {
+  box-shadow: 0 0 0 0.15rem var(--color-primary), var(--vm-card-shadow);
+}
+
+.vm-combo-nudge__media {
+  width: 7.2rem;
+  height: 7.2rem;
+  border-radius: 1.2rem;
+  background: var(--vm-well);
+  overflow: hidden;
+}
+
+.vm-combo-nudge__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.vm-combo-nudge__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.vm-combo-nudge__name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.vm-combo-nudge__text {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: var(--vm-muted);
+}
+
+.vm-combo-nudge__price {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.vm-combo-nudge__separate {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--vm-muted);
+}
+
+.vm-combo-nudge__cta {
+  align-self: center;
+  padding: 0.6rem 1.2rem;
+  border: 0.15rem solid var(--color-primary);
+  border-radius: 99rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+@media screen and (max-width: 359px) {
+  .vm-combo-nudge {
+    grid-template-columns: 5.6rem minmax(0, 1fr);
+  }
+
+  .vm-combo-nudge__media {
+    width: 5.6rem;
+    height: 5.6rem;
+  }
+
+  .vm-combo-nudge__cta {
+    display: none;
+  }
+}
+
+.vm-combo-inside {
+  padding: 1.8rem;
+  border-radius: 2rem;
+  background: #ffffff;
+  box-shadow: var(--vm-card-shadow);
+}
+
+.vm-combo-inside__total {
+  margin: 1.4rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 0.1rem dashed var(--vm-line);
+  font-size: 1.35rem;
+  line-height: 1.5;
+  color: var(--vm-ink);
+}
+
+/* ---------- Product page: pack pills with price + unit price ---------- */
+.product .product__info-container .product-form__input--pill input[type='radio'] + label.vm-pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  min-width: 9.6rem;
+  min-height: 4.4rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 1.4rem;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.vm-pill__size {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.vm-pill__price {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.vm-pill__unit {
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.78;
+}
+
+/* The PDP price itself. vishesh-sections.css greys every .price-item--regular
+   to 50% - meant for the struck-through compare-at price, but it also caught
+   the normal price on every product that isn't on sale, leaving the main
+   price at about 2.6:1 contrast. Back to the brand red the price block was
+   designed with; sale pricing is untouched. */
+.product .product__info-container .price:not(.price--on-sale) .price__regular .price-item--regular {
+  color: var(--color-primary);
+}
+
+.vm-unit-price--pdp {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: rgba(var(--color-foreground), 0.72);
+  font-variant-numeric: tabular-nums;
+}
+
+@media screen and (max-width: 359px) {
+  .product .product__info-container .product-form__input--pill input[type='radio'] + label.vm-pill {
+    min-width: 8.4rem;
+    padding-inline: 1rem;
+  }
+}
+
+/* ---------- Support ---------- */
+.vm-support-section {
+  padding-block: 1.6rem 0.8rem;
+}
+
+.vm-support-section__heading {
+  margin: 0 0 0.6rem;
+  color: var(--vm-ink);
+}
+
+.vm-support-section__text {
+  margin-bottom: 1.6rem;
+  color: var(--vm-muted);
+}
+
+.vm-support {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.vm-support__item {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  min-width: 0;
+}
+
+.vm-support__icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.vm-support__icon svg {
+  width: 2.2rem;
+  height: 2.2rem;
+  fill: currentColor;
+}
+
+.vm-support__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.vm-support__label {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.vm-support__value {
+  font-size: 1.6rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  color: inherit;
+  text-underline-offset: 0.3rem;
+}
+
+.vm-support__value--email {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.vm-support__value--plain {
+  font-weight: 500;
+}
+
+/* contact page: three cards side by side when there is room */
+.vm-support--full {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+}
+
+.vm-support--full .vm-support__item {
+  padding: 1.4rem 1.6rem;
+  border-radius: 1.6rem;
+  background: #ffffff;
+  box-shadow: var(--vm-card-shadow);
+  color: var(--vm-ink);
+}
+
+/* footer: sits on the red band, so it takes the footer's own text colour */
+.vm-support--compact {
+  gap: 1.2rem;
+  padding-block: 0.4rem 1.2rem;
+}
+
+.vm-support--compact .vm-support__icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.vm-support--compact .vm-support__icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.vm-support--compact .vm-support__value {
+  font-size: 1.45rem;
+  min-height: 2.4rem;
+}
+
+.vm-support--compact .vm-support__value:focus-visible {
+  outline-color: currentColor;
+}
+
+/* five footer columns on desktop once the support column is there */
+@media screen and (min-width: 990px) {
+  .footer__blocks-wrapper:has(.vm-support) > .grid__item {
+    width: calc(20% - var(--grid-desktop-horizontal-spacing) * 4 / 5);
+    max-width: calc(20% - var(--grid-desktop-horizontal-spacing) * 4 / 5);
+  }
+}
+
+/* ---------- Registrations ---------- */
+.vm-credentials {
+  padding-block: 3.2rem 4rem;
+}
+
+.vm-credentials__inner {
+  max-width: 96rem;
+}
+
+.vm-credentials__head {
+  margin-bottom: 1.6rem;
+  text-align: center;
+}
+
+.vm-credentials__heading {
+  margin: 0;
+  color: var(--vm-ink);
+}
+
+.vm-credentials__intro {
+  margin: 0.4rem 0 0;
+  color: var(--vm-muted);
+}
+
+/* like the declaration panel on the back of a pack */
+.vm-credentials__list {
+  margin: 0;
+  display: grid;
+  gap: 0;
+  border: 0.15rem dashed var(--vm-line);
+  border-radius: 1.6rem;
+  background: #ffffff;
+}
+
+@media screen and (min-width: 750px) {
+  .vm-credentials__list {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+  }
+}
+
+.vm-credential {
+  padding: 1.6rem 1.8rem;
+  min-width: 0;
+}
+
+.vm-credential + .vm-credential {
+  border-top: 0.15rem dashed var(--vm-line);
+}
+
+@media screen and (min-width: 750px) {
+  .vm-credential + .vm-credential {
+    border-top: 0;
+    border-left: 0.15rem dashed var(--vm-line);
+  }
+}
+
+.vm-credential dd {
+  margin: 0;
+}
+
+.vm-credential__name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vm-muted);
+}
+
+.vm-credential__number {
+  margin-top: 0.4rem !important;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--vm-ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+
+.vm-credential__note,
+.vm-credential__validity {
+  margin-top: 0.4rem !important;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: var(--vm-muted);
+}
+
+.vm-credential--pending {
+  background: repeating-linear-gradient(-45deg, #fff8ec, #fff8ec 1rem, #ffffff 1rem, #ffffff 2rem);
+}
+
+.vm-credentials__footnote {
+  margin: 1.2rem 0 0;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--vm-muted);
+}
