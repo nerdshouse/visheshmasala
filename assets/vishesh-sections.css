@@ -3603,8 +3603,21 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  min-height: 4rem;
+  /* 44px minimum touch target */
+  min-height: 4.4rem;
   min-width: 0;
+  /* Dawn's 3rem side padding left ~90px for a 97px "ADD TO CART" in a
+     two-column grid card at 375px, so the label wrapped onto two lines.
+     1rem a side fits it in one line from 320px up; nowrap keeps it there. */
+  padding-inline: 1rem;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 339px) {
+  .vishesh-pack-select__submit {
+    font-size: 1.3rem;
+    letter-spacing: 0;
+  }
 }
 
 /* Carousel cards (Bestsellers, Shop by Category) are narrower than a
@@ -3658,7 +3671,7 @@
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  min-height: 4.2rem;
+  min-height: 4.4rem;
   border-radius: 99rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

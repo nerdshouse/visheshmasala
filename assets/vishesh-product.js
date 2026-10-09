@@ -35,7 +35,12 @@
       if (reduced) {
         gsap.fromTo(title, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'none' });
       } else if (window.SplitText) {
-        var chars = new SplitText(title, { type: 'chars' }).chars;
+        // Split into words as well as chars: with chars alone every letter
+        // becomes its own inline-block, so a long title like "Gujarati
+        // Kitchen Combo - Rajwadi Garam Masala…" could wrap mid-word at
+        // 375px ("Rajw / adi"). The word wrappers keep each word on one
+        // line while the letters still animate individually.
+        var chars = new SplitText(title, { type: 'words,chars' }).chars;
         gsap.from(chars, {
           y: function () {
             return gsap.utils.random(20, 50);

@@ -114,7 +114,7 @@
                     {%- render 'vishesh-pack-selector', card_product: product, section_id: section.id -%}
                   {%- else -%}
                     <a href="{{ product.url }}" class="vishesh-bestsellers__cta">
-                      <span>{{ 'products.product.add_to_cart' | t }} | {{ product.price | money }}</span>
+                      <span>{{ 'products.product.add_to_cart' | t }} | {{ product.price | money_without_trailing_zeros }}</span>
                     </a>
                   {%- endif -%}
                 </div>
