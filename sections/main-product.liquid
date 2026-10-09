@@ -222,23 +222,43 @@
                 {%- when 'custom_liquid' -%}
                   {{ block.settings.custom_liquid }}
                 {%- when 'collapsible_tab' -%}
-                  <div class="product__accordion accordion quick-add-hidden" data-animate="fade-up" {{ block.shopify_attributes }}>
-                    <details id="Details-{{ block.id }}-{{ section.id }}">
-                      <summary>
-                        <div class="summary__title">
-                          {% render 'icon-accordion', icon: block.settings.icon %}
-                          <h2 class="h4 accordion__title inline-richtext">
-                            {{ block.settings.heading | default: block.settings.page.title | escape }}
-                          </h2>
+                  {%- comment -%}
+                    Only render a tab that has something in it. An empty
+                    Ingredients / FSSAI & Nutrition / How to Use tab opened
+                    to nothing on every product. Content comes from the
+                    block's text (or a metafield connected to it in the
+                    theme editor) or its page; "<p></p>" left behind by the
+                    editor counts as empty, images and tables don't. Kept
+                    visible in the theme editor so it can still be filled.
+                  {%- endcomment -%}
+                  {%- capture accordion_content -%}
+                    {{ block.settings.content }}
+                    {{ block.settings.page.content }}
+                  {%- endcapture -%}
+                  {%- assign accordion_text = accordion_content | strip_html | strip -%}
+                  {%- if accordion_text != blank
+                    or accordion_content contains '<img'
+                    or accordion_content contains '<table'
+                    or accordion_content contains '<iframe'
+                    or request.design_mode
+                  -%}
+                    <div class="product__accordion accordion quick-add-hidden" data-animate="fade-up" {{ block.shopify_attributes }}>
+                      <details id="Details-{{ block.id }}-{{ section.id }}">
+                        <summary>
+                          <div class="summary__title">
+                            {% render 'icon-accordion', icon: block.settings.icon %}
+                            <h2 class="h4 accordion__title inline-richtext">
+                              {{ block.settings.heading | default: block.settings.page.title | escape }}
+                            </h2>
+                          </div>
+                          {{- 'icon-caret.svg' | inline_asset_content -}}
+                        </summary>
+                        <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
+                          {{ accordion_content }}
                         </div>
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
-                      </summary>
-                      <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
-                        {{ block.settings.content }}
-                        {{ block.settings.page.content }}
-                      </div>
-                    </details>
-                  </div>
+                      </details>
+                    </div>
+                  {%- endif -%}
                 {%- when 'quantity_selector' -%}
                   <div
                     id="Quantity-Form-{{ section.id }}"

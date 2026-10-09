@@ -10,7 +10,7 @@
     <div class="vishesh-sticky-atc__info">
       <span class="vishesh-sticky-atc__title">{{ product.title | escape }}</span>
       <span class="vishesh-sticky-atc__price" data-sticky-atc-price>
-        {{- product.selected_or_first_available_variant.price | money -}}
+        {{- product.selected_or_first_available_variant.price | money_without_trailing_zeros -}}
       </span>
     </div>
     <button type="button" class="button" data-sticky-atc-button>

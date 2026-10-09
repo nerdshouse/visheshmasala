@@ -26,9 +26,15 @@
   assign price_min = product.price_min
   assign price_max = product.price_max
   assign available = target.available | default: false
-  assign money_price = price | money
-  assign money_price_min = price_min | money
-  assign money_price_max = price_max | money
+  comment
+    money_without_trailing_zeros: ₹55 rather than ₹55.00, while ₹115.50
+    keeps its paise. Same filter the cart uses. The currency-code branch
+    below is left on money_with_currency (there is no trailing-zero-free
+    variant of it, and the setting is off).
+  endcomment
+  assign money_price = price | money_without_trailing_zeros
+  assign money_price_min = price_min | money_without_trailing_zeros
+  assign money_price_max = price_max | money_without_trailing_zeros
   if settings.currency_code_enabled
     assign money_price = price | money_with_currency
     assign money_price_min = price_min | money_with_currency
@@ -70,7 +76,7 @@
                   {% if settings.currency_code_enabled %}
                     {{ compare_at_price | money_with_currency }}
                   {% else %}
-                    {{ compare_at_price | money }}
+                    {{ compare_at_price | money_without_trailing_zeros }}
                   {% endif %}
                 </s>
               </span>
@@ -98,7 +104,7 @@
               {% if settings.currency_code_enabled %}
                 {{ compare_at_price | money_with_currency }}
               {% else %}
-                {{ compare_at_price | money }}
+                {{ compare_at_price | money_without_trailing_zeros }}
               {% endif %}
             </s>
           </span>

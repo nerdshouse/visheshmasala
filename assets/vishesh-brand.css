@@ -96,6 +96,26 @@ body.vm-sticky-atc-visible .vishesh-whatsapp {
   bottom: calc(var(--vm-sticky-atc-h, 0px) + 1.2rem);
 }
 
+/* Phones: sitting above the bar still put the bubble over page content -
+   on a PDP the bar is up from first paint, so the bubble landed on the
+   product title. Instead the bubble docks inside the bar: the bar keeps
+   a right-hand gutter for it and the bubble is centred in the bar's row
+   (its safe-area padding excluded). Scoped to the bar's breakpoint - on
+   desktop the bar is display:none, its height is 0 and the rule above
+   applies. */
+@media screen and (max-width: 749px) {
+  body:has(.vishesh-whatsapp) .vishesh-sticky-atc {
+    padding-right: calc(1.6rem + 4.8rem + 1.2rem);
+  }
+
+  body.vm-sticky-atc-visible .vishesh-whatsapp {
+    bottom: calc(
+      env(safe-area-inset-bottom, 0px) +
+        (var(--vm-sticky-atc-h, 0px) - env(safe-area-inset-bottom, 0px) - 4.8rem) / 2
+    );
+  }
+}
+
 .vishesh-whatsapp:hover {
   transform: scale(1.08);
 }

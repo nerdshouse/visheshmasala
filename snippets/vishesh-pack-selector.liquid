@@ -29,11 +29,11 @@
     {%- for variant in card_product.variants -%}
       <option
         value="{{ variant.id }}"
-        data-price-html="{{ variant.price | money | escape }}"
+        data-price-html="{{ variant.price | money_without_trailing_zeros | escape }}"
         {% if variant == card_product.selected_or_first_available_variant %}selected{% endif %}
         {% unless variant.available %}disabled{% endunless %}
       >
-        {{ variant.title }} - {{ variant.price | money }}
+        {{ variant.title }} - {{ variant.price | money_without_trailing_zeros }}
         {%- unless variant.available %} ({{ 'products.product.sold_out' | t }}){% endunless -%}
       </option>
     {%- endfor -%}
