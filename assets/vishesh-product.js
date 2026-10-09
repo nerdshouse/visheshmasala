@@ -100,8 +100,42 @@
       // can't tell "not reached yet" from "scrolled past" after a long
       // jump: both are just "not intersecting".
       var barShown = null;
+      var whatsapp = document.querySelector('.vishesh-whatsapp');
+      var titleEl = document.querySelector('.product__title h1, .product__title > *:first-child');
+      var priceEl = document.querySelector('.product__info-container [id^="price-"]');
+      var overlaps = function (a, b) {
+        return !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top);
+      };
+      // On short phones the product title and price can sit at the very
+      // bottom of the first screen, right where the floating WhatsApp
+      // button is. While the sticky bar is down, the button steps aside
+      // (fades out) only for as long as it would cover title or price text,
+      // and comes back as soon as they scroll away. Text lines are measured
+      // with a Range, so a short title that doesn't reach the button never
+      // hides it. Once the bar is up the button docks in the bar instead.
+      var tuckWhatsapp = function (shown) {
+        if (!whatsapp) return;
+        var tuck = false;
+        if (!shown && window.innerWidth < 750) {
+          var wa = whatsapp.getBoundingClientRect();
+          [titleEl, priceEl].forEach(function (el) {
+            if (!el || tuck) return;
+            var range = document.createRange();
+            range.selectNodeContents(el);
+            var rects = range.getClientRects();
+            for (var i = 0; i < rects.length; i++) {
+              if (rects[i].width > 0 && overlaps(wa, rects[i])) {
+                tuck = true;
+                break;
+              }
+            }
+          });
+        }
+        document.body.classList.toggle('vm-wa-tucked', tuck);
+      };
       var updateBar = function () {
         var shown = buyButtons.getBoundingClientRect().bottom < 80;
+        tuckWhatsapp(shown);
         if (shown === barShown) return;
         barShown = shown;
         stickyBar.classList.toggle('is-visible', shown);
@@ -129,6 +163,9 @@
       window.addEventListener('scroll', queueBar, { passive: true });
       window.addEventListener('resize', queueBar, { passive: true });
       updateBar();
+      // The title's letters animate in for about a second after load, so
+      // check once more when they have settled.
+      setTimeout(queueBar, 1600);
 
       stickyBar.querySelector('[data-sticky-atc-button]').addEventListener('click', function () {
         realSubmit.click();
