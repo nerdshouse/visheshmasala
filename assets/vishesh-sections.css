@@ -3603,7 +3603,8 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  min-height: 4rem;
+  /* 44px minimum touch target */
+  min-height: 4.4rem;
   min-width: 0;
   /* Dawn's 3rem side padding left ~90px for a 97px "ADD TO CART" in a
      two-column grid card at 375px, so the label wrapped onto two lines.
@@ -3670,7 +3671,7 @@
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  min-height: 4.2rem;
+  min-height: 4.4rem;
   border-radius: 99rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
