@@ -437,6 +437,15 @@ a.vm-combo-item__name:focus-visible,
   opacity: 0.78;
 }
 
+/* The PDP price itself. vishesh-sections.css greys every .price-item--regular
+   to 50% - meant for the struck-through compare-at price, but it also caught
+   the normal price on every product that isn't on sale, leaving the main
+   price at about 2.6:1 contrast. Back to the brand red the price block was
+   designed with; sale pricing is untouched. */
+.product .product__info-container .price:not(.price--on-sale) .price__regular .price-item--regular {
+  color: var(--color-primary);
+}
+
 .vm-unit-price--pdp {
   display: block;
   margin-top: 0.2rem;
@@ -520,6 +529,11 @@ a.vm-combo-item__name:focus-visible,
   overflow-wrap: anywhere;
   color: inherit;
   text-underline-offset: 0.3rem;
+}
+
+.vm-support__value--email {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .vm-support__value--plain {

@@ -77,7 +77,8 @@
         </span>
         <span class="vm-support__text">
           <span class="vm-support__label">Email</span>
-          <a class="vm-support__value" href="mailto:{{ vm_email | escape }}">{{ vm_email | escape }}</a>
+          {%- comment -%} <wbr> after the @ so a narrow footer column wraps the address there, not mid-word {%- endcomment -%}
+          <a class="vm-support__value vm-support__value--email" href="mailto:{{ vm_email | escape }}">{{ vm_email | escape | replace: '@', '@<wbr>' }}</a>
         </span>
       </li>
     {%- endif -%}
