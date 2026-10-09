@@ -448,5 +448,20 @@
     {%- endif -%}
 
     {% render 'vishesh-whatsapp' %}
+
+    {%- comment -%}
+      instant.page 5.2.0 (https://instant.page/, MIT) - prefetches a
+      same-site page when a link is hovered for 65 ms or touched, so the
+      click that follows loads faster. Official tag and SRI hash, default
+      settings only: no mousedown shortcut, no viewport preloading, no
+      query-string or external links. GET links that act on their own
+      (logout, the drawer cart icon) carry data-no-instant. Remove this
+      tag to turn it off.
+    {%- endcomment -%}
+    <script
+      src="//instant.page/5.2.0"
+      type="module"
+      integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"
+    ></script>
   </body>
 </html>

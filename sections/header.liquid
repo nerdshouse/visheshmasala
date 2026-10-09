@@ -305,7 +305,8 @@
         {%- endcase -%}
       {%- endfor -%}
 
-      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+      {%- comment -%} data-no-instant: the click opens the cart drawer, so a prefetch of /cart would never be used {%- endcomment -%}
+      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble" data-no-instant>
         {% if cart == empty %}
           <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
         {% else %}
