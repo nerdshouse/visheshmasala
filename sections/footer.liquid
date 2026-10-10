@@ -176,7 +176,7 @@
             {%- endif -%}
             {%- for block in section.blocks -%}
               <div
-                class="footer-block grid__item{% if block.type == 'link_list' %} footer-block--menu{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                class="footer-block grid__item{% if block.type == 'link_list' %} footer-block--menu{% endif %}{% if block.type == 'text' %} vishesh-footer-brand{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 data-animate="fade-up"
                 {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
@@ -438,19 +438,43 @@
     </div>
     <style>
       .footer__custom-socials-wrapper {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
-        /* Separated from the blocks grid above it, and from the bottom
-           utility bar below, so it reads as its own centred row. */
+        /* Separated from the blocks grid above it so it reads as its own
+           centred row, with the copyright directly beneath. */
         padding-top: 2.4rem;
-        padding-bottom: 2.4rem;
-        border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
-        margin-top: 2.4rem;
+        padding-bottom: 1.6rem;
+        margin-top: 0;
+      }
+      /* The divider is inset to the content width. A border on the
+         wrapper itself spanned its padding as well, so it ran wider than
+         the columns above it. */
+      .footer__custom-socials-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 2rem;
+        right: 2rem;
+        border-top: 0.1rem solid rgba(255, 255, 255, 0.2);
+      }
+      @media screen and (min-width: 750px) {
+        .footer__custom-socials-wrapper::before {
+          left: 5rem;
+          right: 5rem;
+        }
+      }
+      /* Under 990px the last accordion's own bottom border already closes
+         the list, so a second line here only doubled it. */
+      @media screen and (max-width: 989px) {
+        .footer__custom-socials-wrapper::before {
+          display: none;
+        }
       }
       .vishesh-custom-socials {
         display: flex;
-        gap: 18px;
+        gap: 1.6rem;
         justify-content: center;
         flex-wrap: wrap;
         margin: 0;
@@ -459,11 +483,14 @@
       .vishesh-custom-socials .list-social__item {
         list-style: none;
       }
+      /* 4.4rem circles: a comfortable tap target, same size for all three. */
       .vishesh-custom-socials .list-social__link {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 9px;
+        width: 4.4rem;
+        height: 4.4rem;
+        padding: 0;
         border-radius: 50%;
         background: #ffffff;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -473,16 +500,15 @@
         transform: translateY(-4px);
         box-shadow: 0 8px 18px rgba(0,0,0,0.12);
       }
+      .vishesh-custom-socials .list-social__link:focus-visible {
+        outline: 0.2rem solid #ffffff;
+        outline-offset: 0.3rem;
+        box-shadow: none;
+      }
       .vishesh-custom-socials svg {
         width: 20px;
         height: 20px;
         display: block;
-      }
-      @media screen and (max-width: 749px) {
-        .footer__custom-socials-wrapper {
-          padding-top: 0.5rem;
-          padding-bottom: 1.5rem;
-        }
       }
     </style>
 
@@ -492,6 +518,25 @@
       data-cascade
     {% endif %}
   >
+    {%- comment -%}
+      Payment icons and the locale pickers. With both pickers off and no
+      payment types to list (this store has none), the row rendered empty
+      and still left a 45px band above the copyright - so it only renders
+      when it has something to show.
+    {%- endcomment -%}
+    {%- liquid
+      assign vm_footer_utility = false
+      if section.settings.enable_country_selector and localization.available_countries.size > 1
+        assign vm_footer_utility = true
+      endif
+      if section.settings.enable_language_selector and localization.available_languages.size > 1
+        assign vm_footer_utility = true
+      endif
+      if section.settings.payment_enable and shop.enabled_payment_types.size > 0
+        assign vm_footer_utility = true
+      endif
+    -%}
+    {%- if vm_footer_utility -%}
     <div class="footer__content-bottom-wrapper page-width">
       <div class="footer__column footer__localization isolate">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
@@ -533,7 +578,7 @@
         {%- endif -%}
       </div>
     </div>
-
+    {%- endif -%}
 
     <div class="footer__content-bottom-wrapper page-width{% if section.settings.enable_country_selector == false and section.settings.enable_language_selector == false %} footer__content-bottom-wrapper--center{% endif %}">
       <div class="footer__copyright caption">

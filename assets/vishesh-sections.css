@@ -3231,32 +3231,271 @@
 }
 
 /* ---------- Footer rebuild: Shop / About / Help + trust marks ---------- */
-/* 1.2rem left the column heading sitting almost on top of its first
-   link. Given the links themselves are generously spaced, the heading
-   needs comparable separation to read as a heading. */
-.vishesh-footer-static .footer-block__heading {
-  margin-bottom: 2.6rem;
+/* Layout. Dawn lays the footer out as a flex row whose column widths come
+   from grid--N-col classes, and vm-discovery.css then forced all five
+   columns to 20% - so a 70px "About" list got the same width as the
+   company name and the email address, and both of those wrapped. The
+   footer gets its own grid instead:
+   - under 990px: one column - brand first, then the accordions;
+   - 990px+: brand across the top, then the four link columns sized to
+     their content and spread across the row. Measured at 1280px, the four
+     columns alone need 808px of the 1100px content width, so a fifth
+     brand column beside them would have had ~150px - narrower than before.
+   Selectors carry .footer so they outrank section-footer.css, which loads
+   after this file, and the 20% rule in vm-discovery.css. */
+.footer .footer__blocks-wrapper.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 3.6rem;
+  row-gap: 0;
+  margin: 0;
+}
+
+.footer .footer__blocks-wrapper > .footer-block.grid__item {
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer .footer__blocks-wrapper > .vishesh-footer-brand {
+  order: -1;
+}
+
+@media screen and (max-width: 749px) {
+  .footer .footer__content-top {
+    padding-inline: 2rem;
+    padding-bottom: 2.4rem;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .footer .footer__content-top {
+    padding-bottom: 4rem;
+  }
 }
 
 @media screen and (max-width: 989px) {
-  .vishesh-footer-static .footer-block__heading {
-    margin-bottom: -2.8rem;
+  .footer .footer__blocks-wrapper > .footer-block.vishesh-footer-brand {
+    padding-bottom: 2.4rem;
+    border-bottom: 0.1rem solid rgba(255, 255, 255, 0.16);
   }
+}
+
+@media screen and (min-width: 990px) {
+  .footer .footer__blocks-wrapper.grid {
+    grid-template-columns: repeat(4, auto);
+    justify-content: space-between;
+    row-gap: 4rem;
+  }
+
+  .footer .footer__blocks-wrapper > .vishesh-footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Column headings: the four <summary> headings were 18px regular while
+   the company name (an <h2>) was 18px bold - one weight and size here. */
+.footer .vishesh-footer-static .footer-block__heading {
+  margin: 0 0 1.4rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+
+/* Links: one rhythm for every column, and nothing below the last link
+   (Dawn adds a 4rem bottom margin to every list). The accordion wrapper
+   reuses Dawn's .accordion__content, whose side padding pushed every link
+   and contact row 6px right of its heading. */
+.footer .vishesh-footer-static .accordion__content {
+  padding-inline: 0;
+}
+
+.footer .vishesh-footer-static .footer-block__details-content {
+  margin: 0;
+}
+
+.footer .vishesh-footer-static .list-menu__item--link {
+  display: inline-block;
+  padding: 0.5rem 0;
+  font-size: 1.45rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+}
+
+.footer .vishesh-footer-static .list-menu__item--link:hover {
+  color: #ffffff;
+}
+
+/* The hover underline (further down this file) is inset 1.2rem for the
+   header's padded menu items; footer links have no padding, so it started
+   12px into the word. */
+.footer .footer-block__details-content .list-menu__item--link::after {
+  left: 0;
+  right: 0;
+  bottom: 0.3rem;
+}
+
+@media screen and (min-width: 990px) {
+  .footer .vishesh-footer-static .list-menu__item--link {
+    white-space: nowrap;
+  }
+}
+
+/* Keyboard focus: the theme's default ring is the page text colour at 50%
+   (dark brown), which all but vanished on the red band. */
+.footer a:focus-visible,
+.footer summary:focus-visible,
+.footer .vm-support--compact .vm-support__value:focus-visible {
+  outline: 0.2rem solid #ffffff;
+  outline-offset: 0.3rem;
+  box-shadow: none;
+}
+
+/* Brand: logo, company name, then the seal copy, left-aligned together.
+   The name is balanced so it breaks into even lines, not "Limited" alone. */
+.footer .vishesh-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .vishesh-footer-logo {
   display: block;
   width: fit-content;
-  margin: 0 auto 1.6rem;
+  margin: 0 0 1.6rem;
   padding: 0.8rem;
   background: #ffffff;
   border-radius: 1.2rem;
+}
+
+.footer .vishesh-footer-brand .vishesh-footer-logo {
+  order: -1;
 }
 
 .vishesh-footer-logo img {
   display: block;
   width: 7rem;
   height: auto;
+}
+
+.footer .vishesh-footer-brand .footer-block__heading {
+  margin: 0 0 0.8rem;
+  max-width: 30rem;
+  font-size: 1.7rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.footer .vishesh-footer-brand .vishesh-seal {
+  margin: 0;
+  max-width: 36rem;
+}
+
+.footer .vishesh-footer-brand .vishesh-seal p {
+  margin: 0 0 0.6rem;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer .vishesh-footer-brand .vishesh-seal p:first-child {
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.footer .vishesh-footer-brand .vishesh-seal p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tablet and desktop, where the brand spans the row: logo beside the name
+   and copy rather than stacked above them. */
+@media screen and (min-width: 750px) {
+  .footer .vishesh-footer-brand {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'logo name'
+      'logo text';
+    column-gap: 2.4rem;
+    align-content: start;
+  }
+
+  .footer .vishesh-footer-brand .vishesh-footer-logo {
+    grid-area: logo;
+    margin: 0;
+  }
+
+  .footer .vishesh-footer-brand .footer-block__heading {
+    grid-area: name;
+    max-width: none;
+  }
+
+  .footer .vishesh-footer-brand .vishesh-seal {
+    grid-area: text;
+    max-width: 60rem;
+  }
+}
+
+/* Customer care: same type size and rhythm as the link columns, and the
+   address kept on one line where the column is sized to fit it. */
+.footer .vm-support--compact {
+  gap: 1.4rem;
+  padding: 0.2rem 0 0;
+}
+
+.footer .vm-support--compact .vm-support__value {
+  font-size: 1.45rem;
+}
+
+/* The <wbr> after the @ (vm-support.liquid) is still a break point under
+   nowrap in Chrome, so it is switched off where the column fits the
+   address; phones keep it as the fallback. */
+@media screen and (min-width: 990px) {
+  .footer .vm-support--compact .vm-support__value--email {
+    white-space: nowrap;
+  }
+
+  .footer .vm-support--compact .vm-support__value--email wbr {
+    display: none;
+  }
+}
+
+/* Bottom bar: one divider (above the social row), no empty band, and the
+   copyright centred under the icons. */
+.footer .footer__content-bottom {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.footer .footer__copyright {
+  margin-top: 0;
+  padding-top: 0.4rem;
+}
+
+.footer .copyright__content {
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Phones: the floating WhatsApp bubble (and, on a product page, the sticky
+   add-to-cart bar it docks into) covered the social icons and the
+   copyright line at the bottom of the page. Room for both, using the bar's
+   own measured height. footer.footer outranks the section's inline
+   padding rule. */
+@media screen and (max-width: 749px) {
+  footer.footer {
+    padding-bottom: calc(7.2rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  body.vm-sticky-atc-visible footer.footer {
+    padding-bottom: calc(var(--vm-sticky-atc-h, 0px) + 1.6rem);
+  }
 }
 
 /* ---------- Footer mobile accordion (Shop / About / Help) ----------
@@ -3305,8 +3544,12 @@
     display: inline-flex;
   }
 
+  .footer .vishesh-footer-static .vishesh-footer-accordion__summary {
+    margin: 0;
+  }
+
   .vishesh-footer-accordion .footer-block__details-content {
-    padding: 1.2rem 0 0.4rem;
+    padding: 0.8rem 0 1.6rem;
   }
 }
 
