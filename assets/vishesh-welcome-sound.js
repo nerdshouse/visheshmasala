@@ -5,20 +5,18 @@
  * instant the page opens" is not achievable in any current browser.
  * Chrome, Safari, and Firefox all block audio-with-sound from playing
  * before the visitor has interacted with the page in some way - this is
- * platform policy, not a bug in this code. What this file actually does,
- * in order:
+ * platform policy, not a bug in this code. So this file does nothing on
+ * load: a one-time listener on the visitor's first interaction (click,
+ * tap, keydown) creates the audio and plays the sound - a real user
+ * gesture always satisfies autoplay policy, so this is the path that
+ * reaches every visitor, just not at the exact instant of page load.
  *
- * 1. On load, attempts to play immediately via the Web Audio API. This
- *    succeeds for a minority of visitors - browsers that have decided,
- *    from the visitor's own history with this site/browser profile, that
- *    autoplay is likely welcome (Chrome's MEI heuristic and similar). It
- *    will silently do nothing for a first-time visitor, which is expected
- *    and not an error.
- * 2. Regardless of whether step 1 worked, a one-time listener on the
- *    visitor's very first interaction (click, tap, scroll, keydown) plays
- *    the sound if it hasn't already played - a real user gesture always
- *    satisfies autoplay policy, so this is the fallback that actually
- *    reaches every visitor, just not at the exact instant of page load.
+ * It used to also try on load. That attempt built the Audio element
+ * (downloading the ~95 KB clip on every page until the sound had played)
+ * and, when autoplay was blocked - the normal case - an AudioContext as
+ * well, which cost a long main-thread task while the page was still
+ * loading, for a play that never happened. Visitors who never interact
+ * now pay nothing for the sound at all.
  *
  * Same generated-tone stub approach as assets/vishesh-sound.js (no real
  * recorded/licensed brand clip has been supplied yet) - swap in a real
@@ -129,11 +127,8 @@
   // Returns true only if audio actually started (AudioContext reached
   // "running"), false if the browser silently blocked it (stays
   // "suspended" - no error is thrown, it just never produces sound).
-  // Getting this distinction right matters: the on-load attempt must NOT
-  // be treated as "done" when the browser blocked it, or the first-
-  // gesture fallback below would never get a chance to actually play
-  // anything for exactly the visitors who need it (first-time visitors,
-  // which is the majority case this whole feature exists to reach).
+  // A blocked attempt must NOT be marked "done", or the sound would never
+  // play for exactly the visitors it exists to reach.
   function playGeneratedChime() {
     var Ctx = window.AudioContext || window.webkitAudioContext;
     if (!Ctx) return false;
@@ -209,9 +204,9 @@
     document.body.appendChild(stopBtn);
   }
 
-  // One shared element across both attempts below. The on-load attempt
-  // is expected to fail for most visitors, and building a second Audio
-  // in the gesture handler would download the clip a second time.
+  // One shared element, created only when a gesture asks for it - never
+  // on load - so the clip is not downloaded for visitors who never
+  // interact, and a repeat attempt cannot download it a second time.
   var audioEl = null;
 
   function ensureAudio() {
@@ -269,18 +264,10 @@
     if (playGeneratedChime()) markDone();
   }
 
-  // Step 1: try immediately on load. Silently does nothing in browsers
-  // that block it outright (no thrown error surfaces to the visitor).
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', attemptPlay, { once: true });
-  } else {
-    attemptPlay();
-  }
-
-  // Step 2: the reliable fallback - first real user gesture anywhere on
-  // the page. Only one of these fires (whichever happens first), and the
-  // listeners remove themselves either way once a gesture has occurred,
-  // regardless of whether step 1 already played the sound.
+  // Nothing is created or fetched until the first real user gesture
+  // anywhere on the page. Only one of these fires (whichever happens
+  // first), and the listeners remove themselves once a qualifying
+  // gesture has occurred.
   //
   // Deliberately NOT listening for 'wheel' here (Phase 9 fix). This was
   // originally in the list ("first click, tap, or scroll" per the
@@ -307,9 +294,14 @@
   // The cost is that someone who only ever clicks links never hears it.
   // That is the better failure: a third of a second of a jingle then
   // silence is worse than no jingle.
+  //
+  // The checkout buttons are type="button" (GoKwik opens its checkout in
+  // place rather than navigating), but a jingle starting on the tap that
+  // begins checkout is the one thing nobody wants - they are skipped the
+  // same way.
   function willNavigate(target) {
     if (!target || !target.closest) return false;
-    var el = target.closest('a[href], button[type="submit"], input[type="submit"]');
+    var el = target.closest('a[href], button[type="submit"], input[type="submit"], button[name="checkout"]');
     if (!el) return false;
     if (el.tagName !== 'A') return true;
     var href = el.getAttribute('href') || '';

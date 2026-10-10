@@ -16,10 +16,22 @@
           {{ block.shopify_attributes }}
         >
           {%- if block.settings.image != blank -%}
+            {%- comment -%}
+              Without `sizes` the browser assumes 100vw and picks the 800w
+              file for a polaroid ~150px wide on a phone. The grid is 2
+              columns (2rem gap) inside page-width's 1.5rem gutters under
+              750px, 4 columns (2.8rem gap) inside 5rem gutters above, and
+              page-width caps the content at 1100px; each card has 0.8rem
+              of padding either side of the photo.
+            {%- endcomment -%}
             {{
               block.settings.image
               | image_url: width: 800
-              | image_tag: loading: 'lazy', class: 'vishesh-recipes__image', widths: '400, 600, 800'
+              | image_tag:
+                loading: 'lazy',
+                class: 'vishesh-recipes__image',
+                widths: '400, 600, 800',
+                sizes: '(min-width: 1200px) 238px, (min-width: 750px) calc(25vw - 62px), calc(50vw - 41px)'
             }}
           {%- else -%}
             <div class="vishesh-recipes__placeholder">{{ 'image' | placeholder_svg_tag: 'vishesh-recipes__placeholder-svg' }}</div>

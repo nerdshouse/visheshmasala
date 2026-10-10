@@ -395,11 +395,30 @@
     opacity: 0;
   }
 
-  .card-wrapper:hover .media.media--hover-effect > img + img {
+  .card-wrapper:hover .media.media--hover-effect > img + img,
+  .card-wrapper:hover .media.media--hover-effect > img + picture > img {
     opacity: 1;
     transition: transform var(--duration-long) ease;
     transform: scale(1.03);
   }
+}
+
+/* The hover image is wrapped in <picture> so touch-only devices never
+   download it (see snippets/card-product.liquid). The wrapper itself is
+   filled by base.css's `.media > *` rule; these give the inner <img> the
+   fill, fit and hidden-until-hover state a bare second <img> gets from
+   `.media > img` and `.media--hover-effect > img + img` in base.css. */
+.media > picture > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.media.media--hover-effect > img + picture > img {
+  opacity: 0;
 
   .underline-links-hover:hover a {
     text-decoration: underline;

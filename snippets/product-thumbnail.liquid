@@ -30,6 +30,16 @@
     assign lazy = 'lazy'
   endunless
 
+  # The first media is the product page's LCP element. Without a priority
+  # hint the browser fetched it at the same priority as the thumbnails
+  # and the images further down the page, so it finished late on slow
+  # connections. Only the one eager, first-position image gets the hint;
+  # every other gallery image stays lazy and unhinted (image_tag drops an
+  # attribute whose value is nil).
+  if lazy_load == false and position == 1
+    assign fetch_priority = 'high'
+  endif
+
   assign desktop_columns = 1
   if desktop_layout == 'columns' and media_count > 1
     assign desktop_columns = 2
@@ -84,6 +94,7 @@
         | image_tag:
           class: image_class,
           loading: lazy,
+          fetchpriority: fetch_priority,
           sizes: sizes,
           widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
       }}

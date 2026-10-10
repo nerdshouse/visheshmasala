@@ -162,6 +162,15 @@
                   {%- if forloop.index > 2 -%}
                     {%- assign lazy_load = true -%}
                   {%- endif -%}
+                  {%- comment -%}
+                    The first card's image is this page's LCP element on
+                    phones (2-column grid), so only it gets the priority
+                    hint; the second card stays eager but unhinted.
+                  {%- endcomment -%}
+                  {%- assign card_fetchpriority = nil -%}
+                  {%- if forloop.first -%}
+                    {%- assign card_fetchpriority = 'high' -%}
+                  {%- endif -%}
                   <li
                     class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                     {% if settings.animations_reveal_on_scroll %}
@@ -177,6 +186,7 @@
                       show_vendor: section.settings.show_vendor,
                       show_rating: section.settings.show_rating,
                       lazy_load: lazy_load,
+                      fetchpriority: card_fetchpriority,
                       skip_styles: skip_card_product_styles,
                       quick_add: section.settings.quick_add,
                       section_id: section.id,
