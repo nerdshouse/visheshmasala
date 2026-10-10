@@ -79,6 +79,14 @@
   border-radius: 2rem;
   box-shadow: var(--vm-card-shadow);
   overflow: hidden;
+  /* Containing block for the card's visually-hidden labels ("Combo price",
+     "of the <combo>"). They are position: absolute, and with no positioned
+     ancestor they were placed against <body> - escaping this overflow and the
+     row's scroller and sitting up to ~360px past the right edge on phones.
+     Mobile Chrome then laid the whole homepage out ~1.9x wider than the
+     screen: a sideways swipe panned the page, and a swipe on this row moved
+     the page instead of scrolling the cards. */
+  position: relative;
 }
 
 @media screen and (min-width: 750px) and (max-width: 989px) {
