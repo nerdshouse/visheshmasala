@@ -401,6 +401,11 @@
     transition: transform var(--duration-long) ease;
     transform: scale(1.03);
   }
+
+  .underline-links-hover:hover a {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
 }
 
 /* The hover image is wrapped in <picture> so touch-only devices never
@@ -419,10 +424,19 @@
 
 .media.media--hover-effect > img + picture > img {
   opacity: 0;
+}
 
-  .underline-links-hover:hover a {
-    text-decoration: underline;
-    text-underline-offset: 0.3rem;
+/* On a touch-only screen 990px+ wide (a tablet in landscape) a tap still
+   triggers :hover, but the hover image was never downloaded there - its
+   <img> is only the 1x1 placeholder - so the crossfade above would blank
+   the card. Keep the main image showing instead. */
+@media screen and (min-width: 990px) and (hover: none) {
+  .card-wrapper:hover .media.media--hover-effect > img:first-child:not(:only-child) {
+    opacity: 1;
+  }
+
+  .card-wrapper:hover .media.media--hover-effect > img + picture > img {
+    opacity: 0;
   }
 }
 

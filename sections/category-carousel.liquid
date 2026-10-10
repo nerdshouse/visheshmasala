@@ -38,9 +38,10 @@
                 {%- comment -%}
                   Without `sizes` the browser assumes the image is 100vw
                   wide and picks the 600w file for a card ~220px wide.
-                  The slide is min(30rem, 70vw) and the card has 2rem of
-                  padding each side, so the image is 70vw - 40px up to
-                  428px viewports and a fixed 260px above that.
+                  The slide is min(30rem, 70vw) and the image renders
+                  24px narrower than it (measured: 200px at a 320px
+                  viewport, 276px from 429px up), so 70vw - 24px up to
+                  428px viewports and a fixed 276px above that.
                 {%- endcomment -%}
                 {{
                   block.settings.image
@@ -49,7 +50,7 @@
                     loading: 'lazy',
                     class: 'vishesh-category-card__image',
                     widths: '300, 450, 600',
-                    sizes: '(min-width: 429px) 260px, calc(70vw - 40px)',
+                    sizes: '(min-width: 429px) 276px, calc(70vw - 24px)',
                     alt: block.settings.tag_label
                 }}
               {%- else -%}
